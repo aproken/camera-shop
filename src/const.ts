@@ -4,6 +4,24 @@ export enum AppRoute {
   Product = '/cameras'
 }
 
+export enum Type {
+  Collectible ='Коллекционная',
+  Momentary = 'Моментальная',
+  Digital = 'Цифровая',
+  Membranous ='Плёночная',
+}
+
+export enum Category {
+  VideoCamera = 'Видеокамера',
+  PhotoCamera = 'Фотоаппарат',
+}
+
+export enum Level {
+  Zero = 'Нулевой',
+  Amateur = 'Любительский',
+  Professional = 'Профессиональный',
+}
+
 export enum IconSocial {
   VK = '#icon-vk',
   Pinterest = '#icon-pinterest',
