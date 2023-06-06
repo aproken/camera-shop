@@ -1,7 +1,18 @@
+export const BASE_URL = 'https://camera-shop.accelerator.pages.academy';
+export const REQUEST_TIMEOUT = 5000;
+
 export enum AppRoute {
   Main = '/',
   NotFound = '*',
   Product = '/cameras'
+}
+
+export enum APIRoute {
+  CamerasList = '/cameras',
+}
+
+export enum NameSpace {
+  Camera = 'CAMERA',
 }
 
 export enum Type {
