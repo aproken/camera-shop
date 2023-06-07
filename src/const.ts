@@ -4,7 +4,7 @@ export const REQUEST_TIMEOUT = 5000;
 export enum AppRoute {
   Main = '/',
   NotFound = '*',
-  Product = '/cameras'
+  Product = '/cameras/:cameraId',
 }
 
 export enum APIRoute {

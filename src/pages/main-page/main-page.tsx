@@ -1,11 +1,30 @@
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import Banner from '../../components/banner/banner';
 import Filter from '../../components/filter/filter';
-import Sorting from '../../components/sorting/sorting';
-import CatalogCards from '../../components/catalog-cards/catalog-cards';
-import Pagination from '../../components/pagination/pagination';
+import CatalogContent from '../../components/catalog-content/catalog-content';
+import { getCamerasList, getCamerasListCompletingStatus } from '../../store/camera-process/selectors';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import LoadingScreen from '../loading-screen/loading-screen';
+import { fetchCamerasListAction } from '../../store/api-action';
+import { store } from '../../store';
+import { useEffect } from 'react';
 
 function MainPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const cameras = useAppSelector(getCamerasList);
+  const isCamerasListCompleting = useAppSelector(getCamerasListCompletingStatus);
+
+  useEffect(() => {
+    store.dispatch(fetchCamerasListAction());
+  }, [dispatch]);
+
+
+  if (isCamerasListCompleting) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <main>
       <Banner />
@@ -23,15 +42,7 @@ function MainPage(): JSX.Element {
                 </div>
               </div>
 
-              <div className="catalog__content">
-
-                <div className="catalog-sort">
-                  <Sorting />
-                </div>
-
-                <CatalogCards />
-                <Pagination />
-              </div>
+              <CatalogContent products={ cameras }/>
             </div>
           </div>
         </section>

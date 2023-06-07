@@ -1,12 +1,10 @@
-import ProductCard from '../product-card/product-card';
+//import ProductCard from '../product-card/product-card';
 
 function Slider(): JSX.Element {
   return (
     <div className="product-similar__slider">
       <div className="product-similar__slider-list">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        {/* <ProductCard /> */}
         <button className="slider-controls slider-controls--prev" type="button" aria-label="Предыдущий слайд" disabled>
           <svg width="7" height="12" aria-hidden="true">
             <use xlinkHref="#icon-arrow"></use>
