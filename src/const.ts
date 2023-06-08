@@ -9,10 +9,12 @@ export enum AppRoute {
 
 export enum APIRoute {
   CamerasList = '/cameras',
+  PromoProduct = '/promo',
 }
 
 export enum NameSpace {
   Camera = 'CAMERA',
+  PromoProduct = 'PROMO_PRODUCT',
 }
 
 export enum Type {
