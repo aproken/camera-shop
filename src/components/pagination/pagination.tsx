@@ -1,19 +1,23 @@
-function Pagination(): JSX.Element {
+import LinkBack from '../link-back/link-back';
+import LinkForward from '../link-forward/link-forward';
+import PageNumber from '../page-number/page-number';
+
+type PaginationProps = {
+  currentPage: number;
+  pageNumbers: number[];
+}
+
+function Pagination({ currentPage, pageNumbers, }: PaginationProps): JSX.Element {
   return (
     <div className="pagination">
       <ul className="pagination__list">
-        <li className="pagination__item">
-          <a className="pagination__link pagination__link--active" href="1">1</a>
-        </li>
-        <li className="pagination__item">
-          <a className="pagination__link" href="2">2</a>
-        </li>
-        <li className="pagination__item">
-          <a className="pagination__link" href="3">3</a>
-        </li>
-        <li className="pagination__item">
-          <a className="pagination__link pagination__link--text" href="2">Далее</a>
-        </li>
+        <LinkBack currentPage={currentPage} pageNumbers={ pageNumbers }/>
+        {
+          pageNumbers.map((page) => (
+            <PageNumber key={page} currentPage={ currentPage } page={page} />
+          ))
+        }
+        <LinkForward currentPage={ currentPage } pageNumbers={ pageNumbers } />
       </ul>
     </div>
   );

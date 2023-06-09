@@ -2,12 +2,16 @@ import { Cameras } from '../../types/camera';
 import Pagination from '../pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import Sorting from '../sorting/sorting';
+import { getProductsCurrentPage, getPageNumbers, PRODUCTS_COUNT_ON_PAGE } from '../../const';
 
 type CatalogContentProps = {
   products: Cameras;
+  currentPage: number;
 }
 
-function CatalogContent({ products }: CatalogContentProps): JSX.Element {
+function CatalogContent({ products, currentPage }: CatalogContentProps): JSX.Element {
+  const pageNumbers = getPageNumbers(products.length, PRODUCTS_COUNT_ON_PAGE);
+  const productsCurrentPage = getProductsCurrentPage(products, currentPage, PRODUCTS_COUNT_ON_PAGE);
 
   return (
     <div className="catalog__content">
@@ -18,7 +22,7 @@ function CatalogContent({ products }: CatalogContentProps): JSX.Element {
 
       <div className="cards catalog__cards">
         {
-          products.slice(0, 9).map((product) => (
+          productsCurrentPage.map((product) => (
             <ProductCard
               key={ product.id }
               product={ product }
@@ -28,7 +32,7 @@ function CatalogContent({ products }: CatalogContentProps): JSX.Element {
         }
       </div>
 
-      <Pagination />
+      <Pagination currentPage={ currentPage } pageNumbers={ pageNumbers } />
     </div>
   );
 }
