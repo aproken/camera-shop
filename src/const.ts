@@ -18,6 +18,8 @@ export enum NameSpace {
   PromoProduct = 'PROMO_PRODUCT',
 }
 
+export const CRUMBS = ['Главная', 'Каталог',];
+
 export enum Type {
   Collectible ='Коллекционная',
   Momentary = 'Моментальная',
@@ -44,6 +46,8 @@ export enum IconSocial {
 
 export const START_PAGE = 1;
 
+export const START_INDEX = 0;
+
 export const PRODUCTS_COUNT_ON_PAGE = 9;
 
 export const TABS_TITLE: string[] = ['Описание', 'Характеристики',];
@@ -60,3 +64,5 @@ export const getProductsCurrentPage = <T>(products: Array<T>, pageNumberCurrentP
 };
 
 export const getStylizedPrice = (price: number): string => new Intl.NumberFormat('ru-Ru').format(price);
+
+export const getBreadcrumbs = (productName: string, crumbs: string[]): string[] => [ ...crumbs, productName ];

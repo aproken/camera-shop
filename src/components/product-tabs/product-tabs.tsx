@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Camera } from '../../types/camera';
-import { TABS_TITLE } from '../../const';
+import { START_INDEX, TABS_TITLE } from '../../const';
 
 type ProductTabsProps = {
   product: Camera;
@@ -9,7 +9,7 @@ type ProductTabsProps = {
 function ProductTabs({ product }: ProductTabsProps): JSX.Element {
   const { vendorCode, category, type, level, description } = product;
 
-  const [activeTab, setActiveTab] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<number>(START_INDEX);
 
   const handleTabClick = (index: number) => setActiveTab(index);
 

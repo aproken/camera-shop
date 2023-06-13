@@ -9,8 +9,8 @@ import { getCamera, getCameraComletingStatus } from '../../store/camera-process/
 import LoadingScreen from '../loading-screen/loading-screen';
 import { fetchCameraAction } from '../../store/api-action';
 import NotFoundPage from '../not-found-page/not-found-page';
-import { getStylizedPrice } from '../../const';
-// import { cssTransition } from 'react-toastify';
+import { getStylizedPrice, CRUMBS, getBreadcrumbs } from '../../const';
+
 
 function ProductPage(): JSX.Element {
   const { cameraId } = useParams();
@@ -42,10 +42,12 @@ function ProductPage(): JSX.Element {
 
   const stylizedPrice = getStylizedPrice(price);
 
+  const productCrumbs = getBreadcrumbs(name, CRUMBS);
+
   return (
     <main>
       <div className="page-content">
-        <Breadcrumbs productName={ name }/>
+        <Breadcrumbs crumbs={ productCrumbs }/>
         <div className="page-content__section">
           <section className="product">
             <div className="container">
