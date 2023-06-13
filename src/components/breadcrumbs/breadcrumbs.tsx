@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 
-function Breadcrumbs(): JSX.Element {
+type BreadcrumbsProps = {
+  productName: string;
+}
+
+function Breadcrumbs({ productName }: BreadcrumbsProps): JSX.Element {
   return (
     <div className="breadcrumbs">
       <div className="container">
@@ -14,6 +18,9 @@ function Breadcrumbs(): JSX.Element {
           </li>
           <li className="breadcrumbs__item">
             <span className="breadcrumbs__link breadcrumbs__link--active">Каталог</span>
+          </li>
+          <li className="breadcrumbs__item">
+            <span className="breadcrumbs__link breadcrumbs__link--active">{ productName }</span>
           </li>
         </ul>
       </div>

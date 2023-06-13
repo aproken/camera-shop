@@ -1,10 +1,12 @@
 import { store } from '../store';
-import { Cameras } from './camera';
+import { Camera, Cameras } from './camera';
 import { Promo } from './promo';
 
 export type CameraProcess = {
   camerasList: Cameras;
   isCamerasListCompleting: boolean;
+  camera: Camera | null;
+  isCameraCompleting: boolean;
 }
 
 export type PromoProcess = {

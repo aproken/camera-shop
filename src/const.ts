@@ -10,6 +10,7 @@ export enum AppRoute {
 export enum APIRoute {
   CamerasList = '/cameras',
   PromoProduct = '/promo',
+  Camera = 'camera',
 }
 
 export enum NameSpace {
@@ -45,6 +46,8 @@ export const START_PAGE = 1;
 
 export const PRODUCTS_COUNT_ON_PAGE = 9;
 
+export const TABS_TITLE: string[] = ['Описание', 'Характеристики',];
+
 export const getPageNumbers = (countTotal: number, countOnPage: number) =>
   Array
     .from(
@@ -55,3 +58,5 @@ export const getProductsCurrentPage = <T>(products: Array<T>, pageNumberCurrentP
   const beginIndex = endIndex - productCountOnPage;
   return products.slice(beginIndex, endIndex);
 };
+
+export const getStylizedPrice = (price: number): string => new Intl.NumberFormat('ru-Ru').format(price);

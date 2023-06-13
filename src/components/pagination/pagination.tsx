@@ -11,10 +11,10 @@ function Pagination({ currentPage, pageNumbers, }: PaginationProps): JSX.Element
   return (
     <div className="pagination">
       <ul className="pagination__list">
-        <LinkBack currentPage={currentPage} pageNumbers={ pageNumbers }/>
+        <LinkBack currentPage={ currentPage } pageNumbers={ pageNumbers }/>
         {
           pageNumbers.map((page) => (
-            <PageNumber key={page} currentPage={ currentPage } page={page} />
+            <PageNumber key={ page } currentPage={ currentPage } page={ page } />
           ))
         }
         <LinkForward currentPage={ currentPage } pageNumbers={ pageNumbers } />

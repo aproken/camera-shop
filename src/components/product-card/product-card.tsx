@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Camera } from '../../types/camera';
+import { getStylizedPrice } from '../../const';
 
 type ProductCardProps = {
   product: Camera;
@@ -54,7 +55,7 @@ function ProductCard({ product, onBuyClick, }: ProductCardProps): JSX.Element {
         </div>
         <p className="product-card__title">{ name }</p>
         <p className="product-card__price">
-          <span className="visually-hidden">Цена:</span>{`${ price } ₽`}
+          <span className="visually-hidden">Цена:</span>{`${ getStylizedPrice(price) } ₽`}
         </p>
       </div>
       <div className="product-card__buttons">

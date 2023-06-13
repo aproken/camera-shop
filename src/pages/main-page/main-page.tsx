@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { store } from '../../store';
 import LoadingScreen from '../loading-screen/loading-screen';
-import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+// import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import Banner from '../../components/banner/banner';
 import Filter from '../../components/filter/filter';
 import CatalogContent from '../../components/catalog-content/catalog-content';
@@ -11,8 +11,6 @@ import { getCamerasList, getCamerasListCompletingStatus } from '../../store/came
 import { fetchCamerasListAction } from '../../store/api-action';
 
 function MainPage(): JSX.Element {
-  // eslint-disable-next-line no-console
-  console.debug('TEST');
   const dispatch = useAppDispatch();
   const cameras = useAppSelector(getCamerasList);
   const isCamerasListCompleting = useAppSelector(getCamerasListCompletingStatus);
@@ -34,7 +32,7 @@ function MainPage(): JSX.Element {
     <main>
       <Banner />
       <div className="page-content">
-        <Breadcrumbs />
+        {/* <Breadcrumbs /> */}
 
         <section className="catalog">
           <div className="container">

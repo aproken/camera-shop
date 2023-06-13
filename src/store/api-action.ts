@@ -1,9 +1,10 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
-import { Cameras } from '../types/camera';
-import { APIRoute } from '../const';
+import { Camera, Cameras } from '../types/camera';
+import { APIRoute, AppRoute } from '../const';
 import { Promo } from '../types/promo';
+import { redirectToRoute } from './action';
 
 
 //получение списка камер
@@ -33,6 +34,25 @@ export const fetchPromoProductAction = createAsyncThunk<Promo | null, undefined,
       const { data } = await api.get<Promo>(APIRoute.PromoProduct);
       return data;
     } catch (error) {
+      return null;
+    }
+  }
+);
+
+//Получение товара
+export const fetchCameraAction = createAsyncThunk<Camera | null, number, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+>(
+  'camera/fetchCamera',
+  async (id, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.get<Camera>(`${ APIRoute.CamerasList }/${ id }`);
+      return data;
+    } catch (error) {
+      dispatch(redirectToRoute(AppRoute.NotFound));
       return null;
     }
   }
