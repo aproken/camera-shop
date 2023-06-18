@@ -29,7 +29,7 @@ export const fetchPromoProductAction = createAsyncThunk<Promo | null, undefined,
 }
 >(
   'promoProduct/fetchPromoProduct',
-  async (_arg, { dispatch, extra: api }) => {
+  async (_arg, { extra: api }) => {
     try {
       const { data } = await api.get<Promo>(APIRoute.PromoProduct);
       return data;
@@ -55,5 +55,19 @@ export const fetchCameraAction = createAsyncThunk<Camera | null, number, {
       dispatch(redirectToRoute(AppRoute.NotFound));
       return null;
     }
+  }
+);
+
+//Получение списка похожих товаров
+export const fetchSimilarAction = createAsyncThunk<Cameras, number, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+>(
+  'camera/fetchSimilar',
+  async (id, { extra: api }) => {
+    const { data } = await api.get<Cameras>(`${ APIRoute.CamerasList }/${ id }/${ APIRoute.Similar}`);
+    return data;
   }
 );

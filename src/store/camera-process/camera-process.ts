@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { CameraProcess } from '../../types/state';
-import { fetchCameraAction, fetchCamerasListAction } from '../api-action';
+import { fetchCameraAction, fetchCamerasListAction, fetchSimilarAction } from '../api-action';
 
 const initialState: CameraProcess = {
   camerasList: [],
   isCamerasListCompleting: false,
   camera: null,
   isCameraCompleting: false,
+  similar: [],
+  isSimilarCompleting: false,
 };
 
 export const cameraProcess = createSlice({
@@ -17,24 +19,34 @@ export const cameraProcess = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchCamerasListAction.pending, (state) => {
-        state.isCamerasListCompleting = true;
+        state.isCamerasListCompleting = false;
       })
       .addCase(fetchCamerasListAction.fulfilled, (state, action) => {
         state.camerasList = action.payload;
-        state.isCamerasListCompleting = false;
+        state.isCamerasListCompleting = true;
       })
       .addCase(fetchCamerasListAction.rejected, (state) => {
         state.isCamerasListCompleting = true;
       })
       .addCase(fetchCameraAction.pending, (state) => {
-        state.isCameraCompleting = true;
+        state.isCameraCompleting = false;
       })
       .addCase(fetchCameraAction.fulfilled, (state, action) => {
         state.camera = action.payload;
-        state.isCameraCompleting = false;
+        state.isCameraCompleting = true;
       })
       .addCase(fetchCameraAction.rejected, (state) => {
         state.isCameraCompleting = true;
+      })
+      .addCase(fetchSimilarAction.pending, (state) => {
+        state.isSimilarCompleting = false;
+      })
+      .addCase(fetchSimilarAction.fulfilled, (state, action) => {
+        state.similar = action.payload;
+        state.isSimilarCompleting = true;
+      })
+      .addCase(fetchSimilarAction.rejected, (state) => {
+        state.isSimilarCompleting = true;
       });
   }
 });

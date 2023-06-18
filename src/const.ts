@@ -11,6 +11,7 @@ export enum APIRoute {
   CamerasList = '/cameras',
   PromoProduct = '/promo',
   Camera = 'camera',
+  Similar = 'similar',
 }
 
 export enum NameSpace {
@@ -51,6 +52,12 @@ export const START_INDEX = 0;
 export const PRODUCTS_COUNT_ON_PAGE = 9;
 
 export const TABS_TITLE: string[] = ['Описание', 'Характеристики',];
+
+export const SLIDE_WIDTH = 100;
+
+export const SLIDE_DURATION = 300;
+
+export const VISIBLE_CARDS = 3;
 
 export const getPageNumbers = (countTotal: number, countOnPage: number) =>
   Array

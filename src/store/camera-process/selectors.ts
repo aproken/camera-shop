@@ -9,3 +9,7 @@ export const getCamerasListCompletingStatus = (state: State): boolean => state[N
 export const getCamera = (state: State): Camera | null => state[NameSpace.Camera].camera;
 
 export const getCameraComletingStatus = (state: State): boolean => state[NameSpace.Camera].isCameraCompleting;
+
+export const getSimilar = (state: State): Cameras => state[NameSpace.Camera].similar;
+
+export const getSimilarCompletingStatus = (state: State): boolean => state[NameSpace.Camera].isSimilarCompleting;

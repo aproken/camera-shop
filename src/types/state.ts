@@ -7,10 +7,13 @@ export type CameraProcess = {
   isCamerasListCompleting: boolean;
   camera: Camera | null;
   isCameraCompleting: boolean;
+  similar: Cameras;
+  isSimilarCompleting: boolean;
 }
 
 export type PromoProcess = {
   promoProduct: Promo | null;
+  isProductCompleting: boolean;
 }
 
 export type State = ReturnType<typeof store.getState>;

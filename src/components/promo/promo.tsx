@@ -6,7 +6,7 @@ import { fetchPromoProductAction } from '../../store/api-action';
 import { store } from '../../store';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
-function Banner(): JSX.Element {
+function Promo(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const promoProduct = useAppSelector(getPromoProduct);
@@ -45,4 +45,4 @@ function Banner(): JSX.Element {
   );
 }
 
-export default Banner;
+export default Promo;

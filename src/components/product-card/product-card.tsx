@@ -4,10 +4,13 @@ import { getStylizedPrice } from '../../const';
 
 type ProductCardProps = {
   product: Camera;
+  classNames?: string[];
   onBuyClick?: () => void;
 }
 
-function ProductCard({ product, onBuyClick, }: ProductCardProps): JSX.Element {
+function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps): JSX.Element {
+  const className = [ ...classNames, 'product-card'];
+  const productClassName = className.join(' ');
   const {
     id,
     name,
@@ -20,7 +23,7 @@ function ProductCard({ product, onBuyClick, }: ProductCardProps): JSX.Element {
   } = product;
 
   return (
-    <div className="product-card">
+    <div className={ productClassName }>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`/${ previewImgWebp }, /${previewImgWebp2x}`} />

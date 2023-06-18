@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { store } from '../../store';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
-import Banner from '../../components/banner/banner';
+import Promo from '../../components/promo/promo';
 import Filter from '../../components/filter/filter';
 import CatalogContent from '../../components/catalog-content/catalog-content';
 import { getCamerasList, getCamerasListCompletingStatus } from '../../store/camera-process/selectors';
@@ -23,7 +23,7 @@ function MainPage(): JSX.Element {
   }, [dispatch]);
 
 
-  if (isCamerasListCompleting) {
+  if (!isCamerasListCompleting) {
     return (
       <LoadingScreen />
     );
@@ -31,7 +31,7 @@ function MainPage(): JSX.Element {
 
   return (
     <main>
-      <Banner />
+      <Promo />
       <div className="page-content">
         <Breadcrumbs crumbs={ CRUMBS }/>
 

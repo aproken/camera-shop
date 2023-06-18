@@ -2,12 +2,12 @@ import { /*Link,*/ useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ProductTabs from '../../components/product-tabs/product-tabs';
-import Slider from '../../components/slider/slider';
+import ProductSlider from '../../components/product-slider/product-slider';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCamera, getCameraComletingStatus } from '../../store/camera-process/selectors';
+import { getCamera, getCameraComletingStatus, getSimilar, getSimilarCompletingStatus } from '../../store/camera-process/selectors';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { fetchCameraAction } from '../../store/api-action';
+import { fetchCameraAction, fetchSimilarAction } from '../../store/api-action';
 import NotFoundPage from '../not-found-page/not-found-page';
 import { getStylizedPrice, CRUMBS, getBreadcrumbs } from '../../const';
 
@@ -19,10 +19,13 @@ function ProductPage(): JSX.Element {
 
   const currentProduct = useAppSelector(getCamera);
   const isProductCompleting = useAppSelector(getCameraComletingStatus);
+  const similarList = useAppSelector(getSimilar);
+  const isSimilarCompleting = useAppSelector(getSimilarCompletingStatus);
 
   useEffect(() => {
     if (currentProductId) {
       dispatch(fetchCameraAction(currentProductId));
+      dispatch(fetchSimilarAction(currentProductId));
     }
   }, [dispatch, currentProductId]);
 
@@ -32,7 +35,7 @@ function ProductPage(): JSX.Element {
     );
   }
 
-  if (isProductCompleting || !currentProduct) {
+  if (!isProductCompleting || !currentProduct ) {
     return (
       <LoadingScreen />
     );
@@ -96,12 +99,7 @@ function ProductPage(): JSX.Element {
           </section>
         </div>
         <div className="page-content__section">
-          <section className="product-similar">
-            <div className="container">
-              <h2 className="title title--h3">Похожие товары</h2>
-              <Slider />
-            </div>
-          </section>
+          { (similarList || isSimilarCompleting) && <ProductSlider similar={ similarList }/> }
         </div>
         <div className="page-content__section">
           <section className="review-block">

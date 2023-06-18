@@ -5,6 +5,7 @@ import { fetchPromoProductAction } from '../api-action';
 
 export const initialState: PromoProcess = {
   promoProduct: null,
+  isProductCompleting: false,
 };
 
 export const promoProcess = createSlice({
@@ -13,8 +14,15 @@ export const promoProcess = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(fetchPromoProductAction.pending, (state) => {
+        state.isProductCompleting = false;
+      })
       .addCase(fetchPromoProductAction.fulfilled, (state, action) => {
         state.promoProduct = action.payload;
+        state.isProductCompleting = true;
+      })
+      .addCase(fetchPromoProductAction.rejected, (state) => {
+        state.isProductCompleting = true;
       });
   }
 });
