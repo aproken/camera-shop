@@ -12,6 +12,7 @@ export enum APIRoute {
   PromoProduct = '/promo',
   Camera = 'camera',
   Similar = 'similar',
+  Reviews = 'reviews',
 }
 
 export enum NameSpace {
@@ -58,6 +59,10 @@ export const SLIDE_WIDTH = 100;
 export const SLIDE_DURATION = 300;
 
 export const VISIBLE_CARDS = 3;
+
+export const VISIBLE_REVIEWS = 3;
+
+export const MAX_RATING_STARS = 5;
 
 export const getPageNumbers = (countTotal: number, countOnPage: number) =>
   Array

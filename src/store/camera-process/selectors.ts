@@ -1,5 +1,6 @@
 import { NameSpace } from '../../const';
 import { Camera, Cameras } from '../../types/camera';
+import { Reviews } from '../../types/review';
 import { State } from '../../types/state';
 
 export const getCamerasList = (state: State): Cameras => state[NameSpace.Camera].camerasList;
@@ -13,3 +14,7 @@ export const getCameraComletingStatus = (state: State): boolean => state[NameSpa
 export const getSimilar = (state: State): Cameras => state[NameSpace.Camera].similar;
 
 export const getSimilarCompletingStatus = (state: State): boolean => state[NameSpace.Camera].isSimilarCompleting;
+
+export const getReviewsList = (state: State): Reviews => state[NameSpace.Camera].reviewsList;
+
+export const getReviewsListCompleting = (state: State): boolean => state[NameSpace.Camera].isReviewsListcompleting;

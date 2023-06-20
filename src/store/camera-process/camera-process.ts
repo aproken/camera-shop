@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { CameraProcess } from '../../types/state';
-import { fetchCameraAction, fetchCamerasListAction, fetchSimilarAction } from '../api-action';
+import { fetchCameraAction, fetchCamerasListAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
 
 const initialState: CameraProcess = {
   camerasList: [],
@@ -10,6 +10,8 @@ const initialState: CameraProcess = {
   isCameraCompleting: false,
   similar: [],
   isSimilarCompleting: false,
+  reviewsList: [],
+  isReviewsListcompleting: false,
 };
 
 export const cameraProcess = createSlice({
@@ -47,6 +49,16 @@ export const cameraProcess = createSlice({
       })
       .addCase(fetchSimilarAction.rejected, (state) => {
         state.isSimilarCompleting = true;
+      })
+      .addCase(fetchReviewsAction.pending, (state) => {
+        state.isReviewsListcompleting = false;
+      })
+      .addCase(fetchReviewsAction.fulfilled, (state, action) => {
+        state.reviewsList = action.payload;
+        state.isReviewsListcompleting = true;
+      })
+      .addCase(fetchReviewsAction.rejected, (state) => {
+        state.isReviewsListcompleting = true;
       });
   }
 });

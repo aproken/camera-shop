@@ -1,16 +1,21 @@
-import { /*Link,*/ useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import {
+  getCamera,
+  getCameraComletingStatus,
+  getReviewsList,
+  getSimilar,
+  getSimilarCompletingStatus
+} from '../../store/camera-process/selectors';
+import { fetchCameraAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-action';
+import LoadingScreen from '../loading-screen/loading-screen';
+import NotFoundPage from '../not-found-page/not-found-page';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ProductTabs from '../../components/product-tabs/product-tabs';
 import ProductSlider from '../../components/product-slider/product-slider';
-import ReviewsList from '../../components/reviews-list/reviews-list';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCamera, getCameraComletingStatus, getSimilar, getSimilarCompletingStatus } from '../../store/camera-process/selectors';
-import LoadingScreen from '../loading-screen/loading-screen';
-import { fetchCameraAction, fetchSimilarAction } from '../../store/api-action';
-import NotFoundPage from '../not-found-page/not-found-page';
+import ReviewsBlock from '../../components/reviews-block/reviews-block';
 import { getStylizedPrice, CRUMBS, getBreadcrumbs } from '../../const';
-
 
 function ProductPage(): JSX.Element {
   const { cameraId } = useParams();
@@ -21,11 +26,14 @@ function ProductPage(): JSX.Element {
   const isProductCompleting = useAppSelector(getCameraComletingStatus);
   const similarList = useAppSelector(getSimilar);
   const isSimilarCompleting = useAppSelector(getSimilarCompletingStatus);
+  const reviewsList = useAppSelector(getReviewsList);
+  //const isReviewsListcompleting = useAppSelector(getReviewsListCompleting);
 
   useEffect(() => {
     if (currentProductId) {
       dispatch(fetchCameraAction(currentProductId));
       dispatch(fetchSimilarAction(currentProductId));
+      dispatch(fetchReviewsAction(currentProductId));
     }
   }, [dispatch, currentProductId]);
 
@@ -102,19 +110,7 @@ function ProductPage(): JSX.Element {
           { (similarList || isSimilarCompleting) && <ProductSlider similar={ similarList }/> }
         </div>
         <div className="page-content__section">
-          <section className="review-block">
-            <div className="container">
-              <div className="page-content__headed">
-                <h2 className="title title--h3">Отзывы</h2>
-                <button className="btn" type="button">Оставить свой отзыв</button>
-              </div>
-              <ReviewsList />
-              <div className="review-block__buttons">
-                <button className="btn btn--purple" type="button">Показать больше отзывов
-                </button>
-              </div>
-            </div>
-          </section>
+          <ReviewsBlock comments={ reviewsList } />
         </div>
       </div>
     </main>

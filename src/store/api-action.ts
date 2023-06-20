@@ -5,6 +5,7 @@ import { Camera, Cameras } from '../types/camera';
 import { APIRoute, AppRoute } from '../const';
 import { Promo } from '../types/promo';
 import { redirectToRoute } from './action';
+import { Reviews } from '../types/review';
 
 
 //получение списка камер
@@ -68,6 +69,20 @@ export const fetchSimilarAction = createAsyncThunk<Cameras, number, {
   'camera/fetchSimilar',
   async (id, { extra: api }) => {
     const { data } = await api.get<Cameras>(`${ APIRoute.CamerasList }/${ id }/${ APIRoute.Similar}`);
+    return data;
+  }
+);
+
+//Получение списка отзывов товара
+export const fetchReviewsAction = createAsyncThunk<Reviews, number, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+>(
+  'camera/fetchReviews',
+  async (id, { extra: api }) => {
+    const { data } = await api.get<Reviews>(`${ APIRoute.CamerasList }/${ id }/${ APIRoute.Reviews}`);
     return data;
   }
 );

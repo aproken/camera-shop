@@ -1,6 +1,7 @@
 import { store } from '../store';
 import { Camera, Cameras } from './camera';
 import { Promo } from './promo';
+import { Reviews } from './review';
 
 export type CameraProcess = {
   camerasList: Cameras;
@@ -9,6 +10,8 @@ export type CameraProcess = {
   isCameraCompleting: boolean;
   similar: Cameras;
   isSimilarCompleting: boolean;
+  reviewsList: Reviews;
+  isReviewsListcompleting: boolean;
 }
 
 export type PromoProcess = {
