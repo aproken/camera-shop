@@ -5,8 +5,9 @@ import { Camera, Cameras } from '../types/camera';
 import { APIRoute, AppRoute } from '../const';
 import { Promo } from '../types/promo';
 import { redirectToRoute } from './action';
-import { Reviews } from '../types/review';
-
+import { Review, Reviews } from '../types/review';
+import { toast } from 'react-toastify';
+import { ReviewData } from '../types/review-data';
 
 //получение списка камер
 export const fetchCamerasListAction = createAsyncThunk<Cameras, undefined, {
@@ -82,7 +83,26 @@ export const fetchReviewsAction = createAsyncThunk<Reviews, number, {
 >(
   'camera/fetchReviews',
   async (id, { extra: api }) => {
-    const { data } = await api.get<Reviews>(`${ APIRoute.CamerasList }/${ id }/${ APIRoute.Reviews}`);
+    const { data } = await api.get<Reviews>(`${ APIRoute.CamerasList }/${ id }${ APIRoute.Reviews}`);
     return data;
+  }
+);
+
+//Добавление отзыва для товара
+export const fetchAddNewReviewAction = createAsyncThunk<Review, ReviewData, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+>(
+  'camera/fetchAddNewReview',
+  async (reviewData, { extra: api, rejectWithValue }) => {
+    try {
+      const { data } = await api.post<Review>(APIRoute.Reviews, reviewData);
+      return data;
+    } catch (error) {
+      toast.error('Ups! Unable to save review');
+      return rejectWithValue(error);
+    }
   }
 );

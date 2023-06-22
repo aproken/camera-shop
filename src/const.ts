@@ -12,12 +12,19 @@ export enum APIRoute {
   PromoProduct = '/promo',
   Camera = 'camera',
   Similar = 'similar',
-  Reviews = 'reviews',
+  Reviews = '/reviews',
 }
 
 export enum NameSpace {
   Camera = 'CAMERA',
   PromoProduct = 'PROMO_PRODUCT',
+}
+
+export enum RequestStatus {
+  Pending = 'PENDING',
+  Success = 'SUCCESS',
+  Failure = 'FAILURE',
+  Unknown = 'UNKNOWN',
 }
 
 export const CRUMBS = ['Главная', 'Каталог',];

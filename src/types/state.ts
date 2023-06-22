@@ -1,3 +1,4 @@
+import { RequestStatus } from '../const';
 import { store } from '../store';
 import { Camera, Cameras } from './camera';
 import { Promo } from './promo';
@@ -12,6 +13,7 @@ export type CameraProcess = {
   isSimilarCompleting: boolean;
   reviewsList: Reviews;
   isReviewsListcompleting: boolean;
+  addNewReviewStatus: RequestStatus;
 }
 
 export type PromoProcess = {
