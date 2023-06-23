@@ -20,7 +20,7 @@ function StarsRating({ rating }: StarRatingProps): JSX.Element {
   const emptyStarIcons = Array.from(
     { length: (MAX_RATING_STARS - Math.floor(rating)) }, (_, index) => (
       <svg
-        key={ index }
+        key={ rating + index }
         width="17"
         height="16"
         aria-hidden="true"

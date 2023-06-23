@@ -1,29 +1,33 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks';
+import useModal from '../../hooks/useModal';
 import { fetchAddNewReviewAction } from '../../store/api-action';
+import ReviewInputItem from '../review-input-item/review-input-item';
+import AddReviewSuccessModal from '../add-review-success-modal/add-review-succeess-modal';
 
 type AddReviewModalProps = {
+  productId: number;
   onCloseModal: () => void;
 }
 
-function AddReviewModal({ onCloseModal }: AddReviewModalProps): JSX.Element {
+interface FormErrors {
+  userName?: string;
+  advantage?: string;
+  disadvantage?: string;
+  review?: string;
+}
+
+function AddReviewModal({ productId, onCloseModal }: AddReviewModalProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState({
-    cameraId: 0,
+    cameraId: productId,
     userName: '',
     advantage: '',
     disadvantage: '',
     review: '',
     rating: 0,
   });
-
-  interface FormErrors {
-    userName?: string;
-    advantage?: string;
-    disadvantage?: string;
-    review?: string;
-  }
 
   const [formErrors, setFormErrors] = useState<FormErrors>({
     userName: '',
@@ -32,36 +36,9 @@ function AddReviewModal({ onCloseModal }: AddReviewModalProps): JSX.Element {
     review: '',
   });
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   const handleModalClose = () => onCloseModal();
-
-  useEffect(() => {
-    const handleEscapePress = (evt: KeyboardEvent) => {
-      if (evt.key === 'Escape') {
-        onCloseModal();
-      }
-    };
-
-    const handleOverlayClick: EventListener = (evt) => {
-      if (evt.target === evt.currentTarget) {
-        onCloseModal();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscapePress);
-
-    const overlay = document.querySelector('.modal__overlay');
-    if (overlay) {
-      overlay.addEventListener('click', handleOverlayClick);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscapePress);
-      if (overlay) {
-        overlay.removeEventListener('click', handleOverlayClick);
-      }
-    };
-
-  }, [onCloseModal]);
 
   const handleSubmit = (evt: FormEvent <HTMLFormElement>) => {
     evt.preventDefault();
@@ -95,7 +72,12 @@ function AddReviewModal({ onCloseModal }: AddReviewModalProps): JSX.Element {
     }
 
     dispatch(fetchAddNewReviewAction(formData));
+    setShowSuccessModal(true);
   };
+
+  if(showSuccessModal) {
+    return <AddReviewSuccessModal onCloseModal={ handleModalClose }/>;
+  }
 
   return (
     <div className="modal is-active">
@@ -172,44 +154,27 @@ function AddReviewModal({ onCloseModal }: AddReviewModalProps): JSX.Element {
                   </div>
                   <p className="rate__message">Нужно оценить товар</p>
                 </fieldset>
-                <div className="custom-input form-review__item">
-                  <label>
-                    <span className="custom-input__label">Ваше имя
-                      <svg width="9" height="9" aria-hidden="true">
-                        <use xlinkHref="#icon-snowflake"></use>
-                      </svg>
-                    </span>
-                    <input
-                      type="text"
-                      name="userName"
-                      placeholder="Введите ваше имя"
-                      value={ formData.userName }
-                      onChange={ (evt) => setFormData({ ...formData, userName: evt.target.value })}
-                      required
-                    />
-                  </label>
-                  { formErrors.userName && <p className="custom-input__error">{ formErrors.userName }</p>}
-                </div>
-
-                <InputItem />
-                <div className="custom-input form-review__item">
-                  <label>
-                    <span className="custom-input__label">Недостатки
-                      <svg width="9" height="9" aria-hidden="true">
-                        <use xlinkHref="#icon-snowflake"></use>
-                      </svg>
-                    </span>
-                    <input
-                      type="text"
-                      name="disadvantage"
-                      placeholder="Главные недостатки товара"
-                      value={ formData.disadvantage }
-                      onChange={ (evt) => setFormData({ ...formData, disadvantage: evt.target.value}) }
-                      required
-                    />
-                  </label>
-                  { formErrors.disadvantage && <p className="custom-input__error">{ formErrors.disadvantage }</p>}
-                </div>
+                <ReviewInputItem
+                  label={ 'Ваше имя'}
+                  placeholder={ 'Введите ваше имя' }
+                  value={ formData.userName }
+                  errors={ formErrors.userName }
+                  onChange={ (evt) => setFormData({ ...formData, userName: evt.target.value}) }
+                />
+                <ReviewInputItem
+                  label={ 'Достоинства'}
+                  placeholder={ 'Основные преимущества товара' }
+                  value={ formData.advantage }
+                  errors={ formErrors.advantage }
+                  onChange={ (evt) => setFormData({ ...formData, advantage: evt.target.value})}
+                />
+                <ReviewInputItem
+                  label={ 'Недостатки'}
+                  placeholder={ 'Главные недостатки товара' }
+                  value={ formData.disadvantage }
+                  errors={ formErrors.disadvantage }
+                  onChange={ (evt) => setFormData({ ...formData, disadvantage: evt.target.value})}
+                />
                 <div className="custom-textarea form-review__item">
                   <label>
                     <span className="custom-textarea__label">Комментарий

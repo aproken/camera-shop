@@ -5,6 +5,7 @@ import ReviewCard from '../review-card/review-card';
 import AddReviewModal from '../add-review-modal/add-review-modal';
 
 type ReviewsProps = {
+  productId: number;
   comments: Reviews;
 }
 
@@ -14,7 +15,7 @@ function sortReviewsByDate(reviews: Reviews) {
   return items;
 }
 
-function ReviewsBlock({ comments }: ReviewsProps): JSX.Element {
+function ReviewsBlock({ productId, comments }: ReviewsProps): JSX.Element {
   const [visibleReviews, setVisibleReviews] = useState<number>(VISIBLE_REVIEWS);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -79,7 +80,7 @@ function ReviewsBlock({ comments }: ReviewsProps): JSX.Element {
         }
       </div>
       {
-        isModalOpen && <AddReviewModal onCloseModal={ handleCloseModalClick }/>
+        isModalOpen && <AddReviewModal productId={ productId } onCloseModal={ handleCloseModalClick }/>
       }
     </section>
   );

@@ -110,7 +110,7 @@ function ProductPage(): JSX.Element {
           { (similarList || isSimilarCompleting) && <ProductSlider similar={ similarList }/> }
         </div>
         <div className="page-content__section">
-          <ReviewsBlock comments={ reviewsList } />
+          <ReviewsBlock productId={ currentProductId } comments={ reviewsList } />
         </div>
       </div>
     </main>
