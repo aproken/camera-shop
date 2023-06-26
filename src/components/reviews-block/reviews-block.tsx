@@ -1,8 +1,10 @@
 import { useState } from 'react';
+// import useModal from '../../hooks/useModal';
 import { VISIBLE_REVIEWS } from '../../const';
 import { Review, Reviews } from '../../types/review';
 import ReviewCard from '../review-card/review-card';
-import AddReviewModal from '../add-review-modal/add-review-modal';
+//import AddReviewModal from '../add-review-modal/add-review-modal';
+import ReviewDialog from '../review-dialog/review-dialog';
 
 type ReviewsProps = {
   productId: number;
@@ -17,18 +19,12 @@ function sortReviewsByDate(reviews: Reviews) {
 
 function ReviewsBlock({ productId, comments }: ReviewsProps): JSX.Element {
   const [visibleReviews, setVisibleReviews] = useState<number>(VISIBLE_REVIEWS);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [ isOpen, setIsOpen ] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   const handleMoreReviewClick = () => {
     setVisibleReviews((prevVisibleReviews: number) => prevVisibleReviews + VISIBLE_REVIEWS);
-  };
-
-  const handleAddReviewClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModalClick = () => {
-    setIsModalOpen(false);
   };
 
   const reviewsSort = sortReviewsByDate(comments);
@@ -40,7 +36,7 @@ function ReviewsBlock({ productId, comments }: ReviewsProps): JSX.Element {
         <div className="page-content__headed">
           <h2 className="title title--h3">Отзывы</h2>
           <button
-            onClick={ handleAddReviewClick }
+            onClick={ toggle }
             className="btn"
             type="button"
           >
@@ -79,9 +75,7 @@ function ReviewsBlock({ productId, comments }: ReviewsProps): JSX.Element {
           )
         }
       </div>
-      {
-        isModalOpen && <AddReviewModal productId={ productId } onCloseModal={ handleCloseModalClick }/>
-      }
+      <ReviewDialog productId={productId} isOpen={isOpen} hide={toggle} />
     </section>
   );
 }

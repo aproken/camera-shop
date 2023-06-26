@@ -3,11 +3,10 @@ import { useAppDispatch } from '../../hooks';
 import useModal from '../../hooks/useModal';
 import { fetchAddNewReviewAction } from '../../store/api-action';
 import ReviewInputItem from '../review-input-item/review-input-item';
-import AddReviewSuccessModal from '../add-review-success-modal/add-review-succeess-modal';
+//import AddReviewSuccessModal from '../add-review-success-modal/add-review-succeess-modal';
 
 type AddReviewModalProps = {
   productId: number;
-  onCloseModal: () => void;
 }
 
 interface FormErrors {
@@ -17,8 +16,10 @@ interface FormErrors {
   review?: string;
 }
 
-function AddReviewModal({ productId, onCloseModal }: AddReviewModalProps): JSX.Element {
+function AddReviewModal({ productId }: AddReviewModalProps): JSX.Element {
   const dispatch = useAppDispatch();
+
+  const { closeModal } = useModal();
 
   const [formData, setFormData] = useState({
     cameraId: productId,
@@ -36,9 +37,7 @@ function AddReviewModal({ productId, onCloseModal }: AddReviewModalProps): JSX.E
     review: '',
   });
 
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-
-  const handleModalClose = () => onCloseModal();
+  // const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
 
   const handleSubmit = (evt: FormEvent <HTMLFormElement>) => {
     evt.preventDefault();
@@ -72,18 +71,13 @@ function AddReviewModal({ productId, onCloseModal }: AddReviewModalProps): JSX.E
     }
 
     dispatch(fetchAddNewReviewAction(formData));
-    setShowSuccessModal(true);
   };
-
-  if(showSuccessModal) {
-    return <AddReviewSuccessModal onCloseModal={ handleModalClose }/>;
-  }
 
   return (
     <div className="modal is-active">
       <div className="modal__wrapper">
         <div
-          onClick={ handleModalClose }
+          onClick={ closeModal }
           className="modal__overlay"
         >
         </div>
@@ -154,45 +148,45 @@ function AddReviewModal({ productId, onCloseModal }: AddReviewModalProps): JSX.E
                   </div>
                   <p className="rate__message">Нужно оценить товар</p>
                 </fieldset>
-                <ReviewInputItem
-                  label={ 'Ваше имя'}
-                  placeholder={ 'Введите ваше имя' }
-                  value={ formData.userName }
-                  errors={ formErrors.userName }
-                  onChange={ (evt) => setFormData({ ...formData, userName: evt.target.value}) }
-                />
-                <ReviewInputItem
-                  label={ 'Достоинства'}
-                  placeholder={ 'Основные преимущества товара' }
-                  value={ formData.advantage }
-                  errors={ formErrors.advantage }
-                  onChange={ (evt) => setFormData({ ...formData, advantage: evt.target.value})}
-                />
-                <ReviewInputItem
-                  label={ 'Недостатки'}
-                  placeholder={ 'Главные недостатки товара' }
-                  value={ formData.disadvantage }
-                  errors={ formErrors.disadvantage }
-                  onChange={ (evt) => setFormData({ ...formData, disadvantage: evt.target.value})}
-                />
-                <div className="custom-textarea form-review__item">
-                  <label>
-                    <span className="custom-textarea__label">Комментарий
-                      <svg width="9" height="9" aria-hidden="true">
-                        <use xlinkHref="#icon-snowflake"></use>
-                      </svg>
-                    </span>
-                    <textarea
-                      name="review"
-                      minLength={5}
-                      placeholder="Поделитесь своим опытом покупки"
-                      value={ formData.review }
-                      onChange={ (evt) => setFormData({ ...formData, review: evt.target.value}) }
-                    >
-                    </textarea>
-                  </label>
-                  { formErrors.review && <div className="custom-textarea__error">{ formErrors.review }</div>}
-                </div>
+              </div>
+              <ReviewInputItem
+                label={ 'Ваше имя'}
+                placeholder={ 'Введите ваше имя' }
+                value={ formData.userName }
+                errors={ formErrors.userName }
+                onChange={ (evt) => setFormData({ ...formData, userName: evt.target.value}) }
+              />
+              <ReviewInputItem
+                label={ 'Достоинства'}
+                placeholder={ 'Основные преимущества товара' }
+                value={ formData.advantage }
+                errors={ formErrors.advantage }
+                onChange={ (evt) => setFormData({ ...formData, advantage: evt.target.value})}
+              />
+              <ReviewInputItem
+                label={ 'Недостатки'}
+                placeholder={ 'Главные недостатки товара' }
+                value={ formData.disadvantage }
+                errors={ formErrors.disadvantage }
+                onChange={ (evt) => setFormData({ ...formData, disadvantage: evt.target.value})}
+              />
+              <div className="custom-textarea form-review__item">
+                <label>
+                  <span className="custom-textarea__label">Комментарий
+                    <svg width="9" height="9" aria-hidden="true">
+                      <use xlinkHref="#icon-snowflake"></use>
+                    </svg>
+                  </span>
+                  <textarea
+                    name="review"
+                    minLength={5}
+                    placeholder="Поделитесь своим опытом покупки"
+                    value={ formData.review }
+                    onChange={ (evt) => setFormData({ ...formData, review: evt.target.value}) }
+                  >
+                  </textarea>
+                </label>
+                { formErrors.review && <div className="custom-textarea__error">{ formErrors.review }</div>}
               </div>
               <button
                 className="btn btn--purple form-review__btn"
@@ -203,7 +197,7 @@ function AddReviewModal({ productId, onCloseModal }: AddReviewModalProps): JSX.E
             </form>
           </div>
           <button
-            onClick={ handleModalClose }
+            onClick={ closeModal }
             className="cross-btn"
             type="button"
             aria-label="Закрыть попап"
