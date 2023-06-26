@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
 import Modal from '../modal/modal';
 import ReviewForm from './review-form';
 import ReviewSuccessModal from './review-success-modal';
 import { ReviewData } from '../../types/review-data';
 import { useAppDispatch } from '../../hooks';
 import { fetchAddNewReviewAction } from '../../store/api-action';
+import { toast } from 'react-toastify';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import ReviewErrorModal from './review-error-modal';
 
 type ReviewDialogProps = {
   productId: number;
@@ -17,19 +21,18 @@ function ReviewDialog({productId, isOpen, hide}: ReviewDialogProps): JSX.Element
   const [element, setElement] = useState('form');
 
   const handleSubmitForm = (formData: ReviewData) => {
+    setElement('loaderWindow');
     dispatch(fetchAddNewReviewAction(formData))
-      .then((data) => {
+      .then((data) => unwrapResult(data))
+      .then( () => setElement('successWindow'))
+      .catch( (error) => {
         // eslint-disable-next-line no-console
-        console.log('DISPATH', data);
-        setElement('successWindow');
-      })
-      // eslint-disable-next-line no-console
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error('dispath', error);
-        // TODO: setElement('failureWindow');
+        console.error('Error dispath', error);
+        toast.error('Не удалось отправить отзыв :(');
+        setElement('failureWindow');
       });
   };
+
   const handleClose = () => {
     hide();
     setElement('form');
@@ -37,11 +40,17 @@ function ReviewDialog({productId, isOpen, hide}: ReviewDialogProps): JSX.Element
 
   return (
     <>
-      <Modal isOpen={isOpen && element === 'form'} hide={handleClose}>
-        <ReviewForm productId={productId} onSubmit={handleSubmitForm} />
+      <Modal isOpen={ isOpen && element === 'form' } hide={handleClose}>
+        <ReviewForm productId={productId} onSubmit={(evt) => void handleSubmitForm(evt)} />
       </Modal>
-      <Modal isOpen={isOpen && element === 'successWindow'} hide={handleClose} narrow>
-        <ReviewSuccessModal hide={handleClose} />
+      <Modal isOpen={ isOpen && element === 'successWindow' } hide={ handleClose } narrow>
+        <ReviewSuccessModal hide={ handleClose } />
+      </Modal>
+      <Modal isOpen={ isOpen && element === 'failureWindow' } hide={ handleClose } narrow>
+        <ReviewErrorModal />
+      </Modal>
+      <Modal isOpen={ isOpen && element === 'loaderWindow' } hide={ handleClose } narrow>
+        <LoadingScreen />
       </Modal>
     </>
   );

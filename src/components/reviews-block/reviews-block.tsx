@@ -1,9 +1,7 @@
 import { useState } from 'react';
-// import useModal from '../../hooks/useModal';
 import { VISIBLE_REVIEWS } from '../../const';
 import { Review, Reviews } from '../../types/review';
 import ReviewCard from '../review-card/review-card';
-//import AddReviewModal from '../add-review-modal/add-review-modal';
 import ReviewDialog from '../review-dialog/review-dialog';
 
 type ReviewsProps = {
@@ -18,7 +16,7 @@ function sortReviewsByDate(reviews: Reviews) {
 }
 
 function ReviewsBlock({ productId, comments }: ReviewsProps): JSX.Element {
-  const [visibleReviews, setVisibleReviews] = useState<number>(VISIBLE_REVIEWS);
+  const [ visibleReviews, setVisibleReviews ] = useState<number>(VISIBLE_REVIEWS);
   const [ isOpen, setIsOpen ] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
