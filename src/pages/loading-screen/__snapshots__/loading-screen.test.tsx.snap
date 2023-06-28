@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: LoadingScreen Тестирование компонента LoadingScreen 1`] = `
+<div>
+  <span
+    class="loader"
+  />
+</div>
+`;
+
+exports[`Component: Mistakes Тестирование компонента LoadingScreen 1`] = `
+<div>
+  <span
+    class="loader"
+  />
+</div>
+`;
+
+exports[`Тестирование компонента LoadingScreen 1`] = `
+<div>
+  <span
+    class="loader"
+  />
+</div>
+`;

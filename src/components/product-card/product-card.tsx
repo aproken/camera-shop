@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Camera } from '../../types/camera';
-import { getStylizedPrice } from '../../const';
+import { getStylizedPrice } from '../../utils/utils';
 
 type ProductCardProps = {
   product: Camera;

@@ -2,7 +2,8 @@ import { Cameras } from '../../types/camera';
 import Pagination from '../pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import Sorting from '../sorting/sorting';
-import { getProductsCurrentPage, getPageNumbers, PRODUCTS_COUNT_ON_PAGE } from '../../const';
+import { PRODUCTS_COUNT_ON_PAGE } from '../../const';
+import { getProductsCurrentPage, getPageNumbers } from '../../utils/utils';
 
 type CatalogContentProps = {
   products: Cameras;

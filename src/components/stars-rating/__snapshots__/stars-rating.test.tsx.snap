@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Тестирование компонента StarsRating 1`] = `
+<div>
+  <div
+    class="rate review-card__rate"
+  >
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-star"
+      />
+    </svg>
+    <p
+      class="visually-hidden"
+    >
+      Оценка: 
+      3.5
+    </p>
+  </div>
+</div>
+`;

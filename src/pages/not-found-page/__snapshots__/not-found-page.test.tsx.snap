@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: NotFoundScreen should render correctly 1`] = `
+<div>
+  <main
+    class="not-found-container"
+  >
+    <div
+      class="not-found-content"
+    >
+      <h1
+        class="title not-found-h1"
+      >
+        404
+      </h1>
+      <h2
+        class="title not-found-h2"
+      >
+        page not found
+      </h2>
+      <a
+        class="btn btn--purple"
+        href="/"
+        rel="stylesheet"
+      >
+        Вернуться на главную
+      </a>
+    </div>
+  </main>
+</div>
+`;

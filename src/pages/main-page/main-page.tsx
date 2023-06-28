@@ -9,7 +9,6 @@ import Filter from '../../components/filter/filter';
 import CatalogContent from '../../components/catalog-content/catalog-content';
 import { getCamerasList, getCamerasListCompletingStatus } from '../../store/camera-process/selectors';
 import { fetchCamerasListAction } from '../../store/api-action';
-import { CRUMBS } from '../../const';
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -30,6 +29,11 @@ function MainPage(): JSX.Element {
       </main>
     );
   }
+
+  const CRUMBS = [
+    {label: 'Главная', hred: '/'},
+    {label: 'Каталог', hred: '/'},
+  ];
 
   return (
     <main id="main-page">

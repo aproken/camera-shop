@@ -16,7 +16,7 @@ import ProductTabs from '../../components/product-tabs/product-tabs';
 import ProductSlider from '../../components/product-slider/product-slider';
 import ReviewsBlock from '../../components/reviews-block/reviews-block';
 import ScrollToTop from '../../components/scroll-to-top/scroll-to-top';
-import { getStylizedPrice, CRUMBS, getBreadcrumbs } from '../../const';
+import { getStylizedPrice } from '../../utils/utils';
 
 function ProductPage(): JSX.Element {
   const { cameraId } = useParams();
@@ -55,7 +55,11 @@ function ProductPage(): JSX.Element {
 
   const stylizedPrice = getStylizedPrice(price);
 
-  const productCrumbs = getBreadcrumbs(name, CRUMBS);
+  const productCrumbs = [
+    {label: 'Главная', href: '/'},
+    {label: 'Каталог', href: '/'},
+    {label: name}
+  ];
 
   return (
     <main id="product-page">

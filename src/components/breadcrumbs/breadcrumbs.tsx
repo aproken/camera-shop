@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom';
 
+type BreadcrumbItem = {
+  href?: string;
+  label: string;
+}
+
 type BreadcrumbsProps = {
-  crumbs: string[];
+  crumbs: BreadcrumbItem[];
 }
 
 function Breadcrumbs({ crumbs }: BreadcrumbsProps): JSX.Element {
@@ -9,24 +14,22 @@ function Breadcrumbs({ crumbs }: BreadcrumbsProps): JSX.Element {
     <div className="breadcrumbs">
       <div className="container">
         <ul className="breadcrumbs__list">
-          {
-            crumbs.map((crumb, index) => (
-              <li key={ crumb } className="breadcrumbs__item" >
-                <Link
-                  className={`breadcrumbs__link ${ index === (crumbs.length - 1) ? 'breadcrumbs__link--active' : '' }`}
-                  to="/"
-                >
-                  { crumb }
-                  {index !== (crumbs.length - 1) && (
-                    <svg width="5" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-arrow-mini"></use>
-                    </svg>
-                  )}
+          {crumbs.map((item, index) => (
+            <li key={item.label} className="breadcrumbs__item">
+              {item.href ? (
+                <Link className="breadcrumbs__link" to={item.href}>
+                  {item.label}
+                  <svg width="5" height="8" aria-hidden="true">
+                    <use xlinkHref="#icon-arrow-mini"></use>
+                  </svg>
                 </Link>
-              </li>
-            )
-            )
-          }
+              ) : (
+                <span className="breadcrumbs__link breadcrumbs__link--active">
+                  {item.label}
+                </span>
+              )}
+            </li>
+          ))}
         </ul>
       </div>
     </div>

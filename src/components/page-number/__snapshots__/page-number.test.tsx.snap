@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageNumber component should render correctly 1`] = `
+<div>
+  <li
+    class="pagination__item"
+  >
+    <a
+      class="pagination__link"
+      href="/page/3"
+    >
+      3
+    </a>
+  </li>
+</div>
+`;

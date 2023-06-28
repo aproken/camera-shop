@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Тестирование компонента Pagination 1`] = `
+<div>
+  <div
+    class="pagination"
+  >
+    <ul
+      class="pagination__list"
+    >
+      <li
+        class="pagination__item"
+      >
+        <a
+          class="pagination__link pagination__link--text"
+          href="/page/1"
+        >
+          Назад
+        </a>
+      </li>
+      <li
+        class="pagination__item"
+      >
+        <a
+          class="pagination__link"
+          href="/page/1"
+        >
+          1
+        </a>
+      </li>
+      <li
+        class="pagination__item"
+      >
+        <a
+          class="pagination__link pagination__link--active"
+          href="/page/2"
+        >
+          2
+        </a>
+      </li>
+      <li
+        class="pagination__item"
+      >
+        <a
+          class="pagination__link"
+          href="/page/3"
+        >
+          3
+        </a>
+      </li>
+      <li
+        class="pagination__item"
+      >
+        <a
+          class="pagination__link"
+          href="/page/4"
+        >
+          4
+        </a>
+      </li>
+      <li
+        class="pagination__item"
+      >
+        <a
+          class="pagination__link"
+          href="/page/5"
+        >
+          5
+        </a>
+      </li>
+      <li
+        class="pagination__item"
+      >
+        <a
+          class="pagination__link pagination__link--text"
+          href="/page/3"
+        >
+          Далее
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
