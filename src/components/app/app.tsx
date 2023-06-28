@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Layout from '../layout/layout';
 import MainPage from '../../pages/main-page/main-page';
 import { AppRoute } from '../../const';
@@ -7,7 +8,7 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 
 function App(): JSX.Element {
   return (
-    <BrowserRouter>
+    <HelmetProvider>
       <Routes>
         <Route path='/' element={ <Layout />}>
 
@@ -32,7 +33,7 @@ function App(): JSX.Element {
         </Route>
 
       </Routes>
-    </BrowserRouter>
+    </HelmetProvider>
   );
 }
 

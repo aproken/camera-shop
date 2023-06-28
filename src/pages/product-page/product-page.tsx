@@ -15,6 +15,7 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ProductTabs from '../../components/product-tabs/product-tabs';
 import ProductSlider from '../../components/product-slider/product-slider';
 import ReviewsBlock from '../../components/reviews-block/reviews-block';
+import ScrollToTop from '../../components/scroll-to-top/scroll-to-top';
 import { getStylizedPrice, CRUMBS, getBreadcrumbs } from '../../const';
 
 function ProductPage(): JSX.Element {
@@ -27,7 +28,6 @@ function ProductPage(): JSX.Element {
   const similarList = useAppSelector(getSimilar);
   const isSimilarCompleting = useAppSelector(getSimilarCompletingStatus);
   const reviewsList = useAppSelector(getReviewsList);
-  //const isReviewsListcompleting = useAppSelector(getReviewsListCompleting);
 
   useEffect(() => {
     if (currentProductId) {
@@ -45,7 +45,9 @@ function ProductPage(): JSX.Element {
 
   if (!isProductCompleting || !currentProduct ) {
     return (
-      <LoadingScreen />
+      <main id="product-page" className="loading-container">
+        <LoadingScreen />
+      </main>
     );
   }
 
@@ -56,7 +58,8 @@ function ProductPage(): JSX.Element {
   const productCrumbs = getBreadcrumbs(name, CRUMBS);
 
   return (
-    <main>
+    <main id="product-page">
+      <ScrollToTop />
       <div className="page-content">
         <Breadcrumbs crumbs={ productCrumbs }/>
         <div className="page-content__section">

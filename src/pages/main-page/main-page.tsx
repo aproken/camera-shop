@@ -25,12 +25,14 @@ function MainPage(): JSX.Element {
 
   if (!isCamerasListCompleting) {
     return (
-      <LoadingScreen />
+      <main id="main-page" className="loading-container">
+        <LoadingScreen />
+      </main>
     );
   }
 
   return (
-    <main>
+    <main id="main-page">
       <Promo />
       <div className="page-content">
         <Breadcrumbs crumbs={ CRUMBS }/>

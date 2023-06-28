@@ -6,7 +6,6 @@ import { APIRoute, AppRoute } from '../const';
 import { Promo } from '../types/promo';
 import { redirectToRoute } from './action';
 import { Review, Reviews } from '../types/review';
-import { toast } from 'react-toastify';
 import { ReviewData } from '../types/review-data';
 
 //получение списка камер
@@ -103,7 +102,6 @@ export const fetchAddNewReviewAction = createAsyncThunk<Review, ReviewData, {
       const { data } = await api.post<Review>(APIRoute.Reviews, reviewData);
       return data;
     } catch (error) {
-      toast.error('Ups! Unable to save review');
       return rejectWithValue(error);
     }
   }

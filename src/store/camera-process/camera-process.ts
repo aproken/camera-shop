@@ -3,7 +3,7 @@ import { NameSpace, RequestStatus } from '../../const';
 import { CameraProcess } from '../../types/state';
 import { fetchAddNewReviewAction, fetchCameraAction, fetchCamerasListAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
 
-const initialState: CameraProcess = {
+export const initialState: CameraProcess = {
   camerasList: [],
   isCamerasListCompleting: false,
   camera: null,
@@ -11,7 +11,7 @@ const initialState: CameraProcess = {
   similar: [],
   isSimilarCompleting: false,
   reviewsList: [],
-  isReviewsListcompleting: false,
+  isReviewsListCompleting: false,
   addNewReviewStatus: RequestStatus.Unknown,
 };
 
@@ -52,14 +52,14 @@ export const cameraProcess = createSlice({
         state.isSimilarCompleting = true;
       })
       .addCase(fetchReviewsAction.pending, (state) => {
-        state.isReviewsListcompleting = false;
+        state.isReviewsListCompleting = false;
       })
       .addCase(fetchReviewsAction.fulfilled, (state, action) => {
         state.reviewsList = action.payload;
-        state.isReviewsListcompleting = true;
+        state.isReviewsListCompleting = true;
       })
       .addCase(fetchReviewsAction.rejected, (state) => {
-        state.isReviewsListcompleting = true;
+        state.isReviewsListCompleting = true;
       })
       .addCase(fetchAddNewReviewAction.pending, (state) => {
         state.addNewReviewStatus = RequestStatus.Pending;

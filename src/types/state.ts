@@ -12,7 +12,7 @@ export type CameraProcess = {
   similar: Cameras;
   isSimilarCompleting: boolean;
   reviewsList: Reviews;
-  isReviewsListcompleting: boolean;
+  isReviewsListCompleting: boolean;
   addNewReviewStatus: RequestStatus;
 }
 
