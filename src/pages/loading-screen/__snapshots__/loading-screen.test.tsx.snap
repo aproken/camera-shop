@@ -4,22 +4,7 @@ exports[`Component: LoadingScreen Тестирование компонента 
 <div>
   <span
     class="loader"
-  />
-</div>
-`;
-
-exports[`Component: Mistakes Тестирование компонента LoadingScreen 1`] = `
-<div>
-  <span
-    class="loader"
-  />
-</div>
-`;
-
-exports[`Тестирование компонента LoadingScreen 1`] = `
-<div>
-  <span
-    class="loader"
+    role="status"
   />
 </div>
 `;

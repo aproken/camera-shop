@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getPromoProduct } from '../../store/promo-process/selectors';
 import { fetchPromoProductAction } from '../../store/api-action';
-import { store } from '../../store';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 function Promo(): JSX.Element {
@@ -12,7 +11,7 @@ function Promo(): JSX.Element {
   const promoProduct = useAppSelector(getPromoProduct);
 
   useEffect(() => {
-    store.dispatch(fetchPromoProductAction());
+    dispatch(fetchPromoProductAction());
   }, [dispatch]);
 
   if (!promoProduct) {
