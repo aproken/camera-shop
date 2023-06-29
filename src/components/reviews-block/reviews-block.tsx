@@ -57,7 +57,7 @@ function ReviewsBlock({ productId, comments }: ReviewsProps): JSX.Element {
               </ul>
             )
             :
-            <p className="title title--h5">Отзывов на этоу камеру пока еще нет :(</p>
+            <p className="title title--h5">Отзывов на эту камеру пока еще нет :(</p>
         }
         {
           visibleReviews < reviewsSort.length && (

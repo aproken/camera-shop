@@ -13,7 +13,7 @@ function ReviewCard({ comment }: ReviewCardProps): JSX.Element {
   const { createAt, userName, advantage, disadvantage, review, rating } = comment;
 
   return (
-    <li className="review-card">
+    <li className="review-card" data-testid="review-card">
       <div className="review-card__head">
         <p className="title title--h4">{ userName }</p>
         <time className="review-card__data" dateTime="2022-04-13">{ dayjs(createAt).locale('ru').format('DD MMMM') }</time>
