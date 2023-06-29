@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { store } from '../../store';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import Promo from '../../components/promo/promo';
@@ -18,7 +17,7 @@ function MainPage(): JSX.Element {
   const currentProductsPage = Number(pageIndex);
 
   useEffect(() => {
-    store.dispatch(fetchCamerasListAction());
+    dispatch(fetchCamerasListAction());
   }, [dispatch]);
 
 

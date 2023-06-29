@@ -30,6 +30,7 @@ function Modal({isOpen, hide, children, narrow = false}: ModalProps): React.Reac
         <div className="modal__wrapper">
           <div
             className="modal__overlay"
+            aria-label="Закрыть попап"
             onClick={hide}
           >
           </div>

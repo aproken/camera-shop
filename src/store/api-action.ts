@@ -97,8 +97,6 @@ export const fetchAddNewReviewAction = createAsyncThunk<Review, ReviewData, {
   'camera/fetchAddNewReview',
   async (reviewData, { extra: api, rejectWithValue }) => {
     try {
-      // eslint-disable-next-line no-console
-      console.log(APIRoute.Reviews, reviewData);
       const { data } = await api.post<Review>(APIRoute.Reviews, reviewData);
       return data;
     } catch (error) {

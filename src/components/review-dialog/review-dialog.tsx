@@ -6,7 +6,6 @@ import ReviewSuccessModal from './review-success-modal';
 import { ReviewData } from '../../types/review-data';
 import { useAppDispatch } from '../../hooks';
 import { fetchAddNewReviewAction } from '../../store/api-action';
-import { toast } from 'react-toastify';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import ReviewErrorModal from './review-error-modal';
 
@@ -26,9 +25,6 @@ function ReviewDialog({productId, isOpen, hide}: ReviewDialogProps): JSX.Element
       .then((data) => unwrapResult(data))
       .then( () => setElement('successWindow'))
       .catch( (error) => {
-        // eslint-disable-next-line no-console
-        console.error('Error dispath', error);
-        toast.error('Не удалось отправить отзыв :(');
         setElement('failureWindow');
       });
   };

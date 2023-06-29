@@ -16,16 +16,11 @@ type FormData = {
 };
 
 function ReviewForm({productId, onSubmit}: ReviewFormProps) {
-  const {register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
+  const {register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
   const onSubmitHandler: SubmitHandler<FormData> = (data) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
     onSubmit({...data, rating: +data.rating, cameraId: productId});
   };
-
-  // eslint-disable-next-line no-console
-  console.log(watch('review'));
 
   return (
     <form onSubmit={ (event) => void handleSubmit(onSubmitHandler)(event) }>
