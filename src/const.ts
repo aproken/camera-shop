@@ -57,7 +57,7 @@ export const START_INDEX = 0;
 
 export const PRODUCTS_COUNT_ON_PAGE = 9;
 
-export const TABS_TITLE: string[] = ['Описание', 'Характеристики',];
+export const TABS_TITLE: string[] = ['Характеристики', 'Описание'];
 
 export const SLIDE_WIDTH = 100;
 
