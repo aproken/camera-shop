@@ -9,10 +9,14 @@ function ScrollToTop(): JSX.Element {
   };
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    const scrollStep = -window.scrollY / 120; // Задержка прокрутки
+    const scrollInterval = setInterval(() => {
+      if (window.scrollY !== 0) {
+        window.scrollBy(0, scrollStep);
+      } else {
+        clearInterval(scrollInterval);
+      }
+    }, 10);
   };
 
   useEffect(() => {
@@ -21,7 +25,7 @@ function ScrollToTop(): JSX.Element {
   }, []);
 
   return (
-    <div className={`up-btn ${isVisible ? 'visible' : ''}`} onClick={scrollToTop}>
+    <div className={`up-btn ${isVisible ? 'visible' : ''}`} onClick={ scrollToTop }>
       <svg width="12" height="18" aria-hidden="true">
         <use xlinkHref="#icon-arrow2"></use>
       </svg>

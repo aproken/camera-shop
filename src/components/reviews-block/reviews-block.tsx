@@ -3,6 +3,7 @@ import { VISIBLE_REVIEWS } from '../../const';
 import { Review, Reviews } from '../../types/review';
 import ReviewCard from '../review-card/review-card';
 import ReviewDialog from '../review-dialog/review-dialog';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 type ReviewsProps = {
   productId: number;
@@ -83,6 +84,7 @@ function ReviewsBlock({ productId, comments }: ReviewsProps): JSX.Element {
         }
       </div>
       <ReviewDialog productId={ productId } isOpen={ isOpen } hide={ toggle } />
+      <ScrollToTop />
     </section>
   );
 }

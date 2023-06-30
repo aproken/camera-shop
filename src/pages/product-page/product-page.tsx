@@ -15,7 +15,6 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ProductTabs from '../../components/product-tabs/product-tabs';
 import ProductSlider from '../../components/product-slider/product-slider';
 import ReviewsBlock from '../../components/reviews-block/reviews-block';
-import ScrollToTop from '../../components/scroll-to-top/scroll-to-top';
 import { getStylizedPrice } from '../../utils/utils';
 
 function ProductPage(): JSX.Element {
@@ -63,7 +62,6 @@ function ProductPage(): JSX.Element {
 
   return (
     <main id="product-page">
-      <ScrollToTop />
       <div className="page-content">
         <Breadcrumbs crumbs={ productCrumbs }/>
         <div className="page-content__section">
