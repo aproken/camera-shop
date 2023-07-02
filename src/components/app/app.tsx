@@ -10,28 +10,23 @@ function App(): JSX.Element {
   return (
     <HelmetProvider>
       <Routes>
-        <Route path='/' element={ <Layout />}>
+        <Route path='/' element={ <Layout /> }>
 
           <Route index element={ <Navigate to='/page/1' replace /> } />
 
-          <Route path='/page/'>
-            <Route index element={ <Navigate to='/1' replace /> } />
-            <Route
-              path=':pageIndex'
-              element={ <MainPage />}
-            />
-          </Route>
+          <Route
+            path='/page/:pageIndex'
+            element={ <MainPage /> }
+          />
 
           <Route
-            path={AppRoute.Product}
-            element={ <ProductPage />}
+            path={ AppRoute.Product }
+            element={<ProductPage />}
           />
-          <Route
-            path='*'
-            element={ <NotFoundPage />}
-          />
+
+          <Route path='*' element={ <NotFoundPage /> } />
+
         </Route>
-
       </Routes>
     </HelmetProvider>
   );

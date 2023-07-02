@@ -1,18 +1,30 @@
+import { useEffect } from 'react';
 import { Cameras } from '../../types/camera';
 import Pagination from '../pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import Sorting from '../sorting/sorting';
-import { PRODUCTS_COUNT_ON_PAGE } from '../../const';
+import { AppRoute, PRODUCTS_COUNT_ON_PAGE } from '../../const';
 import { getProductsCurrentPage, getPageNumbers } from '../../utils/utils';
+import { useAppDispatch } from '../../hooks';
+import { redirectToRoute } from '../../store/action';
 
 type CatalogContentProps = {
   products: Cameras;
-  currentPage: number;
+  currentPageIndex: number;
 }
 
-function CatalogContent({ products, currentPage }: CatalogContentProps): JSX.Element {
+function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const pageNumbers = getPageNumbers(products.length, PRODUCTS_COUNT_ON_PAGE);
-  const productsCurrentPage = getProductsCurrentPage(products, currentPage, PRODUCTS_COUNT_ON_PAGE);
+
+  useEffect(() => {
+    if (!currentPageIndex || currentPageIndex > pageNumbers.length) {
+      dispatch(redirectToRoute(AppRoute.NotFound));
+    }
+  }, [currentPageIndex, dispatch, pageNumbers.length]);
+
+  const productsCurrentPage = getProductsCurrentPage(products, currentPageIndex, PRODUCTS_COUNT_ON_PAGE);
 
   return (
     <div className="catalog__content">
@@ -33,7 +45,7 @@ function CatalogContent({ products, currentPage }: CatalogContentProps): JSX.Ele
         }
       </div>
 
-      <Pagination currentPage={ currentPage } pageNumbers={ pageNumbers } />
+      <Pagination currentPageIndex={ currentPageIndex } pageNumbers={ pageNumbers } />
     </div>
   );
 }

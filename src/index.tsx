@@ -4,7 +4,9 @@ import App from './components/app/app';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { ToastContainer } from 'react-toastify';
-import { BrowserRouter } from 'react-router-dom';
+// import { BrowserRouter } from 'react-router-dom';
+import HistoryRouter from '../src/components/history-route/history-route';
+import browserHistory from './browser-history';
 import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
@@ -14,10 +16,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={ store }>
-      <BrowserRouter>
+      {/* <BrowserRouter> */}
+      <HistoryRouter history={browserHistory}>
         <ToastContainer />
         <App />
-      </BrowserRouter>
+      </HistoryRouter>
     </Provider>
   </React.StrictMode>,
 );

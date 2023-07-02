@@ -13,7 +13,7 @@ describe('Тестирование компонента ReviewForm', () => {
     expect(await screen.findByText('Нужно указать имя')).toBeInTheDocument();
     expect(await screen.findByText('Нужно указать достоинства')).toBeInTheDocument();
     expect(await screen.findByText('Нужно указать недостатки')).toBeInTheDocument();
-    expect(await screen.findByText('Нужно добавить комментарий')).toBeInTheDocument();
+    expect(await screen.findByText('Введите не менее 5 символов')).toBeInTheDocument();
   });
 
   it('Форма вызывает OnSubmit при корректном заполнении', async () => {
@@ -34,7 +34,7 @@ describe('Тестирование компонента ReviewForm', () => {
     });
 
     expect(mockOnSubmit).toHaveBeenCalledWith({
-      'advantage': 'Текст достониств',
+      'advantage': 'Текст достоинств',
       'cameraId': 1,
       'disadvantage': 'Текст недостатков',
       'rating': 5,

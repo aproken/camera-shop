@@ -135,14 +135,14 @@ function ReviewForm({productId, onSubmit}: ReviewFormProps) {
                 required: true,
                 minLength: {
                   value: 5,
-                  message: 'Нужно добавить комментарий'
+                  message: 'Введите не менее 5 символов'
                 }
               })}
               placeholder="Поделитесь своим опытом покупки"
               defaultValue={''}
             />
           </label>
-          { errors.review && <div className="custom-textarea__error">Нужно добавить комментарий</div> }
+          { errors.review && <div className="custom-textarea__error">Введите не менее 5 символов</div> }
         </div>
       </div>
       <button className="btn btn--purple form-review__btn" type="submit">

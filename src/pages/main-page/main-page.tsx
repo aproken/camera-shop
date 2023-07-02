@@ -14,12 +14,11 @@ function MainPage(): JSX.Element {
   const cameras = useAppSelector(getCamerasList);
   const isCamerasListCompleting = useAppSelector(getCamerasListCompletingStatus);
   const { pageIndex } = useParams();
-  const currentProductsPage = Number(pageIndex);
+  const currentPageIndex = Number(pageIndex);
 
   useEffect(() => {
     dispatch(fetchCamerasListAction());
   }, [dispatch]);
-
 
   if (!isCamerasListCompleting) {
     return (
@@ -51,7 +50,7 @@ function MainPage(): JSX.Element {
                 </div>
               </div>
 
-              <CatalogContent products={ cameras } currentPage={ currentProductsPage }/>
+              <CatalogContent products={ cameras } currentPageIndex={ currentPageIndex } />
             </div>
           </div>
         </section>

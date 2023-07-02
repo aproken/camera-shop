@@ -3,11 +3,13 @@ import LinkForward from '../link-forward/link-forward';
 import PageNumber from '../page-number/page-number';
 
 type PaginationProps = {
-  currentPage: number;
+  currentPageIndex: number;
   pageNumbers: number[];
 }
 
-function Pagination({ currentPage, pageNumbers, }: PaginationProps): JSX.Element {
+function Pagination({ currentPageIndex, pageNumbers, }: PaginationProps): JSX.Element {
+  const currentPage = Number(currentPageIndex);
+
   return (
     <div className="pagination">
       <ul className="pagination__list">
