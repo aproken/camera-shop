@@ -5,7 +5,10 @@ import { toast } from 'react-toastify';
 
 const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
+  [StatusCodes.BAD_GATEWAY]: true,
+  [StatusCodes.INTERNAL_SERVER_ERROR]: true,
   [StatusCodes.NOT_FOUND]: true,
+  0: true, // Искусственно заблокированные запросы в DevTools
 };
 
 const shouldDisplayError = (response: AxiosResponse) => !!StatusCodeMapping[response.status];
@@ -20,7 +23,7 @@ export const createAPI = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<{ error: string }>) => {
       if (error.response && shouldDisplayError(error.response)) {
-        toast.warn(error.response.data.error);
+        toast.warn('Упс! Что то пошло не так :(');
       }
 
       throw error;
