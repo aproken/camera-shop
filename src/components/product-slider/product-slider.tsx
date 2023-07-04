@@ -3,12 +3,76 @@ import { scroller } from 'react-scroll';
 import { Cameras } from '../../types/camera';
 import ProductCard from '../product-card/product-card';
 import { VISIBLE_CARDS } from '../../const';
+import Swiper from 'react-id-swiper';
+import 'swiper/css';
+import SwiperCore, { Navigation } from 'swiper';
+import './style.css';
+
+SwiperCore.use([Navigation]);
+
 
 type ProductSliderProps = {
   similar: Cameras;
 }
 
+
 function ProductSlider({ similar }: ProductSliderProps): JSX.Element {
+  const params = {
+    slidesPerView: 3,
+    slidesPerGroup: 3,
+    spaceBetween: 30,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
+    },
+    renderPrevButton: () => (
+      <button className="swiper-button-prev">
+        <svg width="7" height="12" aria-hidden="true">
+          <use xlinkHref="#icon-arrow"></use>
+        </svg>
+      </button>
+    ),
+    renderNextButton: () => (
+      <button className="swiper-button-next">
+        <svg width="7" height="12" aria-hidden="true">
+          <use xlinkHref="#icon-arrow"></use>
+        </svg>
+      </button>
+    )
+  };
+  return (
+    <section>
+      <div className="container">
+        <h2 className="title title--h3">Похожие товары</h2>
+        <div style={{
+          position: 'relative',
+          margin: '0 auto',
+          width: 'calc(100% + 16px)',
+          maxWidth: '936px',
+        }}
+        >
+          <Swiper {...params}>
+            {similar.map((product) => (
+              <div key={product.id} >
+                <ProductCard
+                  product={product}
+                  onBuyClick={() => null}
+                />
+              </div>
+            ))}
+          </Swiper>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function ProductSliderOld({ similar }: ProductSliderProps): JSX.Element {
   const totalSets = Math.ceil(similar.length / VISIBLE_CARDS);
 
   const [activeSetIndex, setActiveSetIndex] = useState<number>(0);
