@@ -30,7 +30,7 @@ function ProductTabs({ product }: ProductTabsProps): JSX.Element {
       </div>
       <div className="tabs__content">
         {
-          activeTab === 0
+          activeTab !== 0
             ?
             <div className="tabs__element is-active">
               <div className="product__tabs-text">
