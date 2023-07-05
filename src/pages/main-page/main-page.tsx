@@ -30,8 +30,8 @@ function MainPage(): JSX.Element {
   }
 
   const CRUMBS = [
-    {label: 'Главная', hred: '/'},
-    {label: 'Каталог', hred: '/'},
+    {label: 'Главная', href: '/'},
+    {label: 'Каталог'},
   ];
 
   return (
