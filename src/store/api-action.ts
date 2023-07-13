@@ -7,6 +7,7 @@ import { Promo } from '../types/promo';
 import { redirectToRoute } from './action';
 import { Review, Reviews } from '../types/review';
 import { ReviewData } from '../types/review-data';
+import { Rating } from '../types/ratings';
 
 //получение списка камер
 export const fetchCamerasListAction = createAsyncThunk<Cameras, undefined, {
@@ -88,7 +89,7 @@ export const fetchReviewsAction = createAsyncThunk<Reviews, number, {
 );
 
 //Получение среднего рейтинга для товара
-export const fetchAvarageRatingsAction = createAsyncThunk<number, number, {
+export const fetchAvarageRatingsAction = createAsyncThunk<Rating, number, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -101,7 +102,10 @@ export const fetchAvarageRatingsAction = createAsyncThunk<number, number, {
     const rating = data.map((review) => review.rating);
     const avarageRating = rating.reduce((total, raiting) => (total + raiting), 0) / rating.length;
 
-    return Math.ceil(avarageRating);
+    return {
+      id,
+      averageRating: Math.ceil(avarageRating),
+    };
   }
 );
 

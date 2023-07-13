@@ -7,7 +7,7 @@ import { AppRoute, PRODUCTS_COUNT_ON_PAGE } from '../../const';
 import { getProductsCurrentPage, getPageNumbers } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks';
 import { redirectToRoute } from '../../store/action';
-import { fetchReviewsAction } from '../../store/api-action';
+import { fetchAvarageRatingsAction } from '../../store/api-action';
 
 type CatalogContentProps = {
   products: Cameras;
@@ -29,7 +29,7 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
 
   useEffect(() => {
     productsCurrentPage.forEach((product: Camera) => {
-      dispatch(fetchReviewsAction(product.id));
+      dispatch(fetchAvarageRatingsAction(product.id));
     });
 
   }, [dispatch, productsCurrentPage]);

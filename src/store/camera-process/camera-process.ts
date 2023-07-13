@@ -12,7 +12,7 @@ export const initialState: CameraProcess = {
   isSimilarCompleting: false,
   reviewsList: [],
   isReviewsListCompleting: false,
-  avarageRating: 0,
+  avarageRating: {} as Record<number, number>,
   addNewReviewStatus: RequestStatus.Unknown,
 };
 
@@ -73,7 +73,8 @@ export const cameraProcess = createSlice({
         state.addNewReviewStatus = RequestStatus.Failure;
       })
       .addCase(fetchAvarageRatingsAction.fulfilled, (state, action) => {
-        state.avarageRating = action.payload;
+        const {id, averageRating} = action.payload;
+        state.avarageRating[id] = averageRating;
       });
   }
 });

@@ -93,7 +93,7 @@ function ProductPage(): JSX.Element {
               </div>
               <div className="product__content">
                 <h1 className="title title--h3">{ name }</h1>
-                <ProductStarsRating rating={ averageRating } totalReview={ reviewCount } />
+                <ProductStarsRating rating={ averageRating[currentProductId] } totalReview={ reviewCount } />
                 <p className="product__price"><span className="visually-hidden">Цена:</span>{ stylizedPrice } ₽</p>
                 <button className="btn btn--purple" type="button">
                   <svg width="24" height="16" aria-hidden="true">

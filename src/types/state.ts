@@ -13,7 +13,7 @@ export type CameraProcess = {
   isSimilarCompleting: boolean;
   reviewsList: Reviews;
   isReviewsListCompleting: boolean;
-  avarageRating: number;
+  avarageRating: Record<number, number>;
   addNewReviewStatus: RequestStatus;
 }
 

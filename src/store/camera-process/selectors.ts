@@ -19,4 +19,4 @@ export const getReviewsList = (state: State): Reviews => state[NameSpace.Camera]
 
 export const getReviewsListCompleting = (state: State): boolean => state[NameSpace.Camera].isReviewsListCompleting;
 
-export const getAverageRating = (state: State): number => state[NameSpace.Camera].avarageRating;
+export const getAverageRating = (state: State): Record<number, number> => state[NameSpace.Camera].avarageRating;

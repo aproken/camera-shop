@@ -50,7 +50,7 @@ function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps
         </picture>
       </div>
       <div className="product-card__info">
-        <ProductStarsRating rating={ averageRating } totalReview={ reviewCount } />
+        <ProductStarsRating rating={ averageRating[id] } totalReview={ reviewCount } />
         <p className="product-card__title">{ name }</p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>{`${ getStylizedPrice(price) } ₽`}
