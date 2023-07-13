@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, RequestStatus } from '../../const';
 import { CameraProcess } from '../../types/state';
-import { fetchAddNewReviewAction, fetchCameraAction, fetchCamerasListAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
+import { fetchAddNewReviewAction, fetchAvarageRatingsAction, fetchCameraAction, fetchCamerasListAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
 
 export const initialState: CameraProcess = {
   camerasList: [],
@@ -12,6 +12,7 @@ export const initialState: CameraProcess = {
   isSimilarCompleting: false,
   reviewsList: [],
   isReviewsListCompleting: false,
+  avarageRating: 0,
   addNewReviewStatus: RequestStatus.Unknown,
 };
 
@@ -70,6 +71,9 @@ export const cameraProcess = createSlice({
       })
       .addCase(fetchAddNewReviewAction.rejected, (state) => {
         state.addNewReviewStatus = RequestStatus.Failure;
+      })
+      .addCase(fetchAvarageRatingsAction.fulfilled, (state, action) => {
+        state.avarageRating = action.payload;
       });
   }
 });

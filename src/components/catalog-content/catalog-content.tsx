@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Cameras } from '../../types/camera';
+import { Camera, Cameras } from '../../types/camera';
 import Pagination from '../pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import Sorting from '../sorting/sorting';
@@ -7,6 +7,7 @@ import { AppRoute, PRODUCTS_COUNT_ON_PAGE } from '../../const';
 import { getProductsCurrentPage, getPageNumbers } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks';
 import { redirectToRoute } from '../../store/action';
+import { fetchReviewsAction } from '../../store/api-action';
 
 type CatalogContentProps = {
   products: Cameras;
@@ -25,6 +26,13 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
   }, [currentPageIndex, dispatch, pageNumbers.length]);
 
   const productsCurrentPage = getProductsCurrentPage(products, currentPageIndex, PRODUCTS_COUNT_ON_PAGE);
+
+  useEffect(() => {
+    productsCurrentPage.forEach((product: Camera) => {
+      dispatch(fetchReviewsAction(product.id));
+    });
+
+  }, [dispatch, productsCurrentPage]);
 
   return (
     <div className="catalog__content">

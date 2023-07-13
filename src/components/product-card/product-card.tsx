@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Camera } from '../../types/camera';
+import { getAverageRating } from '../../store/camera-process/selectors';
+import { fetchAvarageRatingsAction } from '../../store/api-action';
 import { getStylizedPrice } from '../../utils/utils';
+import ProductStarsRating from '../product-stars-rating/product-stars-rating';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
 
 type ProductCardProps = {
   product: Camera;
@@ -9,6 +14,8 @@ type ProductCardProps = {
 }
 
 function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const className = [ ...classNames, 'product-card'];
   const productClassName = className.join(' ');
   const {
@@ -21,6 +28,12 @@ function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps
     previewImgWebp2x,
     price,
   } = product;
+
+  const averageRating = useAppSelector(getAverageRating);
+
+  useEffect(() => {
+    dispatch(fetchAvarageRatingsAction(id));
+  }, [dispatch, id]);
 
   return (
     <div className={ productClassName }>
@@ -37,25 +50,7 @@ function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps
         </picture>
       </div>
       <div className="product-card__info">
-        <div className="rate product-card__rate">
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-          <p className="visually-hidden">Рейтинг: 3</p>
-          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{ reviewCount }</p>
-        </div>
+        <ProductStarsRating rating={ averageRating } totalReview={ reviewCount } />
         <p className="product-card__title">{ name }</p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>{`${ getStylizedPrice(price) } ₽`}

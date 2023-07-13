@@ -18,3 +18,5 @@ export const getSimilarCompletingStatus = (state: State): boolean => state[NameS
 export const getReviewsList = (state: State): Reviews => state[NameSpace.Camera].reviewsList;
 
 export const getReviewsListCompleting = (state: State): boolean => state[NameSpace.Camera].isReviewsListCompleting;
+
+export const getAverageRating = (state: State): number => state[NameSpace.Camera].avarageRating;

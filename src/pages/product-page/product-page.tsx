@@ -2,13 +2,19 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
+  getAverageRating,
   getCamera,
   getCameraComletingStatus,
   getReviewsList,
   getSimilar,
   getSimilarCompletingStatus
 } from '../../store/camera-process/selectors';
-import { fetchCameraAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-action';
+import {
+  fetchCameraAction,
+  fetchReviewsAction,
+  fetchSimilarAction,
+  fetchAvarageRatingsAction,
+} from '../../store/api-action';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundPage from '../not-found-page/not-found-page';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
@@ -16,6 +22,7 @@ import ProductTabs from '../../components/product-tabs/product-tabs';
 import ProductSlider from '../../components/product-slider/product-slider';
 import ReviewsBlock from '../../components/reviews-block/reviews-block';
 import { getStylizedPrice } from '../../utils/utils';
+import ProductStarsRating from '../../components/product-stars-rating/product-stars-rating';
 
 function ProductPage(): JSX.Element {
   const { cameraId } = useParams();
@@ -23,6 +30,7 @@ function ProductPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const currentProduct = useAppSelector(getCamera);
+  const averageRating = useAppSelector(getAverageRating);
   const isProductCompleting = useAppSelector(getCameraComletingStatus);
   const similarList = useAppSelector(getSimilar);
   const isSimilarCompleting = useAppSelector(getSimilarCompletingStatus);
@@ -31,6 +39,7 @@ function ProductPage(): JSX.Element {
   useEffect(() => {
     if (currentProductId) {
       dispatch(fetchCameraAction(currentProductId));
+      dispatch(fetchAvarageRatingsAction(currentProductId));
       dispatch(fetchSimilarAction(currentProductId));
       dispatch(fetchReviewsAction(currentProductId));
     }
@@ -60,6 +69,9 @@ function ProductPage(): JSX.Element {
     {label: name}
   ];
 
+  // eslint-disable-next-line no-console
+  console.log(averageRating);
+
   return (
     <main id="product-page">
       <div className="page-content">
@@ -81,25 +93,7 @@ function ProductPage(): JSX.Element {
               </div>
               <div className="product__content">
                 <h1 className="title title--h3">{ name }</h1>
-                <div className="rate product__rate">
-                  <svg width="17" height="16" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="17" height="16" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="17" height="16" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="17" height="16" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="17" height="16" aria-hidden="true">
-                    <use xlinkHref="#icon-star"></use>
-                  </svg>
-                  <p className="visually-hidden">Рейтинг: 4</p>
-                  <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{ reviewCount }</p>
-                </div>
+                <ProductStarsRating rating={ averageRating } totalReview={ reviewCount } />
                 <p className="product__price"><span className="visually-hidden">Цена:</span>{ stylizedPrice } ₽</p>
                 <button className="btn btn--purple" type="button">
                   <svg width="24" height="16" aria-hidden="true">

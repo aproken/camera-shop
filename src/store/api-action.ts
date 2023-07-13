@@ -87,6 +87,24 @@ export const fetchReviewsAction = createAsyncThunk<Reviews, number, {
   }
 );
 
+//Получение среднего рейтинга для товара
+export const fetchAvarageRatingsAction = createAsyncThunk<number, number, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+>(
+  'camera/fetchAvarageRatings',
+  async (id, { extra: api }) => {
+    const { data } = await api.get<Reviews>(`${ APIRoute.CamerasList }/${ id }${ APIRoute.Reviews}`);
+
+    const rating = data.map((review) => review.rating);
+    const avarageRating = rating.reduce((total, raiting) => (total + raiting), 0) / rating.length;
+
+    return Math.ceil(avarageRating);
+  }
+);
+
 //Добавление отзыва для товара
 export const fetchAddNewReviewAction = createAsyncThunk<Review, ReviewData, {
   dispatch: AppDispatch;
