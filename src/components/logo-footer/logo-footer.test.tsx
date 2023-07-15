@@ -3,7 +3,7 @@ import LogoFooter from './logo-footer';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 
-describe('Component: LogoFooter', () => {
+describe('Компонент LogoFooter', () => {
   it('Тестирование компонента Footer', () => {
     const { container }: RenderResult = render(
       <Router>

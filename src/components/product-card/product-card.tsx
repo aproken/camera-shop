@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Camera } from '../../types/camera';
 import { getAverageRating } from '../../store/camera-process/selectors';
-import { fetchAvarageRatingsAction } from '../../store/api-action';
+import { fetchAverageRatingAction } from '../../store/api-action';
 import { getStylizedPrice } from '../../utils/utils';
 import ProductStarsRating from '../product-stars-rating/product-stars-rating';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -32,7 +32,7 @@ function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps
   const averageRating = useAppSelector(getAverageRating);
 
   useEffect(() => {
-    dispatch(fetchAvarageRatingsAction(id));
+    dispatch(fetchAverageRatingAction(id));
   }, [dispatch, id]);
 
   return (

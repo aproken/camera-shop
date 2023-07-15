@@ -19,3 +19,23 @@ exports[`Component: LogoFooter Тестирование компонента Foo
   </a>
 </div>
 `;
+
+exports[`Компонент LogoFooter Тестирование компонента Footer 1`] = `
+<div>
+  <a
+    aria-label="Переход на главную"
+    class="footer__logo"
+    href="/"
+  >
+    <svg
+      aria-hidden="true"
+      height="36"
+      width="100"
+    >
+      <use
+        xlink:href="#icon-logo-mono"
+      />
+    </svg>
+  </a>
+</div>
+`;

@@ -13,7 +13,7 @@ import {
   fetchCameraAction,
   fetchReviewsAction,
   fetchSimilarAction,
-  fetchAvarageRatingsAction,
+  fetchAverageRatingAction,
 } from '../../store/api-action';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundPage from '../not-found-page/not-found-page';
@@ -39,7 +39,7 @@ function ProductPage(): JSX.Element {
   useEffect(() => {
     if (currentProductId) {
       dispatch(fetchCameraAction(currentProductId));
-      dispatch(fetchAvarageRatingsAction(currentProductId));
+      dispatch(fetchAverageRatingAction(currentProductId));
       dispatch(fetchSimilarAction(currentProductId));
       dispatch(fetchReviewsAction(currentProductId));
     }

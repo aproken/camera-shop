@@ -39,7 +39,7 @@ describe('ProductPage component', () => {
     expect(store.getActions()).toHaveLength(4);
     expect(store.getActions().map((item) => item.type)).toEqual([
       'camera/fetchCamera/pending',
-      'REDIRECT_TO_ROUTE',
+      'camera/fetchAverageRating/pending',
       'camera/fetchSimilar/pending',
       'camera/fetchReviews/pending'
     ]);

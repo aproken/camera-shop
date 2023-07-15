@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, RequestStatus } from '../../const';
 import { CameraProcess } from '../../types/state';
-import { fetchAddNewReviewAction, fetchAvarageRatingsAction, fetchCameraAction, fetchCamerasListAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
+import { fetchAddNewReviewAction, fetchAverageRatingAction, fetchCameraAction, fetchCamerasListAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
 
 export const initialState: CameraProcess = {
   camerasList: [],
@@ -72,7 +72,7 @@ export const cameraProcess = createSlice({
       .addCase(fetchAddNewReviewAction.rejected, (state) => {
         state.addNewReviewStatus = RequestStatus.Failure;
       })
-      .addCase(fetchAvarageRatingsAction.fulfilled, (state, action) => {
+      .addCase(fetchAverageRatingAction.fulfilled, (state, action) => {
         const {id, averageRating} = action.payload;
         state.avarageRating[id] = averageRating;
       });

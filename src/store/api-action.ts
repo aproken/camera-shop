@@ -89,7 +89,7 @@ export const fetchReviewsAction = createAsyncThunk<Reviews, number, {
 );
 
 //Получение среднего рейтинга для товара
-export const fetchAvarageRatingsAction = createAsyncThunk<Rating, number, {
+export const fetchAverageRatingAction = createAsyncThunk<Rating, number, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -100,11 +100,11 @@ export const fetchAvarageRatingsAction = createAsyncThunk<Rating, number, {
     const { data } = await api.get<Reviews>(`${ APIRoute.CamerasList }/${ id }${ APIRoute.Reviews}`);
 
     const rating = data.map((review) => review.rating);
-    const avarageRating = rating.reduce((total, raiting) => (total + raiting), 0) / rating.length;
+    const averageRating = rating.reduce((total, raiting) => (total + raiting), 0) / rating.length;
 
     return {
       id,
-      averageRating: Math.ceil(avarageRating),
+      averageRating: Math.ceil(averageRating),
     };
   }
 );

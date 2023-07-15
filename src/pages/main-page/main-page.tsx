@@ -9,7 +9,6 @@ import CatalogContent from '../../components/catalog-content/catalog-content';
 import { getCamerasList, getCamerasListCompletingStatus } from '../../store/camera-process/selectors';
 import { fetchCamerasListAction } from '../../store/api-action';
 
-
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const cameras = useAppSelector(getCamerasList);
