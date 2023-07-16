@@ -27,7 +27,7 @@ function SearchForm(): JSX.Element {
     name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       setFocusedIndex((prevIndex) => (prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0));
@@ -84,6 +84,13 @@ function SearchForm(): JSX.Element {
                       key={ camera }
                       className="form-search__select-item"
                       tabIndex={ index + 1 }
+                      ref={(ref) => {
+                        if(focusedIndex === index) {
+                          ref?.focus();
+                        }
+                      }}
+                      onKeyDown={ handleKeyDown }
+                      aria-selected={focusedIndex === index}
                     >
                       { camera }
                     </li>
