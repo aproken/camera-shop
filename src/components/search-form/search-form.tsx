@@ -60,7 +60,7 @@ function SearchForm(): JSX.Element {
             type="text"
             autoComplete="off"
             placeholder="Поиск по сайту"
-            value={searchTerm}
+            value={ searchTerm }
             onChange={ handleInputChange }
             onKeyDown={ handleKeyDown }
           />
@@ -70,11 +70,11 @@ function SearchForm(): JSX.Element {
             <FocusLock>
               <ul ref={ listRef } className="form-search__select-list">
                 {
-                  resultNames.map((camera) => (
+                  resultNames.map((camera, index) => (
                     <li
                       key={ camera }
                       className="form-search__select-item"
-                      tabIndex={ 0 }
+                      tabIndex={ index + 1 }
                     >
                       { camera }
                     </li>
