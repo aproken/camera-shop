@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import FocusLock from 'react-focus-lock';
-import { ChangeEvent, KeyboardEvent, useState, useRef } from 'react';
+import { ChangeEvent, KeyboardEvent, useState, useRef, useEffect } from 'react';
 import { useAppSelector } from '../../hooks';
 import { getCamerasList } from '../../store/camera-process/selectors';
 
@@ -9,7 +9,7 @@ function SearchForm(): JSX.Element {
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const camerasNames = cameras.map((camera) => camera.name);
-  const [, setFocusedIndex] = useState<number>(-1);
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const listRef = useRef<HTMLUListElement>(null);
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -31,12 +31,10 @@ function SearchForm(): JSX.Element {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       setFocusedIndex((prevIndex) => (prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0));
-    } else
-    if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp') {
       event.preventDefault();
       setFocusedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1));
-    } else
-    if (event.key === 'Tab') {
+    } else if (event.key === 'Tab') {
       if (listRef.current && listRef.current.contains(document.activeElement)) {
         event.preventDefault();
         if (event.shiftKey) {
@@ -44,9 +42,20 @@ function SearchForm(): JSX.Element {
         } else {
           setFocusedIndex((prevIndex) => (prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0));
         }
+      } else {
+        resetSearch();
       }
     }
   };
+
+  useEffect(() => {
+    if (listRef.current && focusedIndex !== -1) {
+      const focusedItem = listRef.current.querySelector(`[tabIndex="${focusedIndex + 1}"]`);
+      if (focusedItem instanceof HTMLElement) {
+        focusedItem.focus();
+      }
+    }
+  }, [focusedIndex]);
 
   return (
     <div className={ classNames('form-search', { 'list-opened ': searchTerm && resultNames.length}) }>
@@ -84,7 +93,11 @@ function SearchForm(): JSX.Element {
             )
           }
         </form>
-        <button className="form-search__reset" type="reset" onClick={resetSearch}>
+        <button
+          className="form-search__reset"
+          type="reset"
+          onClick={ resetSearch }
+        >
           <svg width="10" height="10" aria-hidden="true">
             <use xlinkHref="#icon-close"></use>
           </svg>
