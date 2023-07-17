@@ -1,14 +1,19 @@
 import classNames from 'classnames';
 import FocusLock from 'react-focus-lock';
 import { ChangeEvent, KeyboardEvent, useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { getCamerasList } from '../../store/camera-process/selectors';
+import { Camera } from '../../types/camera';
 
 function SearchForm(): JSX.Element {
+  const navigate = useNavigate();
+
   const cameras = useAppSelector(getCamerasList);
+  const camerasNames = cameras.map((camera) => camera.name);
 
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const camerasNames = cameras.map((camera) => camera.name);
+  const [, setSelectedProduct] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -21,6 +26,7 @@ function SearchForm(): JSX.Element {
   const resetSearch = () => {
     setSearchTerm('');
     setFocusedIndex(-1);
+    setSelectedProduct(null);
   };
 
   useEffect(() => {
@@ -64,6 +70,25 @@ function SearchForm(): JSX.Element {
         }
       }
     }
+    else if (event.key === 'Enter') {
+      if (focusedIndex >= 0 && focusedIndex < resultNames.length) {
+        event.preventDefault();
+        const selectedCamera: Camera = cameras.find((camera) => camera.name === resultNames[focusedIndex])!;
+        setSelectedProduct(selectedCamera.name);
+        navigate(`/cameras/${selectedCamera.id}`);
+        resetSearch();
+      }
+    }
+  };
+
+  const handleProductClick = (productName: string) => {
+    setSelectedProduct(productName);
+    const selectedItemData = cameras.find((camera) => camera.name === productName);
+    if (selectedItemData) {
+      const { id } = selectedItemData;
+      navigate(`/cameras/${ id }`);
+      resetSearch();
+    }
   };
 
   return (
@@ -105,6 +130,7 @@ function SearchForm(): JSX.Element {
                         }
                       }}
                       onKeyDown={ handleKeyDown }
+                      onClick={() => handleProductClick(camera)}
                     >
                       { camera }
                     </li>
