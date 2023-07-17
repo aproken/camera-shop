@@ -18,6 +18,11 @@ function SearchForm(): JSX.Element {
     setFocusedIndex(0);
   };
 
+  useEffect(() => {
+    // eslint-disable-next-line
+    console.log('NewValue', focusedIndex);
+  }, [focusedIndex]);
+
   const resetSearch = () => {
     setSearchTerm('');
     setFocusedIndex(-1);
@@ -72,7 +77,12 @@ function SearchForm(): JSX.Element {
               placeholder="Поиск по сайту"
               value={ searchTerm }
               onChange={ handleInputChange }
-              onKeyDown={ handleKeyDown }
+              ref={(ref) => {
+                if (focusedIndex === 0) {
+                  ref?.focus();
+                }
+              }}
+              //onKeyDown={ handleKeyDown }
             />
           </label>
           {
@@ -101,9 +111,10 @@ function SearchForm(): JSX.Element {
           }
         </form>
         <button
+          tabIndex={1}
           className="form-search__reset"
           type="reset"
-          onClick={ resetSearch }
+          onClick={resetSearch}
         >
           <svg width="10" height="10" aria-hidden="true">
             <use xlinkHref="#icon-close"></use>
