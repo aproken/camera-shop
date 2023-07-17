@@ -9,7 +9,7 @@ function SearchForm(): JSX.Element {
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const camerasNames = cameras.map((camera) => camera.name);
-  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const listRef = useRef<HTMLUListElement>(null);
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -18,15 +18,15 @@ function SearchForm(): JSX.Element {
     setFocusedIndex(0);
   };
 
+  const resetSearch = () => {
+    setSearchTerm('');
+    setFocusedIndex(0);
+  };
+
   useEffect(() => {
     // eslint-disable-next-line
     console.log('NewValue', focusedIndex);
   }, [focusedIndex]);
-
-  const resetSearch = () => {
-    setSearchTerm('');
-    setFocusedIndex(-1);
-  };
 
   const resultNames = camerasNames.filter((name) =>
     name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -35,32 +35,34 @@ function SearchForm(): JSX.Element {
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      setFocusedIndex((prevIndex) => (prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0));
+      setFocusedIndex((prevIndex) => {
+        if (prevIndex === -1) {
+          return 0;
+        }
+        return prevIndex < resultNames.length ? prevIndex + 1 : 0;
+      });
     } else if (event.key === 'ArrowUp') {
       event.preventDefault();
-      setFocusedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1));
+      setFocusedIndex((prevIndex) => {
+        if (prevIndex === -1) {
+          return resultNames.length - 1;
+        }
+        return prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1;
+      });
     } else if (event.key === 'Tab') {
-      if (listRef.current && listRef.current.contains(document.activeElement)) {
-        event.preventDefault();
-        if (event.shiftKey) {
-          setFocusedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1));
-        } else {
-          setFocusedIndex((prevIndex) => (prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0));
+      if (event.shiftKey) {
+        if (focusedIndex === 0) {
+          event.preventDefault();
+          setFocusedIndex(resultNames.length - 1);
         }
       } else {
-        resetSearch();
+        if (focusedIndex === resultNames.length - 1) {
+          event.preventDefault();
+          setFocusedIndex(0);
+        }
       }
     }
   };
-
-  useEffect(() => {
-    if (listRef.current && focusedIndex !== -1) {
-      const focusedItem = listRef.current.querySelector(`[tabIndex="${focusedIndex + 1}"]`);
-      if (focusedItem instanceof HTMLElement) {
-        focusedItem.focus();
-      }
-    }
-  }, [focusedIndex]);
 
   return (
     <div className={ classNames('form-search', { 'list-opened ': searchTerm && resultNames.length}) }>
@@ -75,19 +77,20 @@ function SearchForm(): JSX.Element {
               type="text"
               autoComplete="off"
               placeholder="Поиск по сайту"
+              tabIndex={ 0 }
               value={ searchTerm }
               onChange={ handleInputChange }
+              onKeyDown={ handleKeyDown }
               ref={(ref) => {
-                if (focusedIndex === 0) {
+                if (focusedIndex === -1) {
                   ref?.focus();
                 }
               }}
-              //onKeyDown={ handleKeyDown }
             />
           </label>
           {
             searchTerm && (
-              <ul ref={ listRef } className="form-search__select-list">
+              <ul ref={ listRef } className="form-search__select-list" tabIndex={-1}>
                 {
                   resultNames.map((camera, index) => (
                     <li
@@ -95,12 +98,11 @@ function SearchForm(): JSX.Element {
                       className="form-search__select-item"
                       tabIndex={ index + 1 }
                       ref={(ref) => {
-                        if(focusedIndex === index) {
+                        if (focusedIndex === index) {
                           ref?.focus();
                         }
                       }}
                       onKeyDown={ handleKeyDown }
-                      aria-selected={focusedIndex === index}
                     >
                       { camera }
                     </li>
@@ -111,10 +113,9 @@ function SearchForm(): JSX.Element {
           }
         </form>
         <button
-          tabIndex={1}
           className="form-search__reset"
           type="reset"
-          onClick={resetSearch}
+          onClick={ resetSearch }
         >
           <svg width="10" height="10" aria-hidden="true">
             <use xlinkHref="#icon-close"></use>
