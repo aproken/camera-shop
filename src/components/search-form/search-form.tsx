@@ -42,12 +42,25 @@ function SearchForm(): JSX.Element {
       event.preventDefault();
       setFocusedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1));
     } else if (event.key === 'Tab') {
-      if (listRef.current && listRef.current.contains(document.activeElement)) {
+      if (
+        listRef.current &&
+        listRef.current.contains(document.activeElement)
+      ) {
         event.preventDefault();
         if (event.shiftKey) {
-          setFocusedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1));
+          setFocusedIndex((prevIndex) =>
+            prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1
+          );
         } else {
-          setFocusedIndex((prevIndex) => (prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0));
+          setFocusedIndex((prevIndex) =>
+            prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0
+          );
+        }
+      } else {
+        // Фокус на элементе input
+        if (resultNames.length > 0) {
+          event.preventDefault();
+          setFocusedIndex(0);
         }
       }
     }
@@ -79,13 +92,13 @@ function SearchForm(): JSX.Element {
           </label>
           {
             shouldShowResults && (
-              <ul ref={ listRef } className="form-search__select-list" tabIndex={-1}>
+              <ul ref={ listRef } className="form-search__select-list" tabIndex={ -1 }>
                 {
                   resultNames.map((camera, index) => (
                     <li
                       key={ camera }
                       className="form-search__select-item"
-                      tabIndex={ index }
+                      tabIndex={ 0 }
                       ref={(ref) => {
                         if (focusedIndex === index) {
                           ref?.focus();
