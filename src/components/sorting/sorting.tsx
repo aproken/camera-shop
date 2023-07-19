@@ -1,8 +1,30 @@
+import { useState } from 'react';
+import { SortByOrder, SortByType } from '../../const';
+
 type SortingProps = {
-  onChange?: () => void;
+  onChange?: (sortByType: string, sortByOrder: string) => void;
 }
 
 function Sorting({ onChange }: SortingProps): JSX.Element {
+  const [sortByType, setSortByType] = useState<string>(SortByType.Default);
+  const [sortByOrder, setSortByOrder] = useState<string>(SortByOrder.Default);
+
+  const handleSortByTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id } = event.target;
+    setSortByType(id);
+    if (onChange) {
+      onChange(id, sortByOrder);
+    }
+  };
+
+  const handleSortByOrderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id } = event.target;
+    setSortByOrder(id);
+    if (onChange) {
+      onChange(sortByType, id);
+    }
+  };
+
   return (
     <form action="#">
       <div className="catalog-sort__inner">
@@ -11,29 +33,35 @@ function Sorting({ onChange }: SortingProps): JSX.Element {
           <div className="catalog-sort__btn-text">
             <input
               type="radio"
-              id="sortPrice"
+              id={ SortByType.Price }
               name="sort"
+              checked={ sortByType === SortByType.Price }
+              onChange={ handleSortByTypeChange}
             />
-            <label htmlFor="sortPrice">по цене</label>
+            <label htmlFor={ SortByType.Price }>по цене</label>
           </div>
           <div className="catalog-sort__btn-text">
             <input
               type="radio"
-              id="sortPopular"
+              id={ SortByType.Popularity }
               name="sort"
+              checked={ sortByType === SortByType.Popularity }
+              onChange={ handleSortByTypeChange }
             />
-            <label htmlFor="sortPopular">по популярности</label>
+            <label htmlFor={ SortByType.Popularity }>по популярности</label>
           </div>
         </div>
         <div className="catalog-sort__order">
           <div className="catalog-sort__btn catalog-sort__btn--up">
             <input
               type="radio"
-              id="up"
+              id={ SortByOrder.Up }
               name="sort-icon"
               aria-label="По возрастанию"
+              checked={ sortByOrder === SortByOrder.Up }
+              onChange={ handleSortByOrderChange }
             />
-            <label htmlFor="up">
+            <label htmlFor={ SortByOrder.Up }>
               <svg width="16" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-sort"></use>
               </svg>
@@ -42,11 +70,13 @@ function Sorting({ onChange }: SortingProps): JSX.Element {
           <div className="catalog-sort__btn catalog-sort__btn--down">
             <input
               type="radio"
-              id="down"
+              id={SortByOrder.Down}
               name="sort-icon"
               aria-label="По убыванию"
+              checked={ sortByOrder === SortByOrder.Down }
+              onChange={ handleSortByOrderChange }
             />
-            <label htmlFor="down">
+            <label htmlFor={ SortByOrder.Down }>
               <svg width="16" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-sort"></use>
               </svg>

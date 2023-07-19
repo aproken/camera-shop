@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { getCamerasList } from '../../store/camera-process/selectors';
 import { Camera } from '../../types/camera';
-
+//TODO снять блокировку фокуса на инпуте, когда он пустой, чтобы можно было клавиатурой фокусироваться на элементах страницы
 function SearchForm(): JSX.Element {
   const navigate = useNavigate();
 

@@ -45,6 +45,18 @@ export enum Level {
   Professional = 'Профессиональный',
 }
 
+export enum SortByType {
+  Default = '',
+  Price = 'по цене',
+  Popularity = 'по полулярности',
+}
+
+export enum SortByOrder {
+  Default = '',
+  Up = 'abs',
+  Down = 'desc',
+}
+
 export enum IconSocial {
   VK = '#icon-vk',
   Pinterest = '#icon-pinterest',
