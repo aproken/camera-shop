@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, RequestStatus } from '../../const';
 import { CameraProcess } from '../../types/state';
-import { fetchAddNewReviewAction, fetchCameraAction, fetchCamerasWithAverageRatingAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
+import { fetchAddNewReviewAction, fetchCameraAction, fetchCamerasListAction, fetchCamerasWithAverageRatingAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
 
 export const initialState: CameraProcess = {
   camerasList: [],
@@ -21,6 +21,16 @@ export const cameraProcess = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(fetchCamerasListAction.pending, (state) => {
+        state.isCamerasListCompleting = false;
+      })
+      .addCase(fetchCamerasListAction.fulfilled, (state, action) => {
+        state.camerasList = action.payload;
+        state.isCamerasListCompleting = true;
+      })
+      .addCase(fetchCamerasListAction.rejected, (state) => {
+        state.isCamerasListCompleting = true;
+      })
       .addCase(fetchCamerasWithAverageRatingAction.pending, (state) => {
         state.isCamerasListCompleting = false;
       })
