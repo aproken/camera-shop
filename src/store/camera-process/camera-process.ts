@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, RequestStatus } from '../../const';
 import { CameraProcess } from '../../types/state';
-import { fetchAddNewReviewAction, fetchAverageRatingAction, fetchCameraAction, fetchCamerasListAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
+import { fetchAddNewReviewAction, fetchAverageRatingAction, fetchCameraAction, fetchCamerasListAction, fetchCamerasWithAverageRatingAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
 
 export const initialState: CameraProcess = {
   camerasList: [],
@@ -12,7 +12,6 @@ export const initialState: CameraProcess = {
   isSimilarCompleting: false,
   reviewsList: [],
   isReviewsListCompleting: false,
-  avarageRating: {} as Record<number, number>,
   addNewReviewStatus: RequestStatus.Unknown,
 };
 
@@ -22,14 +21,14 @@ export const cameraProcess = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(fetchCamerasListAction.pending, (state) => {
+      .addCase(fetchCamerasWithAverageRatingAction.pending, (state) => {
         state.isCamerasListCompleting = false;
       })
-      .addCase(fetchCamerasListAction.fulfilled, (state, action) => {
+      .addCase(fetchCamerasWithAverageRatingAction.fulfilled, (state, action) => {
         state.camerasList = action.payload;
         state.isCamerasListCompleting = true;
       })
-      .addCase(fetchCamerasListAction.rejected, (state) => {
+      .addCase(fetchCamerasWithAverageRatingAction.rejected, (state) => {
         state.isCamerasListCompleting = true;
       })
       .addCase(fetchCameraAction.pending, (state) => {
@@ -71,10 +70,6 @@ export const cameraProcess = createSlice({
       })
       .addCase(fetchAddNewReviewAction.rejected, (state) => {
         state.addNewReviewStatus = RequestStatus.Failure;
-      })
-      .addCase(fetchAverageRatingAction.fulfilled, (state, action) => {
-        const {id, averageRating} = action.payload;
-        state.avarageRating[id] = averageRating;
       });
   }
 });

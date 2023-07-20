@@ -18,7 +18,12 @@ export const getProductsCurrentPage = <T>(products: Array<T>, pageNumberCurrentP
 export const getStylizedPrice = (price: number): string => new Intl.NumberFormat('ru-Ru').format(price);
 
 //Функция для сортировки товаров
-export const sortProducts = (products: Cameras, sortByType: string, sortByOrder: string): Cameras => {
+export const sortProducts = (
+  products: Cameras,
+  sortByType: string,
+  sortByOrder: string,
+  averageRating: Record<number, number>
+): Cameras => {
   // сортировка по цене
   if (sortByType === SortByType.Price) {
     if (sortByOrder === SortByOrder.Down) {
@@ -28,14 +33,19 @@ export const sortProducts = (products: Cameras, sortByType: string, sortByOrder:
     }
   }
 
-  // Сортировка по популярности
+  // Сортировка по популярности (среднему рейтингу)
   if (sortByType === SortByType.Popularity) {
     const sortedProducts = [...products];
-    if (sortByOrder === SortByOrder.Down) {
-      sortedProducts.sort((a, b) => b.reviewCount - a.reviewCount);
-    } else {
-      sortedProducts.sort((a, b) => a.reviewCount - b.reviewCount);
-    }
+    sortedProducts.sort((a, b) => {
+      const averageRatingA = averageRating[a.id] || 0;
+      const averageRatingB = averageRating[b.id] || 0;
+
+      if (sortByOrder === SortByOrder.Down) {
+        return averageRatingB - averageRatingA;
+      } else {
+        return averageRatingA - averageRatingB;
+      }
+    });
     return sortedProducts;
   }
 

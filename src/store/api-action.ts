@@ -7,7 +7,6 @@ import { Promo } from '../types/promo';
 import { redirectToRoute } from './action';
 import { Review, Reviews } from '../types/review';
 import { ReviewData } from '../types/review-data';
-import { Rating } from '../types/ratings';
 
 //получение списка камер
 export const fetchCamerasListAction = createAsyncThunk<Cameras, undefined, {
@@ -89,7 +88,7 @@ export const fetchReviewsAction = createAsyncThunk<Reviews, number, {
 );
 
 //Получение среднего рейтинга для товара
-export const fetchAverageRatingAction = createAsyncThunk<Rating, number, {
+export const fetchAverageRatingAction = createAsyncThunk<number, number, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -102,12 +101,40 @@ export const fetchAverageRatingAction = createAsyncThunk<Rating, number, {
     const rating = data.map((review) => review.rating);
     const averageRating = rating.reduce((total, raiting) => (total + raiting), 0) / rating.length;
 
-    return {
-      id,
-      averageRating: Math.ceil(averageRating),
-    };
+    return Math.ceil(averageRating);
   }
 );
+
+// Получение списка всех камер с добавлением среднего рейтинга
+export const fetchCamerasWithAverageRatingAction = createAsyncThunk<Cameras, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+>(
+  'camera/fetchCamerasWithAverageRating',
+  async (_, { dispatch }) => {
+    try {
+      // Получаем список всех камер с помощью действия fetchCamerasListAction
+      const cameras: Cameras = await dispatch(fetchCamerasListAction());
+
+      // Для каждой камеры получаем средний рейтинг и добавляем его в каждую камеру
+      for (const camera of cameras) {
+        const { id } = camera;
+        const averageRating = await dispatch(fetchAverageRatingAction(id));
+
+        // Добавляем полученный средний рейтинг в каждую камеру
+        camera.averageRating = averageRating;
+      }
+
+      return cameras;
+    } catch (error) {
+      console.error('Ошибка при получении камер с средним рейтингом:', error);
+      return []; // Возвращаем пустой массив камер в случае ошибки
+    }
+  }
+);
+
 
 //Добавление отзыва для товара
 export const fetchAddNewReviewAction = createAsyncThunk<Review, ReviewData, {
