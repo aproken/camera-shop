@@ -4,14 +4,14 @@ import Pagination from '../pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import Sorting from '../sorting/sorting';
 import {
-  AppRoute,
+  // AppRoute,
   PRODUCTS_COUNT_ON_PAGE,
   SortByType,
   SortByOrder,
 } from '../../const';
 import { getProductsCurrentPage, getPageNumbers, sortProducts } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks';
-import { redirectToRoute } from '../../store/action';
+// import { redirectToRoute } from '../../store/action';
 
 type CatalogContentProps = {
   products: Cameras;
@@ -27,7 +27,9 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
 
   useEffect(() => {
     if (!currentPageIndex || currentPageIndex > pageNumbers.length) {
-      dispatch(redirectToRoute(AppRoute.NotFound));
+      // eslint-disable-next-line
+      console.log('BUM!');
+      // dispatch(redirectToRoute(AppRoute.NotFound));
     }
   }, [currentPageIndex, dispatch, pageNumbers.length]);
 

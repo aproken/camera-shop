@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, RequestStatus } from '../../const';
 import { CameraProcess } from '../../types/state';
-import { fetchAddNewReviewAction, fetchCameraAction, fetchCamerasListAction, fetchCamerasWithAverageRatingAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
+import { fetchAverageRatingAction, fetchAddNewReviewAction, fetchCameraAction, fetchCamerasListAction, fetchCamerasWithAverageRatingAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
 
 export const initialState: CameraProcess = {
   camerasList: [],
@@ -35,11 +35,17 @@ export const cameraProcess = createSlice({
         state.isCamerasListCompleting = false;
       })
       .addCase(fetchCamerasWithAverageRatingAction.fulfilled, (state, action) => {
-        state.camerasList = action.payload;
+        // state.camerasList = action.payload;
         state.isCamerasListCompleting = true;
       })
       .addCase(fetchCamerasWithAverageRatingAction.rejected, (state) => {
         state.isCamerasListCompleting = true;
+      })
+      .addCase(fetchAverageRatingAction.fulfilled, (state, action) => {
+        const camera = state.camerasList.find((item) => item.id === action.payload.id);
+        if (camera) {
+          camera.averageRating = action.payload.rating;
+        }
       })
       .addCase(fetchCameraAction.pending, (state) => {
         state.isCameraCompleting = false;

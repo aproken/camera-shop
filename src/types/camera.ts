@@ -17,4 +17,9 @@ export type Camera = {
   previewImgWebp2x: string;
 }
 
+export type RatingItem = {
+  id: number;
+  rating: number | null;
+}
+
 export type Cameras = Camera[];

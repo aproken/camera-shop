@@ -7,7 +7,7 @@ import Promo from '../../components/promo/promo';
 import Filter from '../../components/filter/filter';
 import CatalogContent from '../../components/catalog-content/catalog-content';
 import { getCamerasList, getCamerasListCompletingStatus } from '../../store/camera-process/selectors';
-import { fetchCamerasListAction } from '../../store/api-action';
+import { /*fetchCamerasListAction,*/ fetchCamerasWithAverageRatingAction } from '../../store/api-action';
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -17,7 +17,7 @@ function MainPage(): JSX.Element {
   const currentPageIndex = Number(pageIndex);
 
   useEffect(() => {
-    dispatch(fetchCamerasListAction());
+    dispatch(fetchCamerasWithAverageRatingAction());
   }, [dispatch]);
 
   if (!isCamerasListCompleting) {

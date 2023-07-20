@@ -35,17 +35,27 @@ export const sortProducts = (
   // Сортировка по популярности (среднему рейтингу)
   if (sortByType === SortByType.Popularity) {
     return [...products].sort((a, b) => {
-      // Handle the case when averageRating is null
       if (a.averageRating === null && b.averageRating === null) {
         return 0;
       }
       if (a.averageRating === null) {
-        return 1; // Move the product with null averageRating to the end
+        return 1;
       }
       if (b.averageRating === null) {
-        return -1; // Move the product with null averageRating to the end
+        return -1;
       }
-      return b.averageRating - a.averageRating;
+
+      const popularityComparison = b.averageRating - a.averageRating;
+
+      if (popularityComparison === 0) {
+        if (sortByOrder === SortByOrder.Down) {
+          return b.price - a.price;
+        } else {
+          return a.price - b.price;
+        }
+      }
+
+      return popularityComparison;
     });
   }
 
