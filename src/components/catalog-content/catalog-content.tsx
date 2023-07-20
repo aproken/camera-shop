@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Camera, Cameras } from '../../types/camera';
+import { Cameras } from '../../types/camera';
 import Pagination from '../pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import Sorting from '../sorting/sorting';
@@ -12,8 +12,6 @@ import {
 import { getProductsCurrentPage, getPageNumbers, sortProducts } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks';
 import { redirectToRoute } from '../../store/action';
-import { fetchAverageRatingAction } from '../../store/api-action';
-import { unwrapResult } from '@reduxjs/toolkit';
 
 type CatalogContentProps = {
   products: Cameras;
@@ -24,7 +22,6 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
   const dispatch = useAppDispatch();
   const [sortByType, setSortByType] = useState<string>(SortByType.Default);
   const [sortByOrder, setSortByOrder] = useState<string>(SortByOrder.Default);
-  const [averageRating, setAverageRating] = useState<Record<number, number>>({});
 
   const pageNumbers = getPageNumbers(products.length, PRODUCTS_COUNT_ON_PAGE);
 
@@ -34,38 +31,12 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
     }
   }, [currentPageIndex, dispatch, pageNumbers.length]);
 
-  useEffect(() => {
-    const fetchAverageRatings = async () => {
-      try {
-        const ratingPromises = products.map((product) => {
-          return dispatch(fetchAverageRatingAction(product.id))
-            .then(unwrapResult) // Распаковываем успешное значение из createAsyncThunk
-            .then((result) => ({ id: result.id, averageRating: result.averageRating }));
-        });
-
-        const ratings = await Promise.all(ratingPromises);
-        const ratingsMap: Record<number, number> = {};
-
-        ratings.forEach((rating) => {
-          ratingsMap[rating.id] = rating.averageRating;
-        });
-
-        setAverageRating(ratingsMap);
-      } catch (error) {
-        // Обработка ошибки, если что-то пошло не так при получении среднего рейтинга
-        console.error('Ошибка при получении среднего рейтинга:', error);
-      }
-    };
-
-    fetchAverageRatings();
-  }, [dispatch, products]);
-
   const handleSortingChange = (newSortByType: string, newSortByOrder: string) => {
     setSortByType(newSortByType);
     setSortByOrder(newSortByOrder);
   };
 
-  const sortedProducts = sortProducts(products, sortByType, sortByOrder, averageRating);
+  const sortedProducts = sortProducts(products, sortByType, sortByOrder);
   const productsCurrentPage = getProductsCurrentPage(
     sortedProducts,
     currentPageIndex,

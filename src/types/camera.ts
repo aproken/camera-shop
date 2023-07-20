@@ -10,7 +10,7 @@ export type Camera = {
   level: Level;
   price: number;
   reviewCount: number;
-  averageRating?: number;
+  averageRating: number | null;
   previewImg: string;
   previewImg2x: string;
   previewImgWebp: string;

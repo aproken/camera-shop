@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, RequestStatus } from '../../const';
 import { CameraProcess } from '../../types/state';
-import { fetchAddNewReviewAction, fetchAverageRatingAction, fetchCameraAction, fetchCamerasListAction, fetchCamerasWithAverageRatingAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
+import { fetchAddNewReviewAction, fetchCameraAction, fetchCamerasWithAverageRatingAction, fetchReviewsAction, fetchSimilarAction } from '../api-action';
 
 export const initialState: CameraProcess = {
   camerasList: [],

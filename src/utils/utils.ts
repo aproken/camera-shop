@@ -22,7 +22,6 @@ export const sortProducts = (
   products: Cameras,
   sortByType: string,
   sortByOrder: string,
-  averageRating: Record<number, number>
 ): Cameras => {
   // сортировка по цене
   if (sortByType === SortByType.Price) {
@@ -35,18 +34,19 @@ export const sortProducts = (
 
   // Сортировка по популярности (среднему рейтингу)
   if (sortByType === SortByType.Popularity) {
-    const sortedProducts = [...products];
-    sortedProducts.sort((a, b) => {
-      const averageRatingA = averageRating[a.id] || 0;
-      const averageRatingB = averageRating[b.id] || 0;
-
-      if (sortByOrder === SortByOrder.Down) {
-        return averageRatingB - averageRatingA;
-      } else {
-        return averageRatingA - averageRatingB;
+    return [...products].sort((a, b) => {
+      // Handle the case when averageRating is null
+      if (a.averageRating === null && b.averageRating === null) {
+        return 0;
       }
+      if (a.averageRating === null) {
+        return 1; // Move the product with null averageRating to the end
+      }
+      if (b.averageRating === null) {
+        return -1; // Move the product with null averageRating to the end
+      }
+      return b.averageRating - a.averageRating;
     });
-    return sortedProducts;
   }
 
   return products;

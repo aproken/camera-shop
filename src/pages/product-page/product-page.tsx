@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
-  getAverageRating,
   getCamera,
   getCameraComletingStatus,
   getReviewsList,
@@ -30,7 +29,6 @@ function ProductPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const currentProduct = useAppSelector(getCamera);
-  const averageRating = useAppSelector(getAverageRating);
   const isProductCompleting = useAppSelector(getCameraComletingStatus);
   const similarList = useAppSelector(getSimilar);
   const isSimilarCompleting = useAppSelector(getSimilarCompletingStatus);
@@ -59,7 +57,9 @@ function ProductPage(): JSX.Element {
     );
   }
 
-  const { name, price, reviewCount, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, } = currentProduct;
+  const { name, price, reviewCount, averageRating, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, } = currentProduct;
+
+  const rating = averageRating ?? 0;
 
   const stylizedPrice = getStylizedPrice(price);
 
@@ -68,9 +68,6 @@ function ProductPage(): JSX.Element {
     {label: 'Каталог', href: '/'},
     {label: name}
   ];
-
-  // eslint-disable-next-line no-console
-  console.log(averageRating);
 
   return (
     <main id="product-page">
@@ -93,7 +90,7 @@ function ProductPage(): JSX.Element {
               </div>
               <div className="product__content">
                 <h1 className="title title--h3">{ name }</h1>
-                <ProductStarsRating rating={ averageRating[currentProductId] } totalReview={ reviewCount } />
+                <ProductStarsRating rating={ rating } totalReview={ reviewCount } />
                 <p className="product__price"><span className="visually-hidden">Цена:</span>{ stylizedPrice } ₽</p>
                 <button className="btn btn--purple" type="button">
                   <svg width="24" height="16" aria-hidden="true">

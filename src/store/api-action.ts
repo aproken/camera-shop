@@ -88,7 +88,7 @@ export const fetchReviewsAction = createAsyncThunk<Reviews, number, {
 );
 
 //Получение среднего рейтинга для товара
-export const fetchAverageRatingAction = createAsyncThunk<number, number, {
+export const fetchAverageRatingAction = createAsyncThunk<number | null, number, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -96,14 +96,25 @@ export const fetchAverageRatingAction = createAsyncThunk<number, number, {
 >(
   'camera/fetchAvarageRatings',
   async (id, { extra: api }) => {
-    const { data } = await api.get<Reviews>(`${ APIRoute.CamerasList }/${ id }${ APIRoute.Reviews}`);
+    try {
+      const { data } = await api.get<Reviews>(`${ APIRoute.CamerasList }/${ id }${ APIRoute.Reviews}`);
 
-    const rating = data.map((review) => review.rating);
-    const averageRating = rating.reduce((total, raiting) => (total + raiting), 0) / rating.length;
+      const rating = data.map((review) => review.rating);
+      const averageRating = rating.reduce((total, raiting) => (total + raiting), 0) / rating.length;
 
-    return Math.ceil(averageRating);
+      if (averageRating === 0 || averageRating === undefined) {
+        return null;
+      }
+
+      return Math.ceil(averageRating);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Ошибка при получении среднего рейтинга:', error);
+      return null;
+    }
   }
 );
+
 
 // Получение списка всех камер с добавлением среднего рейтинга
 export const fetchCamerasWithAverageRatingAction = createAsyncThunk<Cameras, undefined, {
@@ -116,25 +127,25 @@ export const fetchCamerasWithAverageRatingAction = createAsyncThunk<Cameras, und
   async (_, { dispatch }) => {
     try {
       // Получаем список всех камер с помощью действия fetchCamerasListAction
-      const cameras: Cameras = await dispatch(fetchCamerasListAction());
+      const cameras: Cameras = await dispatch(fetchCamerasListAction()).unwrap();
 
       // Для каждой камеры получаем средний рейтинг и добавляем его в каждую камеру
       for (const camera of cameras) {
         const { id } = camera;
-        const averageRating = await dispatch(fetchAverageRatingAction(id));
+        const averageRating = await dispatch(fetchAverageRatingAction(id)).unwrap();
 
         // Добавляем полученный средний рейтинг в каждую камеру
-        camera.averageRating = averageRating;
+        camera.averageRating = averageRating ?? 0;
       }
 
       return cameras;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Ошибка при получении камер с средним рейтингом:', error);
       return []; // Возвращаем пустой массив камер в случае ошибки
     }
   }
 );
-
 
 //Добавление отзыва для товара
 export const fetchAddNewReviewAction = createAsyncThunk<Review, ReviewData, {

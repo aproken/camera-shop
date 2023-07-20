@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Camera } from '../../types/camera';
-import { getAverageRating } from '../../store/camera-process/selectors';
-import { fetchAverageRatingAction } from '../../store/api-action';
 import { getStylizedPrice } from '../../utils/utils';
 import ProductStarsRating from '../product-stars-rating/product-stars-rating';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useEffect } from 'react';
 
 type ProductCardProps = {
   product: Camera;
@@ -14,14 +10,13 @@ type ProductCardProps = {
 }
 
 function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps): JSX.Element {
-  const dispatch = useAppDispatch();
-
   const className = [ ...classNames, 'product-card'];
   const productClassName = className.join(' ');
   const {
     id,
     name,
     reviewCount,
+    averageRating,
     previewImg,
     previewImg2x,
     previewImgWebp,
@@ -29,11 +24,7 @@ function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps
     price,
   } = product;
 
-  const averageRating = useAppSelector(getAverageRating);
-
-  useEffect(() => {
-    dispatch(fetchAverageRatingAction(id));
-  }, [dispatch, id]);
+  const rating = averageRating ?? 0;
 
   return (
     <div className={ productClassName }>
@@ -50,7 +41,7 @@ function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps
         </picture>
       </div>
       <div className="product-card__info">
-        <ProductStarsRating rating={ averageRating[id] } totalReview={ reviewCount } />
+        <ProductStarsRating rating={ rating } totalReview={ reviewCount } />
         <p className="product-card__title">{ name }</p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>{`${ getStylizedPrice(price) } ₽`}
