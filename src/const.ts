@@ -45,6 +45,22 @@ export enum Level {
   Professional = 'Профессиональный',
 }
 
+export enum QueryParameter {
+  type = 'type',
+  level = 'level',
+  category = 'category',
+  priceGte = 'price_gte',
+  priceLte = 'price_lte',
+}
+
+export type FilterData = {
+  price_gte?: string | null; // Больше или равно
+  price_lte?: string | null; // Меньше или равно
+  type?: Type | null;
+  category?: Category | null;
+  level?: Level | null;
+}
+
 export enum SortByType {
   Default = '',
   Price = 'по цене',
