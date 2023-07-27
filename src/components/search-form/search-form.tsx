@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 // import FocusLock from 'react-focus-lock';
-import { ChangeEvent, KeyboardEvent, useState, useRef, useEffect } from 'react';
+import { ChangeEvent, KeyboardEvent, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { getCamerasList } from '../../store/camera-process/selectors';
@@ -12,6 +12,7 @@ function SearchForm(): JSX.Element {
   const cameras = useAppSelector(getCamerasList);
   const camerasNames = cameras.map((camera) => camera.name);
 
+  const [shouldShowResults, setShouldShowResults] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [, setSelectedProduct] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -20,6 +21,7 @@ function SearchForm(): JSX.Element {
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
     setSearchTerm(value);
+    setShouldShowResults(true);
     setFocusedIndex(-1);
   };
 
@@ -29,18 +31,15 @@ function SearchForm(): JSX.Element {
     setSelectedProduct(null);
   };
 
-  useEffect(() => {
-    // eslint-disable-next-line
-    console.log('NewValue', focusedIndex);
-  }, [focusedIndex]);
-
   const resultNames = camerasNames.filter((name) =>
     name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const shouldShowResults = searchTerm.length > 0;
-
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setShouldShowResults(false);
+    }
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       setFocusedIndex((prevIndex) => (prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0));
@@ -73,7 +72,9 @@ function SearchForm(): JSX.Element {
     else if (event.key === 'Enter') {
       if (focusedIndex >= 0 && focusedIndex < resultNames.length) {
         event.preventDefault();
-        const selectedCamera: Camera = cameras.find((camera) => camera.name === resultNames[focusedIndex])!;
+        const selectedCamera: Camera = cameras.find(
+          (camera) => camera.name === resultNames[focusedIndex]
+        )!;
         setSelectedProduct(selectedCamera.name);
         navigate(`/cameras/${selectedCamera.id}`);
         resetSearch();
@@ -107,15 +108,10 @@ function SearchForm(): JSX.Element {
             value={ searchTerm }
             onChange={ handleInputChange }
             onKeyDown={ handleKeyDown }
-            ref={(ref) => {
-              if (focusedIndex === -1) {
-                ref?.focus();
-              }
-            }}
           />
         </label>
         {
-          shouldShowResults && (
+          shouldShowResults && searchTerm.length > 0 && (
             <ul ref={ listRef } className="form-search__select-list" tabIndex={ -1 }>
               {
                 resultNames.map((camera, index) => (
