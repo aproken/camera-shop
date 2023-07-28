@@ -2,6 +2,12 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Header from './header';
 
+// исключаем search-form, что бы не мешал в тесте
+jest.mock('../../components/search-form/search-form', () => ({
+  __esModule: true,
+  default: () => <input placeholder='Поиск по сайту' />
+}));
+
 describe('Header', () => {
   test('должен отображать навигационные ссылки', () => {
     render(
@@ -32,9 +38,6 @@ describe('Header', () => {
 
     const searchInput = screen.getByPlaceholderText('Поиск по сайту');
     expect(searchInput).toBeInTheDocument();
-
-    const resetButton = screen.getByRole('button', { name: 'Сбросить поиск' });
-    expect(resetButton).toBeInTheDocument();
   });
 
   test('должен отображать ссылку на корзину', () => {

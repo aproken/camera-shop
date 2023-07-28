@@ -5,12 +5,11 @@ exports[`PageNumber component should render correctly 1`] = `
   <li
     class="pagination__item"
   >
-    <a
+    <button
       class="pagination__link"
-      href="/page/3"
     >
       3
-    </a>
+    </button>
   </li>
 </div>
 `;

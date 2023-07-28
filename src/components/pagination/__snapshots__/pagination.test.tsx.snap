@@ -21,52 +21,47 @@ exports[`Тестирование компонента Pagination 1`] = `
       <li
         class="pagination__item"
       >
-        <a
+        <button
           class="pagination__link"
-          href="/page/1"
         >
           1
-        </a>
+        </button>
       </li>
       <li
         class="pagination__item"
       >
-        <a
+        <button
           class="pagination__link pagination__link--active"
-          href="/page/2"
         >
           2
-        </a>
+        </button>
       </li>
       <li
         class="pagination__item"
       >
-        <a
+        <button
           class="pagination__link"
-          href="/page/3"
         >
           3
-        </a>
+        </button>
       </li>
       <li
         class="pagination__item"
       >
-        <a
+        <button
           class="pagination__link"
-          href="/page/4"
         >
           4
-        </a>
+        </button>
       </li>
       <li
         class="pagination__item"
       >
-        <a
+        <button
           class="pagination__link"
-          href="/page/5"
         >
           5
-        </a>
+        </button>
       </li>
       <li
         class="pagination__item"
