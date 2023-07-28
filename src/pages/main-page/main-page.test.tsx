@@ -8,6 +8,18 @@ import { State } from '../../types/state';
 import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
 import App from '../../components/app/app';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import * as Actions from '../../store/api-action';
+
+jest.mock('../../store/api-action.ts');
+jest.mock('../../components/search-form/search-form'); // исключаем search-form, что бы не мешал в тесте
+
+function fakeAction<T, A>(name: string, payload = {}) {
+  return createAsyncThunk<T, A, Record<string, never>>(
+    name,
+    (_id) => Promise.resolve(payload as T)
+  );
+}
 
 describe('App component', () => {
   const api = createAPI();
@@ -17,7 +29,10 @@ describe('App component', () => {
     ThunkDispatch<State, typeof api, Action>
   >([thunk]);
 
-  it('должнен вызваться экшен fetchCamerasListAction для загрузки продукта', () => {
+  it('должнен вызваться экшен fetchCamerasWithAverageRatingAction для загрузки продукта', () => {
+    const fetchCameraAction = jest
+      .spyOn(Actions, 'fetchCamerasWithAverageRatingAction')
+      .mockImplementation(fakeAction('fetchCamerasWithAverageRatingAction'));
     const store = mockStore({
       'CAMERA': {
         camera: null,
@@ -36,14 +51,13 @@ describe('App component', () => {
       </Provider>
     );
 
-    expect(store.getActions()).toHaveLength(1);
-
-    expect(store.getActions().map((item) => item.type)).toEqual([
-      'camera/fetchCamerasList/pending'
-    ]);
+    expect(fetchCameraAction).toBeCalled();
   });
 
   it('должен отображать LoadingScreen при отсутствии данных о продукте', () => {
+    jest
+      .spyOn(Actions, 'fetchCamerasWithAverageRatingAction')
+      .mockImplementation(fakeAction('fetchCamerasWithAverageRatingAction'));
     const store = mockStore({
       'CAMERA': {
         isCamerasListCompleting: false,
