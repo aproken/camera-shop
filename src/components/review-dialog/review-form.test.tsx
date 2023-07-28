@@ -23,7 +23,7 @@ describe('Тестирование компонента ReviewForm', () => {
 
     fireEvent.click(screen.getAllByRole('radio')[0]);
     fireEvent.change(screen.getByLabelText('Ваше имя'), {target: {value: 'Вася'}});
-    fireEvent.change(screen.getByLabelText('Достоинства'), {target: {value: 'Текст достониств'}});
+    fireEvent.change(screen.getByLabelText('Достоинства'), {target: {value: 'Текст достоинств'}});
     fireEvent.change(screen.getByLabelText('Недостатки'), {target: {value: 'Текст недостатков'}});
     fireEvent.change(screen.getByLabelText('Комментарий'), {target: {value: 'Развернутый комментарий'}});
 
