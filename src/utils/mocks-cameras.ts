@@ -1,6 +1,23 @@
 import { Cameras } from '../types/camera';
 import { Type, Category, Level, } from '../const';
 
+export const FakeCamera = {
+  id: 1,
+  name: 'Ретрокамера Dus Auge lV',
+  vendorCode: 'DA4IU67AD5',
+  type: Type.Collectible,
+  category: Category.VideoCamera,
+  description: 'Немецкий концерн BRW разработал видеокамеру Das Auge IV в начале 80-х годов, однако она до сих пор пользуется популярностью среди коллекционеров и яростных почитателей старинной техники. Вы тоже можете прикоснуться к волшебству аналоговой съёмки, заказав этот чудо-аппарат. Кто знает, может с Das Auge IV начнётся ваш путь к наградам всех престижных кинофестивалей.',
+  previewImg: 'img/content/das-auge.jpg',
+  level: Level.Amateur,
+  price: 73450,
+  previewImg2x: 'img/content/das-auge@2x.jpg',
+  previewImgWebp: 'img/content/das-auge.webp',
+  previewImgWebp2x: 'img/content/das-auge@2x.webp',
+  reviewCount: 117,
+  averageRating: 3,
+};
+
 export const makeFakeCameras = (): Cameras => [
   {
     id: 1,
