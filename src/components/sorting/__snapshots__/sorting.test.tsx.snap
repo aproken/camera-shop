@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sorting компонент Отрисовка компонента 1`] = `
+<div>
+  <form
+    action="#"
+  >
+    <div
+      class="catalog-sort__inner"
+    >
+      <p
+        class="title title--h5"
+      >
+        Сортировать:
+      </p>
+      <div
+        class="catalog-sort__type"
+      >
+        <div
+          class="catalog-sort__btn-text"
+        >
+          <input
+            id="по цене"
+            name="sort"
+            type="radio"
+          />
+          <label
+            for="по цене"
+          >
+            по цене
+          </label>
+        </div>
+        <div
+          class="catalog-sort__btn-text"
+        >
+          <input
+            id="по полулярности"
+            name="sort"
+            type="radio"
+          />
+          <label
+            for="по полулярности"
+          >
+            по популярности
+          </label>
+        </div>
+      </div>
+      <div
+        class="catalog-sort__order"
+      >
+        <div
+          class="catalog-sort__btn catalog-sort__btn--up"
+        >
+          <input
+            aria-label="По возрастанию"
+            id="abs"
+            name="sort-icon"
+            type="radio"
+          />
+          <label
+            for="abs"
+          >
+            <svg
+              aria-hidden="true"
+              height="14"
+              width="16"
+            >
+              <use
+                xlink:href="#icon-sort"
+              />
+            </svg>
+          </label>
+        </div>
+        <div
+          class="catalog-sort__btn catalog-sort__btn--down"
+        >
+          <input
+            aria-label="По убыванию"
+            id="desc"
+            name="sort-icon"
+            type="radio"
+          />
+          <label
+            for="desc"
+          >
+            <svg
+              aria-hidden="true"
+              height="14"
+              width="16"
+            >
+              <use
+                xlink:href="#icon-sort"
+              />
+            </svg>
+          </label>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

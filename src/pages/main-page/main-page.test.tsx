@@ -21,7 +21,7 @@ function fakeAction<T, A>(name: string, payload = {}) {
   );
 }
 
-describe('App component', () => {
+describe('App компонент', () => {
   const api = createAPI();
   const mockStore = configureMockStore<
     State,

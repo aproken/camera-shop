@@ -39,7 +39,7 @@ const fakeApp = (
 );
 
 describe('App', () => {
-  it('should render "MainPage" when user navigate to "/"', () => {
+  it('Отрисовывает "MainPage" когда пользователь переходит к "/"', () => {
     jest.mock('../../hooks');
     jest.spyOn(Hook, 'useAppDispatch').mockImplementation(jest.fn);
 
@@ -54,7 +54,7 @@ describe('App', () => {
     expect(mainElement.id).toBe('main-page');
   });
 
-  it('should render when user navigate the product path', () => {
+  it('Отрисовывает страницу ProductPage', () => {
     jest.mock('../../hooks');
     jest.spyOn(Hook, 'useAppDispatch').mockImplementation(jest.fn);
     history.push('/cameras/1');
@@ -66,7 +66,7 @@ describe('App', () => {
     expect(mainElement.id).toBe('product-page');
   });
 
-  it('should render not found page when user navigate the unknown path', () => {
+  it('Отрисовывает страницу NotFound', () => {
     history.push('/non-existent-route');
 
     render(fakeApp);

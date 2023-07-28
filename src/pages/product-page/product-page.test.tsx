@@ -5,22 +5,11 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
 import App from '../../components/app/app';
-import { AppDispatch } from '../../types/state';
 import * as Actions from '../../store/api-action';
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Camera } from '../../types/camera';
-import { FakeCamera } from '../../utils/mocks-cameras';
 
 jest.mock('../../store/api-action.ts');
-
-const fakeActionDummy = (name: string, payload = {}) => (productId: number) =>
-  (dispatch: AppDispatch) => dispatch({ type: name, payload});
-
-const mockFetchCameraAction = createAsyncThunk<Camera | null, number, Record<string, never>>(
-  'camera/fetchCamera',
-  (_id) => Promise.resolve(FakeCamera as Camera | null)
-);
 
 function fakeAction<T>(name: string, payload = {}) {
   return createAsyncThunk<T, number, Record<string, never>>(
@@ -33,7 +22,9 @@ describe('ProductPage component', () => {
   const mockStore = configureMockStore([thunk]);
 
   it('должен вызываться экшен fetchCameraAction для загрузки продукта', () => {
-    const fetchCameraAction = jest.spyOn(Actions, 'fetchCameraAction').mockImplementation(mockFetchCameraAction);
+    const fetchCameraAction = jest
+      .spyOn(Actions, 'fetchCameraAction')
+      .mockImplementation(fakeAction('fetchCameraAction'));
     const fetchAverageRatingAction = jest.spyOn(Actions, 'fetchAverageRatingAction').mockImplementation(fakeAction('fetchAverageRatingAction'));
     const fetchSimilarAction = jest.spyOn(Actions, 'fetchSimilarAction').mockImplementation(fakeAction('fetchSimilarAction'));
     const fetchReviewsAction = jest.spyOn(Actions, 'fetchReviewsAction').mockImplementation(fakeAction('fetchReviewsAction'));
