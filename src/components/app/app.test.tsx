@@ -6,6 +6,7 @@ import App from './app';
 import { AppRoute, RequestStatus } from '../../const';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import thunk from 'redux-thunk';
+import * as Hook from '../../hooks';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -39,6 +40,9 @@ const fakeApp = (
 
 describe('App', () => {
   it('should render "MainPage" when user navigate to "/"', () => {
+    jest.mock('../../hooks');
+    jest.spyOn(Hook, 'useAppDispatch').mockImplementation(jest.fn);
+
     history.push(AppRoute.Main);
 
     render(fakeApp);
@@ -51,6 +55,8 @@ describe('App', () => {
   });
 
   it('should render when user navigate the product path', () => {
+    jest.mock('../../hooks');
+    jest.spyOn(Hook, 'useAppDispatch').mockImplementation(jest.fn);
     history.push('/cameras/1');
 
     render(fakeApp);
