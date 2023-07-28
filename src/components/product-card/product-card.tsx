@@ -27,7 +27,10 @@ function ProductCard({ product, classNames = [], onBuyClick, }: ProductCardProps
   const rating = averageRating ?? 0;
 
   return (
-    <div className={ productClassName }>
+    <div
+      className={ productClassName }
+      data-testid="product-card"
+    >
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`/${ previewImgWebp }, /${previewImgWebp2x}`} />
