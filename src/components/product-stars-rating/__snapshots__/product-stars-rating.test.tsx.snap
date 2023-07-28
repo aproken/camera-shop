@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductStarsRating рендерит правильное количество звезд 1`] = `
+<div>
+  <div
+    class="rate product__rate"
+  >
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="17"
+    >
+      <use
+        xlink:href="#icon-star"
+      />
+    </svg>
+    <p
+      class="visually-hidden"
+    >
+      Рейтинг: 
+      3
+    </p>
+    <p
+      class="rate__count"
+    >
+      <span
+        class="visually-hidden"
+      >
+        Всего оценок:
+      </span>
+      10
+    </p>
+  </div>
+</div>
+`;
