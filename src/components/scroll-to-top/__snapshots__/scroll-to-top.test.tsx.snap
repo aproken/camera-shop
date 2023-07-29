@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Компонент ScrollToTop Отрисовывает кнопку при определенной позиции на странице 1`] = `<div />`;

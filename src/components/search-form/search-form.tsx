@@ -108,6 +108,7 @@ function SearchForm(): JSX.Element {
             value={ searchTerm }
             onChange={ handleInputChange }
             onKeyDown={ handleKeyDown }
+            aria-label='Поиск'
           />
         </label>
         {

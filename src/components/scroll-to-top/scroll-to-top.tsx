@@ -25,7 +25,11 @@ function ScrollToTop(): JSX.Element {
   }, []);
 
   return (
-    <div className={`up-btn ${isVisible ? 'visible' : ''}`} onClick={ scrollToTop }>
+    <div
+      data-testid="scroolToTopBtn"
+      className={`up-btn ${isVisible ? 'visible' : ''}`}
+      onClick={ scrollToTop }
+    >
       <svg width="12" height="18" aria-hidden="true">
         <use xlinkHref="#icon-arrow2"></use>
       </svg>
