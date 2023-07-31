@@ -1,8 +1,8 @@
 type ReviewSuccessModalProps = {
-  hide: () => void;
+  onClose: () => void;
 };
 
-function ReviewSuccessModal({ hide }: ReviewSuccessModalProps): JSX.Element {
+function ReviewSuccessModal({ onClose }: ReviewSuccessModalProps): JSX.Element {
   return (
     <>
       <p className="title title--h4">Спасибо за отзыв</p>
@@ -11,7 +11,7 @@ function ReviewSuccessModal({ hide }: ReviewSuccessModalProps): JSX.Element {
       </svg>
       <div className="modal__buttons">
         <button
-          onClick={hide}
+          onClick={ onClose }
           className="btn btn--purple modal__btn modal__btn--fit-width"
           type="button"
         >

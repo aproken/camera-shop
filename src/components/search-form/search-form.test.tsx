@@ -1,4 +1,4 @@
-import { render, RenderResult, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import thunk from 'redux-thunk';
 import SearchForm from './search-form';

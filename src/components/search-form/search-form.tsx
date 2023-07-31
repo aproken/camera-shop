@@ -72,12 +72,14 @@ function SearchForm(): JSX.Element {
     else if (event.key === 'Enter') {
       if (focusedIndex >= 0 && focusedIndex < resultNames.length) {
         event.preventDefault();
-        const selectedCamera: Camera = cameras.find(
+        const selectedCamera: Camera | undefined = cameras.find(
           (camera) => camera.name === resultNames[focusedIndex]
-        )!;
-        setSelectedProduct(selectedCamera.name);
-        navigate(`/cameras/${selectedCamera.id}`);
-        resetSearch();
+        );
+        if(selectedCamera) {
+          setSelectedProduct(selectedCamera.name);
+          navigate(`/cameras/${selectedCamera.id}`);
+          resetSearch();
+        }
       }
     }
   };

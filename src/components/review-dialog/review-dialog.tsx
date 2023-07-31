@@ -12,10 +12,10 @@ import ReviewErrorModal from './review-error-modal';
 type ReviewDialogProps = {
   productId: number;
   isOpen: boolean;
-  hide: () => void;
+  onClose: () => void;
 }
 
-function ReviewDialog({productId, isOpen, hide}: ReviewDialogProps): JSX.Element {
+function ReviewDialog({productId, isOpen, onClose}: ReviewDialogProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [element, setElement] = useState('form');
 
@@ -30,22 +30,22 @@ function ReviewDialog({productId, isOpen, hide}: ReviewDialogProps): JSX.Element
   };
 
   const handleClose = () => {
-    hide();
+    onClose();
     setElement('form');
   };
 
   return (
     <>
-      <Modal isOpen={ isOpen && element === 'form' } hide={handleClose}>
+      <Modal isOpen={ isOpen && element === 'form' } onClose={ handleClose }>
         <ReviewForm productId={productId} onSubmit={(evt) => void handleSubmitForm(evt)} />
       </Modal>
-      <Modal isOpen={ isOpen && element === 'successWindow' } hide={ handleClose } narrow>
-        <ReviewSuccessModal hide={ handleClose } />
+      <Modal isOpen={ isOpen && element === 'successWindow' } onClose={ handleClose } narrow>
+        <ReviewSuccessModal onClose={ handleClose } />
       </Modal>
-      <Modal isOpen={ isOpen && element === 'failureWindow' } hide={ handleClose } narrow>
+      <Modal isOpen={ isOpen && element === 'failureWindow' } onClose={ handleClose } narrow>
         <ReviewErrorModal />
       </Modal>
-      <Modal isOpen={ isOpen && element === 'loaderWindow' } hide={ handleClose } narrow>
+      <Modal isOpen={ isOpen && element === 'loaderWindow' } onClose={ handleClose } narrow>
         <LoadingScreen />
       </Modal>
     </>

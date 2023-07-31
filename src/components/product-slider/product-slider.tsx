@@ -11,7 +11,7 @@ type ProductSliderProps = {
   similar: Cameras;
 }
 
-export const SliderDefaultParams = {
+export const sliderDefaultParams = {
   slidesPerView: 3,
   slidesPerGroup: 3,
   spaceBetween: 30,
@@ -51,7 +51,7 @@ function ProductSlider({ similar }: ProductSliderProps): JSX.Element {
           maxWidth: '936px',
         }}
         >
-          <Swiper {...SliderDefaultParams}>
+          <Swiper {...sliderDefaultParams}>
             {similar.map((product) => (
               <div key={product.id} >
                 <ProductCard

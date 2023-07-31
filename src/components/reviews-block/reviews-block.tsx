@@ -83,7 +83,7 @@ function ReviewsBlock({ productId, comments }: ReviewsProps): JSX.Element {
           )
         }
       </div>
-      <ReviewDialog productId={ productId } isOpen={ isOpen } hide={ toggle } />
+      <ReviewDialog productId={ productId } isOpen={ isOpen } onClose={ toggle } />
       <ScrollToTop />
     </section>
   );

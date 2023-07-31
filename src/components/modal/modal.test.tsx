@@ -4,14 +4,14 @@ import Modal from './modal';
 describe('Тестирование компонента Modal', () => {
   it('Открытие модального окна', () => {
     const mockHide = jest.fn(() => null);
-    const {container} = render(<Modal isOpen hide={mockHide}>test</Modal>);
+    const {container} = render(<Modal isOpen onClose={mockHide}>test</Modal>);
 
     expect(container).toMatchSnapshot();
   });
 
   it('Закрытие', async () => {
     const mockHide = jest.fn(() => null);
-    const {container} = render(<Modal isOpen hide={mockHide}>test</Modal>);
+    const {container} = render(<Modal isOpen onClose={mockHide}>test</Modal>);
 
     // Закрытие на крестик
     fireEvent.click(screen.getByRole('button'));

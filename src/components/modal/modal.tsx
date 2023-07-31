@@ -6,12 +6,12 @@ import FocusLock from 'react-focus-lock';
 
 type ModalProps = {
   isOpen: boolean;
-  hide: () => void;
+  onClose: () => void;
   children: ReactNode;
   narrow?: boolean;
 }
 
-function Modal({isOpen, hide, children, narrow = false}: ModalProps): React.ReactPortal | null {
+function Modal({isOpen, onClose, children, narrow = false}: ModalProps): React.ReactPortal | null {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const firstFocusableElementRef = useRef<HTMLElement | null>(null);
   const lastFocusableElementRef = useRef<HTMLElement | null>(null);
@@ -19,7 +19,7 @@ function Modal({isOpen, hide, children, narrow = false}: ModalProps): React.Reac
   useEffect(() => {
     const handleEscapePress = (evt: KeyboardEvent) => {
       if (evt.key === 'Escape') {
-        hide();
+        onClose();
       }
     };
 
@@ -67,7 +67,7 @@ function Modal({isOpen, hide, children, narrow = false}: ModalProps): React.Reac
       document.body.style.overflow = '';
       document.removeEventListener('keydown', handleTabPress);
     };
-  }, [isOpen, hide]);
+  }, [isOpen, onClose]);
 
   return isOpen ? ReactDOM.createPortal(
     (
@@ -78,7 +78,7 @@ function Modal({isOpen, hide, children, narrow = false}: ModalProps): React.Reac
           <div
             className="modal__overlay"
             aria-label="Закрыть попап"
-            onClick={ hide }
+            onClick={ onClose }
           >
           </div>
           <div className="modal__content">
@@ -88,7 +88,7 @@ function Modal({isOpen, hide, children, narrow = false}: ModalProps): React.Reac
                 className="cross-btn"
                 type="button"
                 aria-label="Закрыть попап"
-                onClick={ hide }
+                onClick={ onClose }
               >
                 <svg width="10" height="10" aria-hidden="true">
                   <use xlinkHref="#icon-close"></use>

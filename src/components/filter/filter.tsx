@@ -58,7 +58,7 @@ function Filter(): JSX.Element {
       });
       return params;
     });
-  }, [filters, setSearchParams]);
+  }, [filters, navigate, setSearchParams]);
 
   return (
     <form action="#">
