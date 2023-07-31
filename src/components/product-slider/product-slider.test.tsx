@@ -1,18 +1,17 @@
-import { render } from '@testing-library/react';
+import { RenderResult, render } from '@testing-library/react';
 import { makeFakeCameras } from '../../utils/mocks-cameras';
 import ProductSlider from './product-slider';
-import * as Module from 'react-id-swiper';
-jest.mock('react-id-swiper');
+import * as M from 'react-id-swiper';
 
-const SwiperMock = jest.fn(() => null);
-Module.default = SwiperMock;
+const SwiperMockComponent: React.FC = (_props) => <div></div>;
+jest.mock('react-id-swiper', () => jest.fn(SwiperMockComponent));
 
 describe('ProductSlider', () => {
   it('Компонент принимает камеры и отрисовывает их', () => {
-
     const fakeCameras = makeFakeCameras();
-    render(<ProductSlider similar={fakeCameras} />);
-
-    expect(SwiperMock).toHaveBeenCalled();
+    const {container}: RenderResult = render(<ProductSlider similar={fakeCameras} />);
+    expect(M.default).toBeCalled();
+    expect(M.default).toBeCalledTimes(1);
+    expect(container).toMatchSnapshot();
   });
 });

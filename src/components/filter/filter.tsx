@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Type, Category, Level, FilterData, QueryParameter } from '../../const';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useDebounce } from '../../hooks/useDebounce';
 
 function Filter(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,7 +14,9 @@ function Filter(): JSX.Element {
     [QueryParameter.priceGte]: searchParams.get(QueryParameter.priceGte),
     [QueryParameter.priceLte]: searchParams.get(QueryParameter.priceLte),
   } as FilterData;
+
   const [filters, setFilters] = useState<FilterData>(initialState);
+  const debouncedValue = useDebounce<FilterData>(filters, 2000);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
@@ -49,7 +52,7 @@ function Filter(): JSX.Element {
     navigate('/page/1');
     setSearchParams((params) => {
       // Преобразуем фильтры в массив ключ-значение и обновляем URLSearchParams
-      Object.entries(filters).forEach(([key, value]) => {
+      Object.entries(debouncedValue).forEach(([key, value]) => {
         if (value === null ) {
           params.delete(key);
         } else {
@@ -58,7 +61,7 @@ function Filter(): JSX.Element {
       });
       return params;
     });
-  }, [filters, navigate, setSearchParams]);
+  }, [debouncedValue, navigate, setSearchParams]);
 
   return (
     <form action="#">

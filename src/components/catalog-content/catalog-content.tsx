@@ -26,10 +26,10 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
   const pageNumbers = getPageNumbers(products.length, PRODUCTS_COUNT_ON_PAGE);
 
   useEffect(() => {
-    if (!currentPageIndex || currentPageIndex > pageNumbers.length) {
+    if (products.length > 0 && (!currentPageIndex || currentPageIndex > pageNumbers.length)) {
       dispatch(redirectToRoute(AppRoute.NotFound));
     }
-  }, [currentPageIndex, dispatch, pageNumbers.length]);
+  }, [products, currentPageIndex, dispatch, pageNumbers.length]);
 
   const handleSortingChange = (newSortByType: string, newSortByOrder: string) => {
     setSortByType(newSortByType);
@@ -42,6 +42,12 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
     currentPageIndex,
     PRODUCTS_COUNT_ON_PAGE
   );
+
+  if(products.length === 0) {
+    return (
+      <p>Извините, по вашему запросу товаров не найдено :( </p>
+    );
+  }
 
   return (
     <div className="catalog__content">

@@ -7,7 +7,7 @@ import Promo from '../../components/promo/promo';
 import Filter from '../../components/filter/filter';
 import CatalogContent from '../../components/catalog-content/catalog-content';
 import { getCamerasList, getCamerasListCompletingStatus } from '../../store/camera-process/selectors';
-import { /*fetchCamerasListAction,*/ fetchCamerasWithAverageRatingAction } from '../../store/api-action';
+import { fetchCamerasWithAverageRatingAction } from '../../store/api-action';
 import { QueryParameter } from '../../const';
 
 function MainPage(): JSX.Element {
