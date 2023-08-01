@@ -28,10 +28,10 @@ export enum RequestStatus {
 }
 
 export enum Type {
-  Collectible ='Коллекционная',
-  Momentary = 'Моментальная',
   Digital = 'Цифровая',
   Membranous ='Плёночная',
+  Momentary = 'Моментальная',
+  Collectible ='Коллекционная',
 }
 
 export enum Category {

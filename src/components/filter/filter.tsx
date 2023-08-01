@@ -36,10 +36,19 @@ function Filter(): JSX.Element {
         [name]: checked ? value : null,
       }));
     } else {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        [name]: value,
-      }));
+      const isValidValue = /^[1-9]+$/.test(value);
+
+      if(!isValidValue) {
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          [name]: null,
+        }));
+      } else {
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          [name]: value,
+        }));
+      }
     }
   };
 
