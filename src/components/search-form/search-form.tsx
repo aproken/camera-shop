@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-// import FocusLock from 'react-focus-lock';
 import { ChangeEvent, KeyboardEvent, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
@@ -8,6 +7,8 @@ import { Camera } from '../../types/camera';
 
 function SearchForm(): JSX.Element {
   const navigate = useNavigate();
+  const closeBtn = useRef<HTMLButtonElement>(null);
+  const searchInput = useRef<HTMLInputElement>(null);
 
   const cameras = useAppSelector(getCamerasList);
   const camerasNames = cameras.map((camera) => camera.name);
@@ -42,34 +43,17 @@ function SearchForm(): JSX.Element {
     }
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      setFocusedIndex((prevIndex) => (prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0));
+      setFocusedIndex((prevIndex) => prevIndex + 1);
+      if (focusedIndex >= resultNames.length - 1 && closeBtn.current) {
+        closeBtn.current.focus();
+      }
     } else if (event.key === 'ArrowUp') {
       event.preventDefault();
-      setFocusedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1));
-    } else if (event.key === 'Tab') {
-      if (
-        listRef.current &&
-        listRef.current.contains(document.activeElement)
-      ) {
-        event.preventDefault();
-        if (event.shiftKey) {
-          setFocusedIndex((prevIndex) =>
-            prevIndex > 0 ? prevIndex - 1 : resultNames.length - 1
-          );
-        } else {
-          setFocusedIndex((prevIndex) =>
-            prevIndex < resultNames.length - 1 ? prevIndex + 1 : 0
-          );
-        }
-      } else {
-        // Фокус на элементе input
-        if (resultNames.length > 0) {
-          event.preventDefault();
-          setFocusedIndex(0);
-        }
+      setFocusedIndex((prevIndex) => prevIndex - 1);
+      if (focusedIndex <= 0 && searchInput.current) {
+        searchInput.current.focus();
       }
-    }
-    else if (event.key === 'Enter') {
+    } else if (event.key === 'Enter') {
       if (focusedIndex >= 0 && focusedIndex < resultNames.length) {
         event.preventDefault();
         const selectedCamera: Camera | undefined = cameras.find(
@@ -107,6 +91,7 @@ function SearchForm(): JSX.Element {
             autoComplete="off"
             placeholder="Поиск по сайту"
             // tabIndex={ -1 }
+            ref={searchInput}
             value={ searchTerm }
             onChange={ handleInputChange }
             onKeyDown={ handleKeyDown }
@@ -141,6 +126,7 @@ function SearchForm(): JSX.Element {
       <button
         className="form-search__reset"
         type="reset"
+        ref={ closeBtn }
         onClick={ resetSearch }
       >
         <svg width="10" height="10" aria-hidden="true">
