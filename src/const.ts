@@ -51,6 +51,8 @@ export enum QueryParameter {
   category = 'category',
   priceGte = 'price_gte',
   priceLte = 'price_lte',
+  sortByType = 'sortByType',
+  sortByOrder = 'sortByOrder',
 }
 
 export type FilterData = {

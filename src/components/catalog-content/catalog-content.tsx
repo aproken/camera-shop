@@ -8,10 +8,12 @@ import {
   SortByType,
   SortByOrder,
   AppRoute,
+  QueryParameter,
 } from '../../const';
 import { getProductsCurrentPage, getPageNumbers, sortProducts } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks';
 import { redirectToRoute } from '../../store/action';
+import { useSearchParams } from 'react-router-dom';
 
 type CatalogContentProps = {
   products: Cameras;
@@ -22,19 +24,25 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
   const dispatch = useAppDispatch();
   const [sortByType, setSortByType] = useState<string>(SortByType.Default);
   const [sortByOrder, setSortByOrder] = useState<string>(SortByOrder.Default);
+  const [searchParams] = useSearchParams();
 
   const pageNumbers = getPageNumbers(products.length, PRODUCTS_COUNT_ON_PAGE);
+
+  useEffect(() => {
+    const sortByTypeParam = searchParams.get(QueryParameter.sortByType);
+    const sortByOrderParam = searchParams.get(QueryParameter.sortByOrder);
+
+    if(sortByTypeParam && sortByOrderParam) {
+      setSortByType(sortByTypeParam);
+      setSortByOrder(sortByOrderParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (products.length > 0 && (!currentPageIndex || currentPageIndex > pageNumbers.length)) {
       dispatch(redirectToRoute(AppRoute.NotFound));
     }
   }, [products, currentPageIndex, dispatch, pageNumbers.length]);
-
-  const handleSortingChange = (newSortByType: string, newSortByOrder: string) => {
-    setSortByType(newSortByType);
-    setSortByOrder(newSortByOrder);
-  };
 
   const sortedProducts = sortProducts(products, sortByType, sortByOrder);
   const productsCurrentPage = getProductsCurrentPage(
@@ -53,7 +61,7 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
     <div className="catalog__content">
 
       <div className="catalog-sort">
-        <Sorting onChange={ handleSortingChange } />
+        <Sorting />
       </div>
 
       <div className="cards catalog__cards">

@@ -1,28 +1,45 @@
-import { useState } from 'react';
-import { SortByOrder, SortByType } from '../../const';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { QueryParameter, SortByOrder, SortByType } from '../../const';
 
-type SortingProps = {
-  onChange?: (sortByType: string, sortByOrder: string) => void;
-}
+function Sorting(): JSX.Element {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-function Sorting({ onChange }: SortingProps): JSX.Element {
-  const [sortByType, setSortByType] = useState<string>(SortByType.Default);
-  const [sortByOrder, setSortByOrder] = useState<string>(SortByOrder.Default);
-
+  const sortByType = searchParams.get(QueryParameter.sortByType) || SortByType.Default;
+  const sortByOrder = searchParams.get(QueryParameter.sortByOrder) || SortByOrder.Default;
+  //тип сортировки популярность или цена
   const handleSortByTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
-    setSortByType(id);
-    if (onChange) {
-      onChange(id, sortByOrder);
-    }
-  };
 
+    let newSortByType = sortByType;
+    let newSortByOrder = sortByOrder;
+    if(sortByOrder === SortByOrder.Default) {
+      newSortByOrder = SortByOrder.Up;
+    }
+    if (id === SortByType.Popularity) {
+      newSortByType = SortByType.Popularity;
+    } else if (id === SortByType.Price) {
+      newSortByType = SortByType.Price;
+    }
+
+    navigate('/page/1');
+    setSearchParams({ [QueryParameter.sortByType]: newSortByType, [QueryParameter.sortByOrder]: newSortByOrder });
+  };
+  //направление вверх или вних по цене
   const handleSortByOrderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
-    setSortByOrder(id);
-    if (onChange) {
-      onChange(sortByType, id);
+
+    let newSortByType = sortByType;
+    let newSortByOrder = id;
+
+    if (sortByType === SortByType.Popularity) {
+      newSortByOrder = id;
+    } else if (id === SortByOrder.Up || id === SortByOrder.Down) {
+      newSortByType = SortByType.Price;
     }
+
+    navigate('/page/1');
+    setSearchParams({ [QueryParameter.sortByType]: newSortByType, [QueryParameter.sortByOrder]: newSortByOrder });
   };
 
   return (
@@ -36,7 +53,7 @@ function Sorting({ onChange }: SortingProps): JSX.Element {
               id={ SortByType.Price }
               name="sort"
               checked={ sortByType === SortByType.Price }
-              onChange={ handleSortByTypeChange}
+              onChange={ handleSortByTypeChange }
             />
             <label htmlFor={ SortByType.Price }>по цене</label>
           </div>
