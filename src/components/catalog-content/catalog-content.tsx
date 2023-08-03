@@ -8,7 +8,7 @@ import {
   SortByType,
   SortByOrder,
   AppRoute,
-  QueryParameter,
+  QueryParameterSort,
 } from '../../const';
 import { getProductsCurrentPage, getPageNumbers, sortProducts } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks';
@@ -29,8 +29,8 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
   const pageNumbers = getPageNumbers(products.length, PRODUCTS_COUNT_ON_PAGE);
 
   useEffect(() => {
-    const sortByTypeParam = searchParams.get(QueryParameter.sortByType);
-    const sortByOrderParam = searchParams.get(QueryParameter.sortByOrder);
+    const sortByTypeParam = searchParams.get(QueryParameterSort.sortByType);
+    const sortByOrderParam = searchParams.get(QueryParameterSort.sortByOrder);
 
     if(sortByTypeParam && sortByOrderParam) {
       setSortByType(sortByTypeParam);

@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Type, Category, Level, FilterData, QueryParameter } from '../../const';
+import { Type, Category, Level, FilterData, QueryParameterFilter } from '../../const';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDebounce } from '../../hooks/useDebounce';
 
-function Filter(): JSX.Element {
+type FilterProps = {
+  minPrice: number;
+  maxPrice: number;
+}
+
+function Filter({ minPrice, maxPrice }: FilterProps): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const initialState = {
-    [QueryParameter.category]: searchParams.get(QueryParameter.category),
-    [QueryParameter.type]: searchParams.get(QueryParameter.type),
-    [QueryParameter.level]: searchParams.get(QueryParameter.level),
-    [QueryParameter.priceGte]: searchParams.get(QueryParameter.priceGte),
-    [QueryParameter.priceLte]: searchParams.get(QueryParameter.priceLte),
+    [QueryParameterFilter.category]: searchParams.get(QueryParameterFilter.category),
+    [QueryParameterFilter.type]: searchParams.getAll(QueryParameterFilter.type) || [],
+    [QueryParameterFilter.level]: searchParams.getAll(QueryParameterFilter.level) || [],
+    [QueryParameterFilter.priceGte]: searchParams.get(QueryParameterFilter.priceGte) || minPrice,
+    [QueryParameterFilter.priceLte]: searchParams.get(QueryParameterFilter.priceLte) || maxPrice,
   } as FilterData;
 
   const [filters, setFilters] = useState<FilterData>(initialState);
@@ -21,22 +26,36 @@ function Filter(): JSX.Element {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
 
+    const updateCheckbox = (prevFilters: FilterData) => {
+      const filterNameParam = QueryParameterFilter[name as keyof typeof QueryParameterFilter];
+      const oldValue = prevFilters[filterNameParam] as string[];
+      if (checked) {
+        return { ...prevFilters, [name]: [value, ...oldValue] };
+      } else {
+        return { ...prevFilters, [name]: oldValue.filter((i) => i !== value) };
+      }
+    };
+
     if (type === 'checkbox') {
       if (
-        name === QueryParameter.category &&
+        name === QueryParameterFilter.category &&
         value === Category.VideoCamera &&
         checked && (
-          filters.type === Type.Collectible || filters.type === Type.Membranous
+          filters.type?.includes(Type.Collectible) || filters.type?.includes(Type.Membranous)
         )
       ) {
-        filters[QueryParameter.type] = null;
+        filters[QueryParameterFilter.type] = [];
+      } else if (name === QueryParameterFilter.level || name === QueryParameterFilter.type) {
+        setFilters((prevFilters) => updateCheckbox(prevFilters));
+      } else {
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          [name]: checked ? value : null,
+        }));
       }
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        [name]: checked ? value : null,
-      }));
     } else {
-      const isValidValue = /^[1-9]+$/.test(value);
+      const isValidValue = /^[1-9][0-9]*$/.test(value);
+      const numberValue = parseInt(value, 10);
 
       if(!isValidValue) {
         setFilters((prevFilters) => ({
@@ -44,28 +63,96 @@ function Filter(): JSX.Element {
           [name]: null,
         }));
       } else {
+        if (
+          QueryParameterFilter.priceGte.toString() === name ||
+          QueryParameterFilter.priceLte.toString() === name
+        ) {
+          const newFilterValue = {
+            ...filters,
+            [name]: numberValue,
+          };
+          const priceLte = newFilterValue[QueryParameterFilter.priceLte] || 0;
+          const priceGte = newFilterValue[QueryParameterFilter.priceGte] || 0;
+          newFilterValue[QueryParameterFilter.priceLte] = priceLte;
+          newFilterValue[QueryParameterFilter.priceGte] = priceGte;
+
+          if (name === QueryParameterFilter.priceGte.toString()) {
+            // Если введенная цена меньше минимальной, установите минимальную
+            if (numberValue < minPrice) {
+              setFilters((prevFilters) => ({
+                ...prevFilters,
+                [name]: minPrice,
+              }));
+            } else {
+              // Если введенная цена больше максимальной, установите максимальную
+              if (numberValue > maxPrice) {
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  [name]: maxPrice,
+                }));
+              }
+              // Если значение "до" меньше значения "от", установите значение "до" равным значению "от"
+              if (filters[QueryParameterFilter.priceGte] < numberValue) {
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  [QueryParameterFilter.priceLte]: numberValue,
+                }));
+              }
+            }
+          } else if (name === QueryParameterFilter.priceLte.toString()) {
+            // Если введенная цена больше максимальной, установите максимальную
+            if (numberValue > maxPrice) {
+              setFilters((prevFilters) => ({
+                ...prevFilters,
+                [name]: maxPrice,
+              }));
+            } else {
+              // Если введенная цена меньше минимальной, установите минимальную
+              if (numberValue < minPrice) {
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  [name]: minPrice,
+                }));
+              }
+              // Если значение "от" больше значения "до", установите значение "от" равным значению "до"
+              if (filters[QueryParameterFilter.priceGte] > numberValue) {
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  [QueryParameterFilter.priceGte]: numberValue,
+                }));
+              }
+            }
+          }
+        }
         setFilters((prevFilters) => ({
           ...prevFilters,
-          [name]: value,
+          [name]: numberValue,
         }));
       }
     }
   };
 
   const handleResetFilters = () => {
-    setFilters({});
-    setSearchParams({});
+    setSearchParams((_old) => new URLSearchParams());
+    setFilters({
+      [QueryParameterFilter.priceGte]: minPrice,
+      [QueryParameterFilter.priceLte]: maxPrice,
+      [QueryParameterFilter.level]: [],
+      [QueryParameterFilter.type]: []
+    } as FilterData);
   };
 
   useEffect(() => {
     navigate('/page/1');
     setSearchParams((params) => {
-      // Преобразуем фильтры в массив ключ-значение и обновляем URLSearchParams
+      params = new URLSearchParams();
       Object.entries(debouncedValue).forEach(([key, value]) => {
         if (value === null ) {
           params.delete(key);
+        } else if ( value instanceof Array ) {
+          value.forEach((item) => params.append(key, item));
         } else {
-          params.set(key, String(value));
+          params.set(key, value.toString());
         }
       });
       return params;
@@ -83,9 +170,9 @@ function Filter(): JSX.Element {
               <input
                 onChange={ handleInputChange }
                 type="number"
-                name={ QueryParameter.priceGte }
-                value={ filters[QueryParameter.priceGte] || '' }
-                placeholder="от"
+                name={ QueryParameterFilter.priceGte }
+                value={ filters[QueryParameterFilter.priceGte] || '' }
+                placeholder={ `от ${ minPrice }`}
               />
             </label>
           </div>
@@ -94,9 +181,9 @@ function Filter(): JSX.Element {
               <input
                 onChange={ handleInputChange }
                 type="number"
-                name={ QueryParameter.priceLte }
-                value={ filters[QueryParameter.priceLte] || '' }
-                placeholder="до"
+                name={ QueryParameterFilter.priceLte }
+                value={ filters[QueryParameterFilter.priceLte] || '' }
+                placeholder={ `до ${ maxPrice }`}
               />
             </label>
           </div>
@@ -113,9 +200,9 @@ function Filter(): JSX.Element {
               <label>
                 <input
                   onChange={ handleInputChange }
-                  checked={ filters[QueryParameter.category] === categoryValue }
+                  checked={ filters[QueryParameterFilter.category] === categoryValue }
                   type="checkbox"
-                  name={ QueryParameter.category }
+                  name={ QueryParameterFilter.category }
                   value={ categoryValue }
                 />
                 <span className="custom-checkbox__icon"></span>
@@ -136,12 +223,12 @@ function Filter(): JSX.Element {
               <label>
                 <input
                   onChange={ handleInputChange }
-                  checked={ filters[QueryParameter.type] === typeValue }
+                  checked={ filters[QueryParameterFilter.type]?.includes(typeValue) }
                   type="checkbox"
-                  name={ QueryParameter.type }
+                  name={ QueryParameterFilter.type }
                   value={ typeValue }
                   disabled={
-                    (filters[QueryParameter.category] === Category.VideoCamera && typeValue === Type.Membranous) || (filters[QueryParameter.category] === Category.VideoCamera && typeValue === Type.Collectible)
+                    (filters[QueryParameterFilter.category] === Category.VideoCamera && typeValue === Type.Membranous) || (filters[QueryParameterFilter.category] === Category.VideoCamera && typeValue === Type.Momentary)
                   }
                 />
                 <span className="custom-checkbox__icon"></span>
@@ -162,9 +249,9 @@ function Filter(): JSX.Element {
               <label>
                 <input
                   onChange={ handleInputChange }
-                  checked={ filters[QueryParameter.level] === levelValue }
+                  checked={ filters[QueryParameterFilter.level]?.includes(levelValue) }
                   type="checkbox"
-                  name={ QueryParameter.level }
+                  name={ QueryParameterFilter.level }
                   value={ levelValue }
                 />
                 <span className="custom-checkbox__icon"></span>

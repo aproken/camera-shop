@@ -5,9 +5,12 @@ import Filter from './filter';
 
 describe('Filter', () => {
   test('изменение фильтров и сброс', () => {
+    const minPrice = 5000;
+    const maxPrice = 100000;
+
     render(
       <Router>
-        <Filter />
+        <Filter minPrice={ minPrice } maxPrice={ maxPrice }/>
       </Router>
     );
 
@@ -18,16 +21,15 @@ describe('Filter', () => {
     expect(screen.getByText('Уровень')).toBeInTheDocument();
 
     // Находим элементы фильтров
-    const priceGteInput = screen.getByPlaceholderText('от');
-    const priceLteInput = screen.getByPlaceholderText('до');
+    const [priceGteInput, priceLteInput] = screen.getAllByRole('spinbutton');
     const categoryCheckboxes = screen.getAllByRole('checkbox', { name: /Видеокамера|Фотоаппарат/ });
     const typeCheckboxes = screen.getAllByRole('checkbox', { name: /Коллекционная|Моментальная|Цифровая|Плёночная/ });
     const levelCheckboxes = screen.getAllByRole('checkbox', { name: /Нулевой|Любительский|Профессиональный/ });
     const resetButton = screen.getByRole('button', { name: 'Сбросить фильтры' });
 
     // Проверяем начальное состояние фильтров
-    expect(priceGteInput).toHaveValue(null);
-    expect(priceLteInput).toHaveValue(null);
+    expect(priceGteInput).toHaveValue(5000);
+    expect(priceLteInput).toHaveValue(100000);
     expect(categoryCheckboxes).toHaveLength(2);
     expect(typeCheckboxes).toHaveLength(4);
     expect(levelCheckboxes).toHaveLength(3);
@@ -50,8 +52,8 @@ describe('Filter', () => {
     fireEvent.click(resetButton);
 
     // Проверяем, что фильтры были сброшены
-    expect(priceGteInput).toHaveValue(null);
-    expect(priceLteInput).toHaveValue(null);
+    expect(priceGteInput).toHaveValue(5000);
+    expect(priceLteInput).toHaveValue(100000);
     expect(categoryCheckboxes[0]).not.toBeChecked();
     expect(typeCheckboxes[1]).not.toBeChecked();
     expect(levelCheckboxes[2]).not.toBeChecked();

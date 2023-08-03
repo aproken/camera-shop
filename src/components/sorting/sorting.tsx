@@ -1,12 +1,12 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { QueryParameter, SortByOrder, SortByType } from '../../const';
+import { QueryParameterSort, SortByOrder, SortByType } from '../../const';
 
 function Sorting(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const sortByType = searchParams.get(QueryParameter.sortByType) || SortByType.Default;
-  const sortByOrder = searchParams.get(QueryParameter.sortByOrder) || SortByOrder.Default;
+  const sortByType = searchParams.get(QueryParameterSort.sortByType) || SortByType.Default;
+  const sortByOrder = searchParams.get(QueryParameterSort.sortByOrder) || SortByOrder.Default;
   //тип сортировки популярность или цена
   const handleSortByTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
@@ -23,7 +23,7 @@ function Sorting(): JSX.Element {
     }
 
     navigate('/page/1');
-    setSearchParams({ [QueryParameter.sortByType]: newSortByType, [QueryParameter.sortByOrder]: newSortByOrder });
+    setSearchParams({ [QueryParameterSort.sortByType]: newSortByType, [QueryParameterSort.sortByOrder]: newSortByOrder });
   };
   //направление вверх или вних по цене
   const handleSortByOrderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +39,7 @@ function Sorting(): JSX.Element {
     }
 
     navigate('/page/1');
-    setSearchParams({ [QueryParameter.sortByType]: newSortByType, [QueryParameter.sortByOrder]: newSortByOrder });
+    setSearchParams({ [QueryParameterSort.sortByType]: newSortByType, [QueryParameterSort.sortByOrder]: newSortByOrder });
   };
 
   return (

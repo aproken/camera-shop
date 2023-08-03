@@ -8,7 +8,8 @@ import Filter from '../../components/filter/filter';
 import CatalogContent from '../../components/catalog-content/catalog-content';
 import { getCamerasList, getCamerasListCompletingStatus } from '../../store/camera-process/selectors';
 import { fetchCamerasWithAverageRatingAction } from '../../store/api-action';
-import { QueryParameter } from '../../const';
+import { QueryParameterFilter } from '../../const';
+import { getMinPrice, getMaxPrice } from '../../utils/utils';
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -17,17 +18,19 @@ function MainPage(): JSX.Element {
   const { pageIndex } = useParams();
   const [searchParams] = useSearchParams();
   const currentPageIndex = Number(pageIndex);
+  const minPrice = getMinPrice(cameras || []);
+  const maxPrice = getMaxPrice(cameras || []);
 
   useEffect(() => {
     dispatch(fetchCamerasWithAverageRatingAction());
   }, [dispatch]);
 
   const filteredCameras = useMemo(() => {
-    const category = searchParams.get(QueryParameter.category);
-    const level = searchParams.get(QueryParameter.level);
-    const priceGte = searchParams.get(QueryParameter.priceGte);
-    const priceLte = searchParams.get(QueryParameter.priceLte);
-    const type = searchParams.get(QueryParameter.type);
+    const category = searchParams.get(QueryParameterFilter.category);
+    const level = searchParams.getAll(QueryParameterFilter.level);
+    const priceGte = searchParams.get(QueryParameterFilter.priceGte);
+    const priceLte = searchParams.get(QueryParameterFilter.priceLte);
+    const type = searchParams.getAll(QueryParameterFilter.type);
 
     let camerasByFilter = cameras;
 
@@ -37,15 +40,15 @@ function MainPage(): JSX.Element {
       );
     }
 
-    if (level) {
+    if (level.length > 0) {
       camerasByFilter = camerasByFilter.filter(
-        (item) => level === item.level
+        (item) => level.includes(item.level)
       );
     }
 
-    if (type) {
+    if (type.length > 0) {
       camerasByFilter = camerasByFilter.filter(
-        (item) => type === item.type
+        (item) => type.includes(item.type)
       );
     }
 
@@ -90,7 +93,7 @@ function MainPage(): JSX.Element {
               <div className="catalog__aside">
 
                 <div className="catalog-filter">
-                  <Filter />
+                  <Filter minPrice={ minPrice } maxPrice={ maxPrice }/>
                 </div>
               </div>
 
