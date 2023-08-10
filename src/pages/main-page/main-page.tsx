@@ -8,8 +8,58 @@ import Filter from '../../components/filter/filter';
 import CatalogContent from '../../components/catalog-content/catalog-content';
 import { getCamerasList, getCamerasListCompletingStatus } from '../../store/camera-process/selectors';
 import { fetchCamerasWithAverageRatingAction } from '../../store/api-action';
-import { QueryParameterFilter } from '../../const';
+import { QueryParameterFilter, QueryParameterPriceBlock } from '../../const';
 import { getMinPrice, getMaxPrice } from '../../utils/utils';
+import { Cameras } from '../../types/camera';
+
+const getFilterWithoutPrice = (filters: URLSearchParams) => new URLSearchParams(
+  Array.from(filters.entries())
+    .filter(
+      ([k,v]) => !['price_gte','price_lte'].includes(k)
+    )
+);
+
+const getCameraByFilter = (cameraList: Cameras, filterParams: URLSearchParams) => {
+  const category = filterParams.get(QueryParameterFilter.category);
+  const type = filterParams.getAll(QueryParameterFilter.type);
+  const level = filterParams.getAll(QueryParameterFilter.level);
+  const priceGte = filterParams.get(QueryParameterPriceBlock.MinPrice);
+  const priceLte = filterParams.get(QueryParameterPriceBlock.MaxPrice);
+
+  let camerasByFilter = cameraList;
+
+  if (category) {
+    camerasByFilter = camerasByFilter.filter(
+      (item) => category === item.category
+    );
+  }
+
+  if (level.length > 0) {
+    camerasByFilter = camerasByFilter.filter(
+      (item) => level.includes(item.level)
+    );
+  }
+
+  if (type.length > 0) {
+    camerasByFilter = camerasByFilter.filter(
+      (item) => type.includes(item.type)
+    );
+  }
+
+  if (priceGte && priceGte !== '0') {
+    camerasByFilter = camerasByFilter.filter(
+      (item) => item.price >= Number(priceGte)
+    );
+  }
+
+  if (priceLte && priceLte !== '0') {
+    camerasByFilter = camerasByFilter.filter(
+      (item) => item.price <= Number(priceLte)
+    );
+  }
+
+  return camerasByFilter;
+};
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -18,54 +68,25 @@ function MainPage(): JSX.Element {
   const { pageIndex } = useParams();
   const [searchParams] = useSearchParams();
   const currentPageIndex = Number(pageIndex);
-  const minPrice = getMinPrice(cameras || []);
-  const maxPrice = getMaxPrice(cameras || []);
 
   useEffect(() => {
     dispatch(fetchCamerasWithAverageRatingAction());
   }, [dispatch]);
 
-  const filteredCameras = useMemo(() => {
-    const category = searchParams.get(QueryParameterFilter.category);
-    const level = searchParams.getAll(QueryParameterFilter.level);
-    const priceGte = searchParams.get(QueryParameterFilter.priceGte);
-    const priceLte = searchParams.get(QueryParameterFilter.priceLte);
-    const type = searchParams.getAll(QueryParameterFilter.type);
+  const filteredCameras = useMemo(
+    () => getCameraByFilter(cameras, searchParams),
+    [searchParams, cameras]
+  );
 
-    let camerasByFilter = cameras;
-
-    if (category) {
-      camerasByFilter = camerasByFilter.filter(
-        (item) => category === item.category
-      );
-    }
-
-    if (level.length > 0) {
-      camerasByFilter = camerasByFilter.filter(
-        (item) => level.includes(item.level)
-      );
-    }
-
-    if (type.length > 0) {
-      camerasByFilter = camerasByFilter.filter(
-        (item) => type.includes(item.type)
-      );
-    }
-
-    if (priceGte) {
-      camerasByFilter = camerasByFilter.filter(
-        (item) => item.price >= Number(priceGte)
-      );
-    }
-
-    if (priceLte) {
-      camerasByFilter = camerasByFilter.filter(
-        (item) => item.price <= Number(priceLte)
-      );
-    }
-
-    return camerasByFilter;
-  }, [searchParams, cameras]);
+  const [minPrice, maxPrice] = useMemo(
+    () => {
+      const fCameras = getCameraByFilter(cameras, getFilterWithoutPrice(searchParams));
+      return [
+        getMinPrice(fCameras || []),
+        getMaxPrice(fCameras || [])
+      ];
+    }, [searchParams, cameras]
+  );
 
   if (!isCamerasListCompleting) {
     return (

@@ -35,8 +35,8 @@ export enum Type {
 }
 
 export enum Category {
-  VideoCamera = 'Видеокамера',
   PhotoCamera = 'Фотоаппарат',
+  VideoCamera = 'Видеокамера',
 }
 
 export enum Level {
@@ -49,8 +49,11 @@ export enum QueryParameterFilter {
   type = 'type',
   level = 'level',
   category = 'category',
-  priceGte = 'price_gte',
-  priceLte = 'price_lte',
+}
+
+export enum QueryParameterPriceBlock {
+  MinPrice = 'price_gte',
+  MaxPrice = 'price_lte',
 }
 
 export enum QueryParameterSort {
@@ -58,7 +61,7 @@ export enum QueryParameterSort {
   sortByOrder = 'sortByOrder',
 }
 
-export type QueryParameter = QueryParameterFilter | QueryParameterSort;
+export type QueryParameter = QueryParameterFilter | QueryParameterPriceBlock | QueryParameterSort;
 
 export type FilterData = {
   price_gte: number; // Больше или равно

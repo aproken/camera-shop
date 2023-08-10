@@ -23,7 +23,11 @@ function Sorting(): JSX.Element {
     }
 
     navigate('/page/1');
-    setSearchParams({ [QueryParameterSort.sortByType]: newSortByType, [QueryParameterSort.sortByOrder]: newSortByOrder });
+    setSearchParams((params) => {
+      params.set(QueryParameterSort.sortByType, newSortByType);
+      params.set(QueryParameterSort.sortByOrder, newSortByOrder);
+      return params;
+    });
   };
   //направление вверх или вних по цене
   const handleSortByOrderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +43,11 @@ function Sorting(): JSX.Element {
     }
 
     navigate('/page/1');
-    setSearchParams({ [QueryParameterSort.sortByType]: newSortByType, [QueryParameterSort.sortByOrder]: newSortByOrder });
+    setSearchParams((params) => {
+      params.set(QueryParameterSort.sortByType, newSortByType);
+      params.set(QueryParameterSort.sortByOrder, newSortByOrder);
+      return params;
+    });
   };
 
   return (
