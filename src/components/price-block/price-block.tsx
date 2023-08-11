@@ -8,6 +8,11 @@ type PriceBlockProps = {
   maxPrice: number;
 }
 
+type PriceState = {
+  minPrice: number | null;
+  maxPrice: number | null;
+}
+
 function PriceBlock({ minPrice, maxPrice }: PriceBlockProps): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -24,17 +29,17 @@ function PriceBlock({ minPrice, maxPrice }: PriceBlockProps): JSX.Element {
     maxPriceValue = parseInt(maxPriceParams, 10);
   }
 
-  const [price, setPrice] = useState({
-    minPrice: minPriceValue,
-    maxPrice: maxPriceValue
+  const [price, setPrice] = useState<PriceState>({
+    minPrice: null,
+    maxPrice: null
   });
 
-  useEffect(() => {
-    setPrice({
-      minPrice: minPriceValue,
-      maxPrice: maxPriceValue,
-    });
-  } , [minPriceValue, maxPriceValue]);
+  // useEffect(() => {
+  //   setPrice({
+  //     minPrice: minPriceValue,
+  //     maxPrice: maxPriceValue,
+  //   });
+  // } , [minPriceValue, maxPriceValue]);
 
   const debouncedValue = useDebounce(price, 2000);
 
@@ -85,30 +90,33 @@ function PriceBlock({ minPrice, maxPrice }: PriceBlockProps): JSX.Element {
 
   useEffect(() => {
     if (
-      debouncedValue.maxPrice.toString() === maxPriceParams &&
-      debouncedValue.minPrice.toString() === minPriceParams
+      debouncedValue.maxPrice?.toString() === maxPriceParams &&
+      debouncedValue.minPrice?.toString() === minPriceParams
     ) {
       return;
     }
 
     let maxPriceToPersist = debouncedValue.maxPrice;
-    if (isNaN(debouncedValue.maxPrice) || debouncedValue.maxPrice > maxPrice) {
+    if (isNaN(debouncedValue.maxPrice || NaN) || (debouncedValue.maxPrice || NaN) > maxPrice) {
       maxPriceToPersist = maxPrice;
     }
 
     let minPriceToPersist = debouncedValue.minPrice;
-    if (isNaN(debouncedValue.minPrice) || debouncedValue.minPrice < minPrice) {
-      minPriceToPersist = minPrice;
+    if (isNaN(debouncedValue.minPrice || NaN) || (debouncedValue.minPrice || NaN) < minPriceValue) {
+      minPriceToPersist = minPriceValue;
     }
 
-    if (debouncedValue.maxPrice < debouncedValue.minPrice) {
+    if (
+      (debouncedValue.maxPrice !== null && debouncedValue.minPrice !== null) &&
+      (debouncedValue.maxPrice < debouncedValue.minPrice)
+    ) {
       maxPriceToPersist = debouncedValue.minPrice;
     }
 
-    setPrice({
-      minPrice: minPriceToPersist,
-      maxPrice: maxPriceToPersist,
-    });
+    // setPrice({
+    //   minPrice: minPriceToPersist,
+    //   maxPrice: maxPriceToPersist,
+    // });
 
     setSearchParams((prevParams) => {
       prevParams.set(QueryParameterPriceBlock.MaxPrice, String(maxPriceToPersist));
@@ -125,7 +133,7 @@ function PriceBlock({ minPrice, maxPrice }: PriceBlockProps): JSX.Element {
             onChange={ handleMinPriceChange }
             type="number"
             name={ QueryParameterPriceBlock.MinPrice }
-            value={ price.minPrice }
+            value={ price.minPrice || ''}
             placeholder={ `${ minPrice }`}
           />
         </label>
@@ -136,7 +144,7 @@ function PriceBlock({ minPrice, maxPrice }: PriceBlockProps): JSX.Element {
             onChange={ handleMaxPriceChange }
             type="number"
             name={ QueryParameterPriceBlock.MaxPrice }
-            value={ price.maxPrice }
+            value={ price.maxPrice || ''}
             placeholder={ `${ maxPrice }`}
           />
         </label>
