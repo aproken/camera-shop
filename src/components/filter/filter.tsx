@@ -77,7 +77,10 @@ function Filter({ minPrice, maxPrice }: FilterProps): JSX.Element {
   return (
     <form action="#">
       <h2 className="visually-hidden">Фильтр</h2>
-      <PriceBlock minPrice={ minPrice } maxPrice={ maxPrice }/>
+      <fieldset className="catalog-filter__block">
+        <legend className="title title--h5">Цена, ₽</legend>
+        <PriceBlock minPrice={ minPrice } maxPrice={ maxPrice }/>
+      </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="title title--h5">Категория</legend>
         {
