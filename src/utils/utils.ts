@@ -64,13 +64,21 @@ export const sortProducts = (
 
 //Возвращает минимальную цену из списка продуктов
 export const getMinPrice = (products: Cameras) => {
-  const prices = products.map((product) => product.price);
-  return Math.min(...prices);
+  if(products.length !== 0) {
+    const prices = products.map((product) => product.price);
+    return Math.min(...prices);
+  } else {
+    return 0;
+  }
 };
 
 //Возвращает максимальную цену из списка продуктов
 export const getMaxPrice = (products: Cameras) => {
-  const prices = products.map((product) => product.price);
-  return Math.max(...prices);
+  if(products.length !== 0) {
+    const prices = products.map((product) => product.price);
+    return Math.max(...prices);
+  } else {
+    return 0;
+  }
 };
 
