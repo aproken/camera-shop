@@ -41,13 +41,13 @@ function SearchForm(): JSX.Element {
       event.preventDefault();
       setShouldShowResults(false);
     }
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' || (!event.shiftKey && event.key === 'Tab')) {
       event.preventDefault();
       setFocusedIndex((prevIndex) => prevIndex + 1);
       if (focusedIndex >= resultNames.length - 1 && closeBtn.current) {
         closeBtn.current.focus();
       }
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp' || (event.shiftKey && event.key === 'Tab')) {
       event.preventDefault();
       setFocusedIndex((prevIndex) => prevIndex - 1);
       if (focusedIndex <= 0 && searchInput.current) {

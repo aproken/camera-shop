@@ -63,10 +63,14 @@ function Filter({ minPrice, maxPrice }: FilterProps): JSX.Element {
     }
 
     if (name === QueryParameterFilter.category) {
-      setSearchParams((prevFilters) => ({
-        ...prevFilters,
-        [name]: checked ? value : null,
-      }));
+      setSearchParams((prevFilters) => {
+        if (checked) {
+          prevFilters.set(name, value);
+        } else {
+          prevFilters.delete(name);
+        }
+        return prevFilters;
+      });
     }
   };
 
