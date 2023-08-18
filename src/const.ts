@@ -5,6 +5,7 @@ export enum AppRoute {
   Main = '/',
   NotFound = '/not-found',
   Product = '/cameras/:cameraId',
+  Basket = '/orders',
 }
 
 export enum APIRoute {
@@ -13,11 +14,14 @@ export enum APIRoute {
   Camera = 'camera',
   Similar = 'similar',
   Reviews = '/reviews',
+  Coupon = '/coupons',
+  Order = '/orders',
 }
 
 export enum NameSpace {
   Camera = 'CAMERA',
   PromoProduct = 'PROMO_PRODUCT',
+  Order = 'ORDER',
 }
 
 export enum RequestStatus {
@@ -38,6 +42,11 @@ export enum Category {
   PhotoCamera = 'Фотоаппарат',
   VideoCamera = 'Видеокамера',
 }
+
+export const CategoryMapper = {
+  [Category.PhotoCamera]: 'Фотокамера',
+  [Category.VideoCamera]: 'Видеокамера'
+};
 
 export enum Level {
   Zero = 'Нулевой',

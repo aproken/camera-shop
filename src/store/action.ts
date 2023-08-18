@@ -6,3 +6,4 @@ export const Action = {
 };
 
 export const redirectToRoute = createAction<AppRoute>(Action.REDIRECT_TO_ROUTE);
+

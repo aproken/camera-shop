@@ -7,6 +7,8 @@ import { Promo } from '../types/promo';
 import { redirectToRoute } from './action';
 import { Review, Reviews } from '../types/review';
 import { ReviewData } from '../types/review-data';
+import { Coupon } from '../types/coupon';
+import { OrderData } from '../types/order-data';
 
 //получение списка камер
 export const fetchCamerasListAction = createAsyncThunk<Cameras, undefined, {
@@ -117,7 +119,6 @@ export const fetchAverageRatingAction = createAsyncThunk<RatingItem, number, {
   }
 );
 
-
 // Получение списка всех камер с добавлением среднего рейтинга
 export const fetchCamerasWithAverageRatingAction = createAsyncThunk<null, undefined, {
   dispatch: AppDispatch;
@@ -159,6 +160,48 @@ export const fetchAddNewReviewAction = createAsyncThunk<Review, ReviewData, {
       return data;
     } catch (error) {
       return rejectWithValue(error);
+    }
+  }
+);
+
+//Заказ: получение процента скидки по купону
+export const fetchDiscountAction = createAsyncThunk<Coupon, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+>(
+  'discount/fetchDiscount',
+  async (couponData, { extra: api }) => {
+    try {
+      const { data } = await api.post<number>(APIRoute.Coupon, {coupon: couponData});
+      return {
+        coupon: couponData,
+        discount: data,
+      } as Coupon;
+    } catch {
+      return {
+        coupon: null,
+        discount: 0
+      } as Coupon;
+    }
+  }
+);
+
+//Заказ: создание нового заказа
+export const fetchAddNewOrderAction = createAsyncThunk<boolean, OrderData, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+>(
+  'order/fetchAddNewOrder',
+  async(orderData, { extra: api }) => {
+    try {
+      await api.post<boolean>(APIRoute.Order, orderData);
+      return true;
+    } catch {
+      return false;
     }
   }
 );

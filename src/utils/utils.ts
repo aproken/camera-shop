@@ -1,5 +1,6 @@
 import { SortByType, SortByOrder } from '../const';
 import { Cameras } from '../types/camera';
+import { Orders } from '../types/order';
 
 //Функция для вычисления количества страниц для пагинации
 export const getPageNumbers = (countTotal: number, countOnPage: number) =>
@@ -80,5 +81,26 @@ export const getMaxPrice = (products: Cameras) => {
   } else {
     return 0;
   }
+};
+
+//Вычисляет итоговую стоимость, учитывая количество товара
+export const getTotalPrice = (orders: Orders): number => {
+  const total = orders.reduce(
+    (totalPrice, order) => totalPrice + order.camera.price * order.quantity,
+    0
+  );
+  return total;
+};
+
+//Вычисляет скидку
+export const getTotalDiscount = (orders: Orders, discount: number): number => {
+  const total = getTotalPrice(orders);
+  return total / 100 * discount;
+};
+
+export const getFinalPrice = (orders: Orders, discount: number): number => {
+  const price = getTotalPrice(orders);
+  const discountValue = getTotalDiscount(orders, discount);
+  return price - discountValue;
 };
 

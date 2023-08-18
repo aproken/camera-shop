@@ -35,7 +35,7 @@ export const cameraProcess = createSlice({
         state.isCamerasListCompleting = false;
       })
       .addCase(fetchCamerasWithAverageRatingAction.fulfilled, (state, action) => {
-        // state.camerasList = action.payload;
+        //state.camerasList = action.payload;
         state.isCamerasListCompleting = true;
       })
       .addCase(fetchCamerasWithAverageRatingAction.rejected, (state) => {
@@ -45,6 +45,9 @@ export const cameraProcess = createSlice({
         const camera = state.camerasList.find((item) => item.id === action.payload.id);
         if (camera) {
           camera.averageRating = action.payload.rating;
+        }
+        if(state.camera?.id === action.payload.id) {
+          state.camera.averageRating = action.payload.rating;
         }
       })
       .addCase(fetchCameraAction.pending, (state) => {

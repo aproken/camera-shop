@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   getCamera,
@@ -14,6 +14,7 @@ import {
   fetchSimilarAction,
   fetchAverageRatingAction,
 } from '../../store/api-action';
+import { redirectToRoute } from '../../store/action';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundPage from '../not-found-page/not-found-page';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
@@ -22,17 +23,26 @@ import ProductSlider from '../../components/product-slider/product-slider';
 import ReviewsBlock from '../../components/reviews-block/reviews-block';
 import { getStylizedPrice } from '../../utils/utils';
 import ProductStarsRating from '../../components/product-stars-rating/product-stars-rating';
+import AddToBasketButton from '../../components/buttons/add-to-basket-button/add-to-basket-button';
+import BuyDialog from '../../components/buy-dialog/buy-dialog';
+import CameraInOrderButton from '../../components/buttons/camera-in-order/camera-in-order';
+import { isProductInBasket } from '../../store/basket-process/selectors';
+import { AppRoute } from '../../const';
 
 function ProductPage(): JSX.Element {
   const { cameraId } = useParams();
   const currentProductId = Number(cameraId);
   const dispatch = useAppDispatch();
 
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+
   const currentProduct = useAppSelector(getCamera);
   const isProductCompleting = useAppSelector(getCameraComletingStatus);
   const similarList = useAppSelector(getSimilar);
   const isSimilarCompleting = useAppSelector(getSimilarCompletingStatus);
   const reviewsList = useAppSelector(getReviewsList);
+  const isCurrentProductInOrder = useAppSelector((state) => isProductInBasket(state, currentProductId));
 
   useEffect(() => {
     if (currentProductId) {
@@ -92,16 +102,19 @@ function ProductPage(): JSX.Element {
                 <h1 className="title title--h3">{ name }</h1>
                 <ProductStarsRating rating={ rating } totalReview={ reviewCount } />
                 <p className="product__price"><span className="visually-hidden">Цена:</span>{ stylizedPrice } ₽</p>
-                <button className="btn btn--purple" type="button">
-                  <svg width="24" height="16" aria-hidden="true">
-                    <use xlinkHref="#icon-add-basket"></use>
-                  </svg>Добавить в корзину
-                </button>
+                {
+                  isCurrentProductInOrder
+                    ?
+                    <CameraInOrderButton />
+                    :
+                    < AddToBasketButton onClick={ toggle }/>
+                }
                 <ProductTabs product={ currentProduct } />
               </div>
             </div>
           </section>
         </div>
+        {/* TODO нет averageRating в обекте similar camera */}
         <div className="page-content__section">
           { (similarList || isSimilarCompleting) && <ProductSlider similar={ similarList }/> }
         </div>
@@ -109,6 +122,7 @@ function ProductPage(): JSX.Element {
           <ReviewsBlock productId={ currentProductId } comments={ reviewsList } />
         </div>
       </div>
+      <BuyDialog product={ currentProduct } isOpen={ isOpen } onClose={ toggle } onFinish={ () => dispatch(redirectToRoute(AppRoute.Main))}/>
     </main>
   );
 }

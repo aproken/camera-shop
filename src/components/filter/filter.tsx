@@ -1,4 +1,11 @@
-import { Type, Category, Level, QueryParameterFilter, QueryParameterPriceBlock } from '../../const';
+import {
+  Type,
+  Category,
+  Level,
+  QueryParameterFilter,
+  QueryParameterPriceBlock,
+  CategoryMapper,
+} from '../../const';
 import { useSearchParams } from 'react-router-dom';
 import PriceBlock from '../price-block/price-block';
 
@@ -20,12 +27,6 @@ const updateCheckbox = (prevFilters: URLSearchParams, name: QueryParameterFilter
   return new URLSearchParams([
     ...filterEntries,
     ...newValue.map((item) => [name, item])]);
-};
-
-
-const CategoryMapper = {
-  [Category.PhotoCamera]: 'Фотокамера',
-  [Category.VideoCamera]: 'Видеокамера'
 };
 
 function Filter({ minPrice, maxPrice }: FilterProps): JSX.Element {
@@ -167,5 +168,5 @@ function Filter({ minPrice, maxPrice }: FilterProps): JSX.Element {
     </form>
   );
 }
-
+// TODO фильры: инпут цена от должен перерисовывать минимальную цену товара из каталога
 export default Filter;

@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import LogoHeader from '../logo-header/logo-header';
 import SearchForm from '../search-form/search-form';
+import { AppRoute } from '../../const';
+import { useAppSelector } from '../../hooks';
+import { getCamerasInBasket } from '../../store/basket-process/selectors';
 
 function Header(): JSX.Element {
+  const orders = useAppSelector(getCamerasInBasket);
+
   return (
     <header className="header" id="header">
       <div className="container">
@@ -24,10 +29,17 @@ function Header(): JSX.Element {
           </ul>
         </nav>
         <SearchForm />
-        <Link className="header__basket-link" to="#todo" data-testid="basket-link">
+        <Link className="header__basket-link" to={ AppRoute.Basket } data-testid="basket-link">
           <svg width="16" height="16" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg>
+          {
+            orders.length !== 0
+              ?
+              <span className="header__basket-count">{ orders.length }</span>
+              :
+              ''
+          }
         </Link>
       </div>
     </header>

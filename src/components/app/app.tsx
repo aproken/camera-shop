@@ -5,6 +5,7 @@ import MainPage from '../../pages/main-page/main-page';
 import { AppRoute } from '../../const';
 import ProductPage from '../../pages/product-page/product-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
+import BasketPage from '../../pages/basket-page/basket-page';
 
 function App(): JSX.Element {
   return (
@@ -22,6 +23,11 @@ function App(): JSX.Element {
           <Route
             path={ AppRoute.Product }
             element={<ProductPage />}
+          />
+
+          <Route
+            path={ AppRoute.Basket }
+            element={<BasketPage />}
           />
 
           <Route path='*' element={ <NotFoundPage /> } />

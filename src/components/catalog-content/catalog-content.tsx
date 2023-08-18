@@ -70,7 +70,6 @@ function CatalogContent({ products, currentPageIndex }: CatalogContentProps): JS
             <ProductCard
               key={ product.id }
               product={ product }
-              onBuyClick={ () => null }
             />
           ))
         }

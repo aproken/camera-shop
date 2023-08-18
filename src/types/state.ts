@@ -1,6 +1,8 @@
 import { RequestStatus } from '../const';
 import { store } from '../store';
 import { Camera, Cameras } from './camera';
+import { Coupon } from './coupon';
+import { Orders } from './order';
 import { Promo } from './promo';
 import { Reviews } from './review';
 
@@ -14,6 +16,12 @@ export type CameraProcess = {
   reviewsList: Reviews;
   isReviewsListCompleting: boolean;
   addNewReviewStatus: RequestStatus;
+}
+
+export type BasketProcess = {
+  ordersList: Orders;
+  coupon: Coupon;
+  addNewOrdersStatus: RequestStatus;
 }
 
 export type PromoProcess = {

@@ -56,7 +56,6 @@ function ProductSlider({ similar }: ProductSliderProps): JSX.Element {
               <div key={product.id} >
                 <ProductCard
                   product={product}
-                  onBuyClick={() => null}
                 />
               </div>
             ))}
