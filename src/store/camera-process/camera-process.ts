@@ -64,7 +64,7 @@ export const cameraProcess = createSlice({
         state.isSimilarCompleting = false;
       })
       .addCase(fetchSimilarAction.fulfilled, (state, action) => {
-        state.similar = action.payload;
+        state.similar = action.payload.map((item) => item.id);
         state.isSimilarCompleting = true;
       })
       .addCase(fetchSimilarAction.rejected, (state) => {

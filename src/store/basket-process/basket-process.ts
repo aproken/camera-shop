@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NameSpace, RequestStatus } from '../../const';
+import { NameSpace, RequestStatus, CouponStatus } from '../../const';
 import { BasketProcess } from '../../types/state';
 import { fetchAddNewOrderAction, fetchDiscountAction } from '../api-action';
 import { Camera } from '../../types/camera';
@@ -10,6 +10,7 @@ export const initialState: BasketProcess = {
   coupon: {
     coupon: null,
     discount: 0,
+    status: CouponStatus.Default
   },
   addNewOrdersStatus: RequestStatus.Unknown,
 };
@@ -48,6 +49,7 @@ export const basketProcess = createSlice({
       state.ordersList = [];
       state.coupon.coupon = null;
       state.coupon.discount = 0;
+      state.coupon.status = CouponStatus.Default;
     }
   },
   extraReducers(builder) {
@@ -59,6 +61,7 @@ export const basketProcess = createSlice({
         state.coupon = {
           coupon: null,
           discount: 0,
+          status: CouponStatus.Error
         };
       })
       .addCase(fetchAddNewOrderAction.pending, (state) => {

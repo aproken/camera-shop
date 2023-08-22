@@ -38,6 +38,10 @@ describe('App компонент', () => {
         camera: null,
         isCameraCompleting: false,
       },
+      'ORDER' : {
+        ordersList: [],
+        coupon: {}
+      }
     });
 
     const history = createMemoryHistory();
@@ -62,6 +66,10 @@ describe('App компонент', () => {
       'CAMERA': {
         isCamerasListCompleting: false,
       },
+      'ORDER' : {
+        ordersList: [],
+        coupon: {}
+      }
     });
 
     const history = createMemoryHistory();

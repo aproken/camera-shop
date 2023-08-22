@@ -12,20 +12,26 @@ type QuantityOfCamerasProps = {
 function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [quantityValue, setQuantityValue] = useState(quantity);
-  const debounsedValue = useDebounce(quantityValue, 2500);
+  const debounsedValue = useDebounce(quantityValue, 2000);
 
   const handlerPrevButton = () => {
     if(quantity <= 1) {
       return ;
     }
-    setQuantityValue(quantityValue - 1);
+    dispatch(actions.changeQuantityOfCameras({
+      camera,
+      quantity: quantity - 1
+    }));
   };
 
   const handlerNextButton = () => {
     if(quantity >= 99) {
       return ;
     }
-    setQuantityValue(quantityValue + 1);
+    dispatch(actions.changeQuantityOfCameras({
+      camera,
+      quantity: quantity + 1
+    }));
   };
 
   const handlerChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {

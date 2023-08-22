@@ -36,6 +36,10 @@ describe('ProductPage component', () => {
         isCameraCompleting: false,
         camerasList: [],
       },
+      'ORDER' : {
+        ordersList: [],
+        coupon: {}
+      }
     });
 
     const history = createMemoryHistory();
@@ -66,6 +70,10 @@ describe('ProductPage component', () => {
         isCameraCompleting: false,
         camerasList: [],
       },
+      'ORDER' : {
+        ordersList: [],
+        coupon: {}
+      }
     });
 
     const history = createMemoryHistory();

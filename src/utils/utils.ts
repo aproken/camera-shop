@@ -95,9 +95,10 @@ export const getTotalPrice = (orders: Orders): number => {
 //Вычисляет скидку
 export const getTotalDiscount = (orders: Orders, discount: number): number => {
   const total = getTotalPrice(orders);
-  return total / 100 * discount;
+  return Math.floor(total / 100 * discount);
 };
 
+//Вычисляет итоговую стоимость, учитывая количество товара и скидку
 export const getFinalPrice = (orders: Orders, discount: number): number => {
   const price = getTotalPrice(orders);
   const discountValue = getTotalDiscount(orders, discount);

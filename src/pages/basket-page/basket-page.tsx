@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BasketCard from '../../components/basket-card/basket-card';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
-import { AppRoute } from '../../const';
+import { AppRoute, CouponStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { getCamerasInBasket, getDiscount } from '../../store/basket-process/selectors';
 import {
@@ -15,7 +15,7 @@ import { fetchAddNewOrderAction, fetchDiscountAction } from '../../store/api-act
 import { actions } from '../../store/basket-process/basket-process';
 import OrderSuccessModal from '../../components/buy-dialog/order-success';
 import Modal from '../../components/modal/modal';
-
+import classNames from 'classnames';
 
 function BasketPage(): JSX.Element {
   const navigate = useNavigate();
@@ -29,6 +29,11 @@ function BasketPage(): JSX.Element {
   const [couponValue, setCouponValue] = useState<string>(coupon.coupon || '');
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+
+  const closeAndRedirect = () => {
+    toggle();
+    navigate(AppRoute.Main);
+  };
 
   const productCrumbs = [
     {label: 'Главная', href: '/'},
@@ -54,7 +59,7 @@ function BasketPage(): JSX.Element {
     );
     dispatch(fetchAddNewOrderAction({
       camerasIds: camerasIds,
-      coupon: coupon.coupon || ''
+      coupon: coupon.coupon
     })).then(() => toggle());
     dispatch(actions.clearBasket());
   };
@@ -77,61 +82,58 @@ function BasketPage(): JSX.Element {
               }
             </ul>
             {
-              orders.length !== 0
-                ?
-                <div className="basket__summary">
-                  <div className="basket__promo">
-                    <p className="title title--h4">Если у вас есть промокод на скидку, примените его в этом поле</p>
-                    <div className="basket-form">
-                      <form action="#">
-                        <div className="custom-input">
-                          <label><span className="custom-input__label">Промокод</span>
-                            <input
-                              onChange = { handlerChangeInput }
-                              value={ couponValue }
-                              type="text"
-                              name="promo"
-                              placeholder="Введите промокод"
-                            />
-                          </label>
-                          <p className="custom-input__error">Промокод неверный</p>
-                          <p className="custom-input__success">Промокод принят!</p>
-                        </div>
-                        <button
-                          onClick={ handlerOnClick }
-                          className="btn"
-                          type="submit"
-                        >Применить
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-                  <div className="basket__summary-order">
-                    <p className="basket__summary-item"><span className="basket__summary-text">Всего:</span><span className="basket__summary-value">{`${ getStylizedPrice(getTotalPrice(orders))} ₽`}</span></p>
-                    <p className="basket__summary-item"><span className="basket__summary-text">Скидка:</span><span className="basket__summary-value basket__summary-value--bonus">{`${ getTotalDiscount(orders, discount) }  ₽`}</span></p>
-                    <p className="basket__summary-item"><span className="basket__summary-text basket__summary-text--total">К оплате:</span><span className="basket__summary-value basket__summary-value--total">{`${ getStylizedPrice(getFinalPrice(orders, discount))} ₽`}</span></p>
-                    <button
-                      className="btn btn--purple"
-                      type="submit"
-                      onClick={ handlerCheckout }
-                    >Оформить заказ
-                    </button>
+              orders.length === 0 &&
+              <p>В корзине пока пусто...</p>
+            }
+            {
+              <div className="basket__summary">
+                <div className="basket__promo">
+                  <p className="title title--h4">Если у вас есть промокод на скидку, примените его в этом поле</p>
+                  <div className="basket-form">
+                    <form action="#">
+                      <div className={classNames('custom-input', {
+                        'is-valid': coupon.status === CouponStatus.Success,
+                        'is-invalid': coupon.status === CouponStatus.Error,
+                      })}
+                      >
+                        <label><span className="custom-input__label">Промокод</span>
+                          <input
+                            onChange = { handlerChangeInput }
+                            value={ couponValue }
+                            type="text"
+                            name="promo"
+                            placeholder="Введите промокод"
+                          />
+                        </label>
+                        { coupon.status === CouponStatus.Error && <p className="custom-input__error">Промокод неверный</p>}
+                        { coupon.status === CouponStatus.Success && <p className="custom-input__success">Промокод принят!</p>}
+                      </div>
+                      <button
+                        onClick={ handlerOnClick }
+                        className="btn"
+                        type="submit"
+                      >Применить
+                      </button>
+                    </form>
                   </div>
                 </div>
-                :
-                <>
-                  <p>В корзине пока пусто...</p>
+                <div className="basket__summary-order">
+                  <p className="basket__summary-item"><span className="basket__summary-text">Всего:</span><span className="basket__summary-value">{`${ getStylizedPrice(getTotalPrice(orders))} ₽`}</span></p>
+                  <p className="basket__summary-item"><span className="basket__summary-text">Скидка:</span><span className="basket__summary-value basket__summary-value--bonus">{`${ getTotalDiscount(orders, discount) }  ₽`}</span></p>
+                  <p className="basket__summary-item"><span className="basket__summary-text basket__summary-text--total">К оплате:</span><span className="basket__summary-value basket__summary-value--total">{`${ getStylizedPrice(getFinalPrice(orders, discount))} ₽`}</span></p>
                   <button
-                    onClick={ () => navigate(AppRoute.Main) }
                     className="btn btn--purple"
-                  >Перейти в каталог
+                    type="submit"
+                    onClick={ handlerCheckout }
+                  >Оформить заказ
                   </button>
-                </>
+                </div>
+              </div>
             }
           </div>
         </section>
-        <Modal isOpen={ isOpen } onClose={ toggle } >
-          <OrderSuccessModal onClose={ toggle }/>
+        <Modal isOpen={ isOpen } onClose={ closeAndRedirect } >
+          <OrderSuccessModal onClose={ closeAndRedirect }/>
         </Modal>
       </div>
     </main>
@@ -139,6 +141,3 @@ function BasketPage(): JSX.Element {
 }
 
 export default BasketPage;
-
-// TODO валидация поля купона
-// TODO debounce оставить только для Input

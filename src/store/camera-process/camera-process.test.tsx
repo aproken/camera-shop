@@ -59,7 +59,7 @@ describe('cameraProcess reducer', () => {
       undefined,
       fetchSimilarAction.fulfilled(similarCameras, '', 0)
     );
-    expect(nextState.similar).toEqual(similarCameras);
+    expect(nextState.similar).toEqual(similarCameras.map((i) => i.id));
     expect(nextState.isSimilarCompleting).toBe(true);
   });
 

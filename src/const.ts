@@ -31,6 +31,12 @@ export enum RequestStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum CouponStatus {
+  Default = 'default',
+  Error = 'error',
+  Success = 'success',
+}
+
 export enum Type {
   Digital = 'Цифровая',
   Membranous ='Плёночная',

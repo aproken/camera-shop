@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { Camera, Cameras, RatingItem } from '../types/camera';
-import { APIRoute, AppRoute } from '../const';
+import { APIRoute, AppRoute, CouponStatus } from '../const';
 import { Promo } from '../types/promo';
 import { redirectToRoute } from './action';
 import { Review, Reviews } from '../types/review';
@@ -178,11 +178,13 @@ export const fetchDiscountAction = createAsyncThunk<Coupon, string, {
       return {
         coupon: couponData,
         discount: data,
+        status: CouponStatus.Success
       } as Coupon;
     } catch {
       return {
         coupon: null,
-        discount: 0
+        discount: 0,
+        status: CouponStatus.Error
       } as Coupon;
     }
   }

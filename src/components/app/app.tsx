@@ -7,6 +7,7 @@ import ProductPage from '../../pages/product-page/product-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import BasketPage from '../../pages/basket-page/basket-page';
 
+
 function App(): JSX.Element {
   return (
     <HelmetProvider>

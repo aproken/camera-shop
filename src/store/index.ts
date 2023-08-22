@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createAPI} from '../services/api';
+import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'reduxjs-toolkit-persist';
 import { rootReducer } from './root-reducer';
 import { redirect } from './middlewares/redirect';
 
@@ -11,6 +12,17 @@ export const store = configureStore({
     getDefaultMiddleware({
       thunk: {
         extraArgument: api,
+      },
+      serializableCheck: {
+        /* ignore persistance actions */
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER
+        ],
       },
     }).concat(redirect),
 });

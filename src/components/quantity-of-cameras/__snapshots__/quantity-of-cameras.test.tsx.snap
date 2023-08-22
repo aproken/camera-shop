@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuantityOfCamera render 1`] = `
+<div>
+  <div
+    class="quantity"
+  >
+    <button
+      aria-label="уменьшить количество товара"
+      class="btn-icon btn-icon--prev"
+    >
+      <svg
+        aria-hidden="true"
+        height="12"
+        width="7"
+      >
+        <use
+          xlink:href="#icon-arrow"
+        />
+      </svg>
+    </button>
+    <label
+      class="visually-hidden"
+      for="counter1"
+    />
+    <input
+      aria-label="количество товара"
+      id="counter1"
+      max="99"
+      min="1"
+      type="number"
+      value="1"
+    />
+    <button
+      aria-label="увеличить количество товара"
+      class="btn-icon btn-icon--next"
+    >
+      <svg
+        aria-hidden="true"
+        height="12"
+        width="7"
+      >
+        <use
+          xlink:href="#icon-arrow"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;

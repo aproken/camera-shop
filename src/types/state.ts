@@ -11,7 +11,7 @@ export type CameraProcess = {
   isCamerasListCompleting: boolean;
   camera: Camera | null;
   isCameraCompleting: boolean;
-  similar: Cameras;
+  similar: number[];
   isSimilarCompleting: boolean;
   reviewsList: Reviews;
   isReviewsListCompleting: boolean;

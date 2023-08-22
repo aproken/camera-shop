@@ -1,4 +1,4 @@
 export type OrderData = {
   camerasIds: number[];
-  coupon: string;
+  coupon: string | null;
 };

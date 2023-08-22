@@ -1,6 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Header from './header';
+import { createAPI } from '../../services/api';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { Action } from 'redux';
+import thunk, { ThunkDispatch } from 'redux-thunk';
+import { State } from '../../types/state';
+import { Provider } from 'react-redux';
 
 // исключаем search-form, что бы не мешал в тесте
 jest.mock('../../components/search-form/search-form', () => ({
@@ -8,12 +14,31 @@ jest.mock('../../components/search-form/search-form', () => ({
   default: () => <input placeholder='Поиск по сайту' />
 }));
 
+const api = createAPI();
+const mockStore = configureMockStore<
+  State,
+  Action<string>,
+  ThunkDispatch<State, typeof api, Action>
+>([thunk]);
+
+const store = mockStore({
+  'CAMERA': {
+    isCamerasListCompleting: false,
+  },
+  'ORDER' : {
+    ordersList: [],
+    coupon: {}
+  }
+});
+
 describe('Header', () => {
   test('должен отображать навигационные ссылки', () => {
     render(
-      <BrowserRouter>
-        <Header />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Header />
+        </BrowserRouter>
+      </Provider>
     );
 
     const catalogLink = screen.getByText('Каталог');
@@ -31,9 +56,11 @@ describe('Header', () => {
 
   test('должен отображать форму поиска', () => {
     render(
-      <BrowserRouter>
-        <Header />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Header />
+        </BrowserRouter>
+      </Provider>
     );
 
     const searchInput = screen.getByPlaceholderText('Поиск по сайту');
@@ -42,9 +69,11 @@ describe('Header', () => {
 
   test('должен отображать ссылку на корзину', () => {
     render(
-      <BrowserRouter>
-        <Header />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Header />
+        </BrowserRouter>
+      </Provider>
     );
 
     const basketLink = screen.getByTestId('basket-link');

@@ -26,6 +26,10 @@ const store = mockStore({
     promoProduct: null,
     isProductCompleting: false,
   },
+  'ORDER' : {
+    ordersList: [],
+    coupon: {}
+  }
 });
 
 const history = createMemoryHistory();
