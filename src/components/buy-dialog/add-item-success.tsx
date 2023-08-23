@@ -12,7 +12,7 @@ function AddItemSuccessModal({ onClose }: AddItemSuccessModalProps): JSX.Element
     navigate(AppRoute.Basket);
   };
 
-  const handlerGoToBuyClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleGoToBuyClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     onClose();
   };
@@ -25,7 +25,7 @@ function AddItemSuccessModal({ onClose }: AddItemSuccessModalProps): JSX.Element
       </svg>
       <div className="modal__buttons">
         <Link
-          onClick={ handlerGoToBuyClick }
+          onClick={ handleGoToBuyClick }
           className="btn btn--transparent modal__btn"
           to="#"
         >Продолжить покупки

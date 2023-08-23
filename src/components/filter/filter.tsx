@@ -168,5 +168,5 @@ function Filter({ minPrice, maxPrice }: FilterProps): JSX.Element {
     </form>
   );
 }
-// TODO фильры: инпут цена от должен перерисовывать минимальную цену товара из каталога
+
 export default Filter;

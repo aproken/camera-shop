@@ -41,19 +41,19 @@ function BasketPage(): JSX.Element {
     {label: 'Корзина'}
   ];
 
-  const handlerChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setCouponValue(value);
   };
 
-  const handlerOnClick = (evt: React.MouseEvent) => {
+  const handleOnClick = (evt: React.MouseEvent) => {
     evt.preventDefault();
     if(couponValue !== '') {
       dispatch(fetchDiscountAction(couponValue));
     }
   };
 
-  const handlerCheckout = () => {
+  const handleCheckout = () => {
     const camerasIds: number[] = orders.flatMap(
       (order) => Array(order.quantity).fill(Number(order.camera.id)) as number[]
     );
@@ -98,7 +98,7 @@ function BasketPage(): JSX.Element {
                       >
                         <label><span className="custom-input__label">Промокод</span>
                           <input
-                            onChange = { handlerChangeInput }
+                            onChange = { handleChangeInput }
                             value={ couponValue }
                             type="text"
                             name="promo"
@@ -109,7 +109,7 @@ function BasketPage(): JSX.Element {
                         { coupon.status === CouponStatus.Success && <p className="custom-input__success">Промокод принят!</p>}
                       </div>
                       <button
-                        onClick={ handlerOnClick }
+                        onClick={ handleOnClick }
                         className="btn"
                         type="submit"
                       >Применить
@@ -124,7 +124,7 @@ function BasketPage(): JSX.Element {
                   <button
                     className="btn btn--purple"
                     type="submit"
-                    onClick={ handlerCheckout }
+                    onClick={ handleCheckout }
                   >Оформить заказ
                   </button>
                 </div>

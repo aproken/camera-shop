@@ -14,7 +14,7 @@ function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.El
   const [quantityValue, setQuantityValue] = useState(quantity);
   const debounsedValue = useDebounce(quantityValue, 2000);
 
-  const handlerPrevButton = () => {
+  const handlePrevButton = () => {
     if(quantity <= 1) {
       return ;
     }
@@ -24,7 +24,7 @@ function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.El
     }));
   };
 
-  const handlerNextButton = () => {
+  const handleNextButton = () => {
     if(quantity >= 99) {
       return ;
     }
@@ -34,7 +34,7 @@ function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.El
     }));
   };
 
-  const handlerChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
     if(value === '' || (
@@ -64,7 +64,7 @@ function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.El
   return (
     <div className="quantity">
       <button
-        onClick={ handlerPrevButton }
+        onClick={ handlePrevButton }
         className="btn-icon btn-icon--prev"
         aria-label="уменьшить количество товара"
       >
@@ -74,7 +74,7 @@ function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.El
       </button>
       <label className="visually-hidden" htmlFor="counter1"></label>
       <input
-        onChange={ handlerChangeInput }
+        onChange={ handleChangeInput }
         type="number"
         id="counter1"
         value={ quantityValue }
@@ -83,7 +83,7 @@ function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.El
         aria-label="количество товара"
       />
       <button
-        onClick={ handlerNextButton }
+        onClick={ handleNextButton }
         className="btn-icon btn-icon--next"
         aria-label="увеличить количество товара"
       >

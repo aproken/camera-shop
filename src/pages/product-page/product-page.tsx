@@ -114,7 +114,6 @@ function ProductPage(): JSX.Element {
             </div>
           </section>
         </div>
-        {/* TODO нет averageRating в обекте similar camera */}
         <div className="page-content__section">
           { (similarList || isSimilarCompleting) && <ProductSlider similar={ similarList }/> }
         </div>

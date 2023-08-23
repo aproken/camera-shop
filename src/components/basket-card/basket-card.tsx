@@ -13,7 +13,7 @@ function BasketCard({ order }: BasketCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const { id, name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, vendorCode, type, category, level, price, } = order.camera;
 
-  const handlerOnClick = () => {
+  const handleOnClick = () => {
     dispatch(actions.deleteCameraIntoBasket(id));
   };
 
@@ -44,7 +44,7 @@ function BasketCard({ order }: BasketCardProps): JSX.Element {
       <QuantityOfCameras camera={ order.camera } quantity={ order.quantity }/>
       <div className="basket-item__total-price"><span className="visually-hidden">Общая цена:</span>{`${ getStylizedPrice(price * order.quantity) } ₽`}</div>
       <button
-        onClick={ handlerOnClick }
+        onClick={ handleOnClick }
         className="cross-btn"
         type="button"
         aria-label="Удалить товар"
