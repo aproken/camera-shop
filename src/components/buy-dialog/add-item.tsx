@@ -11,8 +11,6 @@ type AddItemModalProps = {
 function AddItemModal({ product, onClick, onClose }: AddItemModalProps): JSX.Element {
   const { name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, vendorCode, type, category, level, price, } = product;
 
-  const handleAddToBusket = () => onClick();
-
   return (
     <>
       <p className="title title--h4">Добавить товар в корзину</p>
@@ -42,7 +40,7 @@ function AddItemModal({ product, onClick, onClose }: AddItemModalProps): JSX.Ele
       </div>
       <div className="modal__buttons">
         <button
-          onClick={ handleAddToBusket }
+          onClick={ onClick }
           className="btn btn--purple modal__btn modal__btn--fit-width"
           type="button"
         >
