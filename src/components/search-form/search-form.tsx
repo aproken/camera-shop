@@ -13,7 +13,7 @@ function SearchForm(): JSX.Element {
   const cameras = useAppSelector(getCamerasList);
   const camerasNames = cameras.map((camera) => camera.name);
 
-  const [shouldShowResults, setShouldShowResults] = useState<boolean>(true);
+  const [shouldShowResults, setShouldShowResults] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [, setSelectedProduct] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -37,6 +37,9 @@ function SearchForm(): JSX.Element {
   );
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement> | KeyboardEvent<HTMLElement>) => {
+    if (!shouldShowResults && event.key === 'Tab') {
+      return ;
+    }
     if (event.key === 'Escape') {
       event.preventDefault();
       setShouldShowResults(false);
