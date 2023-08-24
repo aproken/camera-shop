@@ -83,6 +83,13 @@ export const getMaxPrice = (products: Cameras) => {
   }
 };
 
+//Возвращает общее количество товаров в корзине
+export const getTotalQuantity = (orders: Orders) => {
+  if(orders.length) {
+    return orders.reduce((totalQuantity, order) => totalQuantity + order.quantity, 0);
+  }
+};
+
 //Вычисляет итоговую стоимость, учитывая количество товара
 export const getTotalPrice = (orders: Orders): number => {
   const total = orders.reduce(

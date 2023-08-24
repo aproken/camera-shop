@@ -4,6 +4,7 @@ import SearchForm from '../search-form/search-form';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { getCamerasInBasket } from '../../store/basket-process/selectors';
+import { getTotalQuantity } from '../../utils/utils';
 
 function Header(): JSX.Element {
   const orders = useAppSelector(getCamerasInBasket);
@@ -36,7 +37,7 @@ function Header(): JSX.Element {
           {
             orders.length !== 0
               ?
-              <span className="header__basket-count">{ orders.length }</span>
+              <span className="header__basket-count">{ getTotalQuantity(orders) }</span>
               :
               ''
           }

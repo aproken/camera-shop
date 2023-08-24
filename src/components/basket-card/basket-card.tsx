@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { CategoryMapper } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { Order } from '../../types/order';
 import { getStylizedPrice } from '../../utils/utils';
 import QuantityOfCameras from '../quantity-of-cameras/quantity-of-cameras';
+import Modal from '../modal/modal';
+import RemoveItemModal from '../buy-dialog/remove-item';
 import { actions } from '../../store/basket-process/basket-process';
 
 type BasketCardProps = {
@@ -11,7 +14,11 @@ type BasketCardProps = {
 
 function BasketCard({ order }: BasketCardProps): JSX.Element {
   const dispatch = useAppDispatch();
+
   const { id, name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, vendorCode, type, category, level, price, } = order.camera;
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
 
   const handleOnClick = () => {
     dispatch(actions.deleteCameraIntoBasket(id));
@@ -44,7 +51,7 @@ function BasketCard({ order }: BasketCardProps): JSX.Element {
       <QuantityOfCameras camera={ order.camera } quantity={ order.quantity }/>
       <div className="basket-item__total-price"><span className="visually-hidden">Общая цена:</span>{`${ getStylizedPrice(price * order.quantity) } ₽`}</div>
       <button
-        onClick={ handleOnClick }
+        onClick={ toggle }
         className="cross-btn"
         type="button"
         aria-label="Удалить товар"
@@ -53,6 +60,9 @@ function BasketCard({ order }: BasketCardProps): JSX.Element {
           <use xlinkHref="#icon-close"></use>
         </svg>
       </button>
+      <Modal isOpen={ isOpen } onClose={ toggle } >
+        <RemoveItemModal product={ order.camera } onClick={ handleOnClick } onClose={ toggle }/>
+      </Modal>
     </li>
   );
 }

@@ -67,6 +67,7 @@ function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.El
         onClick={ handlePrevButton }
         className="btn-icon btn-icon--prev"
         aria-label="уменьшить количество товара"
+        disabled={ quantityValue === 1 }
       >
         <svg width="7" height="12" aria-hidden="true">
           <use xlinkHref="#icon-arrow"></use>
@@ -86,6 +87,7 @@ function QuantityOfCameras({ camera, quantity }: QuantityOfCamerasProps): JSX.El
         onClick={ handleNextButton }
         className="btn-icon btn-icon--next"
         aria-label="увеличить количество товара"
+        disabled={ quantityValue === 99 }
       >
         <svg width="7" height="12" aria-hidden="true">
           <use xlinkHref="#icon-arrow"></use>
