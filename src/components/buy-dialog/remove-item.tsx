@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Camera } from '../../types/camera';
-import { getStylizedPrice } from '../../utils/utils';
 import { CategoryMapper } from '../../const';
 
 
@@ -11,7 +10,7 @@ type RemoveItemModalProps = {
 }
 
 function RemoveItemModal({ product, onClick, onClose }: RemoveItemModalProps): JSX.Element {
-  const { name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, vendorCode, type, category, level, price, } = product;
+  const { name, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, vendorCode, type, category, level, } = product;
 
   const handleGoToBuyClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
@@ -42,7 +41,6 @@ function RemoveItemModal({ product, onClick, onClose }: RemoveItemModalProps): J
             <li className="basket-item__list-item">{ `${ type }${' '}${ CategoryMapper[category].toLowerCase() } `}</li>
             <li className="basket-item__list-item">{`${ level } уровень`}</li>
           </ul>
-          <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{`${ getStylizedPrice(price) } ₽`}</p>
         </div>
       </div>
       <div className="modal__buttons">
@@ -54,7 +52,7 @@ function RemoveItemModal({ product, onClick, onClose }: RemoveItemModalProps): J
         </button>
         <Link
           onClick={ handleGoToBuyClick }
-          className="btn btn--transparent modal__btn"
+          className="btn btn--transparent modal__btn modal__btn--half-width"
           to="#"
         >Продолжить покупки
         </Link>

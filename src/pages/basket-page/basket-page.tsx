@@ -46,10 +46,16 @@ function BasketPage(): JSX.Element {
     setCouponValue(value);
   };
 
-  const handleOnClick = (evt: React.MouseEvent) => {
+  const handleOnClick = async (evt: React.MouseEvent) => {
     evt.preventDefault();
     if(couponValue !== '') {
-      dispatch(fetchDiscountAction(couponValue));
+      const result = await dispatch(fetchDiscountAction(couponValue)).unwrap();
+      if (result.status === CouponStatus.Error) {
+        setTimeout(() => {
+          setCouponValue('');
+          dispatch(actions.clearCoupon());
+        }, 3000);
+      }
     }
   };
 
@@ -62,6 +68,18 @@ function BasketPage(): JSX.Element {
       coupon: coupon.coupon
     })).then(() => toggle());
     dispatch(actions.clearBasket());
+
+    if (orders.length === 0) {
+      setCouponValue('');
+    }
+  };
+
+  const hasSpace = (inputValue: string) => inputValue.includes(' ');
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
   };
 
   return (
@@ -93,23 +111,26 @@ function BasketPage(): JSX.Element {
                     <form action="#">
                       <div className={classNames('custom-input', {
                         'is-valid': coupon.status === CouponStatus.Success,
-                        'is-invalid': coupon.status === CouponStatus.Error,
+                        'is-invalid': hasSpace(couponValue) || coupon.status === CouponStatus.Error,
                       })}
                       >
-                        <label><span className="custom-input__label">Промокод</span>
+                        <label>
+                          <span className="custom-input__label">Промокод</span>
                           <input
                             onChange = { handleChangeInput }
                             value={ couponValue }
                             type="text"
                             name="promo"
                             placeholder="Введите промокод"
+                            onKeyDown={ handleKeyPress }
                           />
+                          { hasSpace(couponValue) && <p className="custom-input__error">Пробелы недопустимы</p> }
                         </label>
                         { coupon.status === CouponStatus.Error && <p className="custom-input__error">Промокод неверный</p>}
                         { coupon.status === CouponStatus.Success && <p className="custom-input__success">Промокод принят!</p>}
                       </div>
                       <button
-                        onClick={ handleOnClick }
+                        onClick={ (evt) => void handleOnClick(evt) }
                         className="btn"
                         type="submit"
                       >Применить
@@ -125,6 +146,7 @@ function BasketPage(): JSX.Element {
                     className="btn btn--purple"
                     type="submit"
                     onClick={ handleCheckout }
+                    disabled={ orders.length === 0 }
                   >Оформить заказ
                   </button>
                 </div>

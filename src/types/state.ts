@@ -1,4 +1,4 @@
-import { RequestStatus } from '../const';
+import { RequestStatus, Type } from '../const';
 import { store } from '../store';
 import { Camera, Cameras } from './camera';
 import { Coupon } from './coupon';

@@ -45,6 +45,11 @@ export const basketProcess = createSlice({
         order.quantity = action.payload.quantity;
       }
     },
+    clearCoupon: (state) => {
+      state.coupon.coupon = null;
+      state.coupon.discount = 0;
+      state.coupon.status = CouponStatus.Default;
+    },
     clearBasket: (state) => {
       state.ordersList = [];
       state.coupon.coupon = null;

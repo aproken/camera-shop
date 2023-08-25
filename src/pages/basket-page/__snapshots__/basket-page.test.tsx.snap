@@ -155,6 +155,7 @@ exports[`BasketPage render 1`] = `
                 <button
                   aria-label="уменьшить количество товара"
                   class="btn-icon btn-icon--prev"
+                  disabled=""
                 >
                   <svg
                     aria-hidden="true"
